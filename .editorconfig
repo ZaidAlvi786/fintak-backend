@@ -1,0 +1,7 @@
+﻿[*.cs]
+
+# CS1998: Async method lacks 'await' operators and will run synchronously
+dotnet_diagnostic.CS1998.severity = none
+
+# IDE0055: Fix formatting
+dotnet_diagnostic.IDE0055.severity = silent
