@@ -26,5 +26,6 @@ jobs:
       - name: Run auto_push.py
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
         run: |
           python auto_push.py
