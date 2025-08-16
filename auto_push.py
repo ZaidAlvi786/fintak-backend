@@ -1,48 +1,38 @@
 import subprocess
 import datetime
 import random
-import smtplib
-from email.mime.text import MIMEText
+import os
+import json
+import requests  # install via pip
 
-# ========== CONFIG ==========
-SMTP_SERVER = "smtp.gmail.com"   # e.g., Gmail SMTP
-SMTP_PORT = 587
-EMAIL_USER = "itsabout786@gmail.com"    # sender email
-EMAIL_PASS = "alvig786"       # Gmail app password (not your main password!)
-EMAIL_TO   = "zaidalviza786@gmail.com"     # receiver email
-# ============================
+WEBHOOK_URL = "https://hooks.slack.com/services/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"
 
-def send_email(subject, body):
-    """Send email notification"""
-    msg = MIMEText(body)
-    msg["Subject"] = subject
-    msg["From"] = EMAIL_USER
-    msg["To"] = EMAIL_TO
-
+def send_webhook(message):
+    """Send a message to Slack/Discord via webhook"""
+    if not WEBHOOK_URL:
+        print("⚠️ WEBHOOK_URL not set")
+        return
+    data = {"content": message}  # Discord
+    # For Slack, use: data = {"text": message}
     try:
-        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
-            server.starttls()
-            server.login(EMAIL_USER, EMAIL_PASS)
-            server.sendmail(EMAIL_USER, EMAIL_TO, msg.as_string())
-        print("📧 Error notification sent to", EMAIL_TO)
+        response = requests.post(WEBHOOK_URL, data=json.dumps(data), headers={"Content-Type": "application/json"})
+        if response.status_code == 200 or response.status_code == 204:
+            print("📢 Notification sent successfully!")
+        else:
+            print(f"❌ Failed to send notification: {response.text}")
     except Exception as e:
-        print("❌ Failed to send email:", e)
+        print(f"❌ Exception sending webhook: {e}")
 
 def run_cmd(cmd):
-    """Run a shell command and return output or raise error."""
     result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
     if result.returncode != 0:
         error_msg = f"Error running command: {cmd}\n{result.stderr}"
         print(error_msg)
-        send_email("🚨 Auto Push Failed", error_msg)
+        send_webhook(f"🚨 Auto Push Failed:\n{error_msg}")
         exit(1)
     return result.stdout.strip()
 
-def get_candidate_files():
-    """Return list of tracked + untracked files (ignores .gitignore)."""
-    tracked = run_cmd("git ls-files").splitlines()
-    untracked = run_cmd("git ls-files --others --exclude-standard").splitlines()
-    return tracked + untracked
+# ----------------- rest of your auto_push.py -----------------
 
 def main():
     today = datetime.datetime.now().strftime("%Y-%m-%d")
@@ -72,7 +62,7 @@ def main():
         else:
             print("⚡ No changes to commit after selecting files.")
     except Exception as e:
-        send_email("🚨 Auto Push Script Failed", str(e))
+        send_webhook(f"🚨 Auto Push Script Failed:\n{str(e)}")
         raise
 
 if __name__ == "__main__":
