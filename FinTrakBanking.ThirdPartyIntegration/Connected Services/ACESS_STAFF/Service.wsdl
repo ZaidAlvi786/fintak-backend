@@ -1,0 +1,1449 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="ResetPin">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="serialNumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="applicationName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ResetPinResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ResetPinResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetPin">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="serialNumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="applicationName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="newPIN" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="confirmNewPIN" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetPinResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SetPinResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ResetTokenActivation">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="serialNumber" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ResetTokenActivationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ResetTokenActivationResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AuthoriseUser">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="domain" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pin" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dpResponse" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="reqHostCode" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AuthoriseUserResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AuthoriseUserResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ChangePin">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="domain" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pin" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dpResponse" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="newPIN" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="confirmNewPIN" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ChangePinResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ChangePinResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AssignTokenToUser">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="domain" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="serialNumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="gracePeriod" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AssignTokenToUserResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AssignTokenToUserResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UnassignToken">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="serialNumber" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UnassignTokenResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UnassignTokenResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CreateUser">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="domain" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="orgunit" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="desc" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="phone" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="mobile" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pwd" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="isDiable" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="isLocked" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="local_auth" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="back_auth" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CreateUserResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CreateUserResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="EnableUser">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="domain" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userid" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="EnableUserResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="EnableUserResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DisableUser">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="domain" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userid" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DisableUserResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="DisableUserResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LinkUser">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="domain" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="useDPFromUserDomain" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="useDPFromUserID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LinkUserResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LinkUserResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UnlinkUser">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="domain" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UnlinkUserResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UnlinkUserResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CheckUser">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="domain" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="toUserID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="orgUnit" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="disabled" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="locked" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="hasDP" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CheckUserResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CheckUserResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TokenExist">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="serialNumber" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TokenExistResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TokenExistResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UnlockUser">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="domain" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userid" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UnlockUserResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UnlockUserResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeleteUser">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="domain" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userid" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeleteUserResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="DeleteUserResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="string" nillable="true" type="s:string" />
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="ResetPinSoapIn">
+    <wsdl:part name="parameters" element="tns:ResetPin" />
+  </wsdl:message>
+  <wsdl:message name="ResetPinSoapOut">
+    <wsdl:part name="parameters" element="tns:ResetPinResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetPinSoapIn">
+    <wsdl:part name="parameters" element="tns:SetPin" />
+  </wsdl:message>
+  <wsdl:message name="SetPinSoapOut">
+    <wsdl:part name="parameters" element="tns:SetPinResponse" />
+  </wsdl:message>
+  <wsdl:message name="ResetTokenActivationSoapIn">
+    <wsdl:part name="parameters" element="tns:ResetTokenActivation" />
+  </wsdl:message>
+  <wsdl:message name="ResetTokenActivationSoapOut">
+    <wsdl:part name="parameters" element="tns:ResetTokenActivationResponse" />
+  </wsdl:message>
+  <wsdl:message name="AuthoriseUserSoapIn">
+    <wsdl:part name="parameters" element="tns:AuthoriseUser" />
+  </wsdl:message>
+  <wsdl:message name="AuthoriseUserSoapOut">
+    <wsdl:part name="parameters" element="tns:AuthoriseUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="ChangePinSoapIn">
+    <wsdl:part name="parameters" element="tns:ChangePin" />
+  </wsdl:message>
+  <wsdl:message name="ChangePinSoapOut">
+    <wsdl:part name="parameters" element="tns:ChangePinResponse" />
+  </wsdl:message>
+  <wsdl:message name="AssignTokenToUserSoapIn">
+    <wsdl:part name="parameters" element="tns:AssignTokenToUser" />
+  </wsdl:message>
+  <wsdl:message name="AssignTokenToUserSoapOut">
+    <wsdl:part name="parameters" element="tns:AssignTokenToUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="UnassignTokenSoapIn">
+    <wsdl:part name="parameters" element="tns:UnassignToken" />
+  </wsdl:message>
+  <wsdl:message name="UnassignTokenSoapOut">
+    <wsdl:part name="parameters" element="tns:UnassignTokenResponse" />
+  </wsdl:message>
+  <wsdl:message name="CreateUserSoapIn">
+    <wsdl:part name="parameters" element="tns:CreateUser" />
+  </wsdl:message>
+  <wsdl:message name="CreateUserSoapOut">
+    <wsdl:part name="parameters" element="tns:CreateUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="EnableUserSoapIn">
+    <wsdl:part name="parameters" element="tns:EnableUser" />
+  </wsdl:message>
+  <wsdl:message name="EnableUserSoapOut">
+    <wsdl:part name="parameters" element="tns:EnableUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="DisableUserSoapIn">
+    <wsdl:part name="parameters" element="tns:DisableUser" />
+  </wsdl:message>
+  <wsdl:message name="DisableUserSoapOut">
+    <wsdl:part name="parameters" element="tns:DisableUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="LinkUserSoapIn">
+    <wsdl:part name="parameters" element="tns:LinkUser" />
+  </wsdl:message>
+  <wsdl:message name="LinkUserSoapOut">
+    <wsdl:part name="parameters" element="tns:LinkUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="UnlinkUserSoapIn">
+    <wsdl:part name="parameters" element="tns:UnlinkUser" />
+  </wsdl:message>
+  <wsdl:message name="UnlinkUserSoapOut">
+    <wsdl:part name="parameters" element="tns:UnlinkUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="CheckUserSoapIn">
+    <wsdl:part name="parameters" element="tns:CheckUser" />
+  </wsdl:message>
+  <wsdl:message name="CheckUserSoapOut">
+    <wsdl:part name="parameters" element="tns:CheckUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="TokenExistSoapIn">
+    <wsdl:part name="parameters" element="tns:TokenExist" />
+  </wsdl:message>
+  <wsdl:message name="TokenExistSoapOut">
+    <wsdl:part name="parameters" element="tns:TokenExistResponse" />
+  </wsdl:message>
+  <wsdl:message name="UnlockUserSoapIn">
+    <wsdl:part name="parameters" element="tns:UnlockUser" />
+  </wsdl:message>
+  <wsdl:message name="UnlockUserSoapOut">
+    <wsdl:part name="parameters" element="tns:UnlockUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="DeleteUserSoapIn">
+    <wsdl:part name="parameters" element="tns:DeleteUser" />
+  </wsdl:message>
+  <wsdl:message name="DeleteUserSoapOut">
+    <wsdl:part name="parameters" element="tns:DeleteUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="ResetPinHttpGetIn">
+    <wsdl:part name="serialNumber" type="s:string" />
+    <wsdl:part name="applicationName" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ResetPinHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="SetPinHttpGetIn">
+    <wsdl:part name="serialNumber" type="s:string" />
+    <wsdl:part name="applicationName" type="s:string" />
+    <wsdl:part name="newPIN" type="s:string" />
+    <wsdl:part name="confirmNewPIN" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="SetPinHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="ResetTokenActivationHttpGetIn">
+    <wsdl:part name="serialNumber" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ResetTokenActivationHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="AuthoriseUserHttpGetIn">
+    <wsdl:part name="domain" type="s:string" />
+    <wsdl:part name="userID" type="s:string" />
+    <wsdl:part name="pin" type="s:string" />
+    <wsdl:part name="dpResponse" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="reqHostCode" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="AuthoriseUserHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="ChangePinHttpGetIn">
+    <wsdl:part name="domain" type="s:string" />
+    <wsdl:part name="userID" type="s:string" />
+    <wsdl:part name="pin" type="s:string" />
+    <wsdl:part name="dpResponse" type="s:string" />
+    <wsdl:part name="newPIN" type="s:string" />
+    <wsdl:part name="confirmNewPIN" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ChangePinHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="AssignTokenToUserHttpGetIn">
+    <wsdl:part name="domain" type="s:string" />
+    <wsdl:part name="serialNumber" type="s:string" />
+    <wsdl:part name="userID" type="s:string" />
+    <wsdl:part name="gracePeriod" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="AssignTokenToUserHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="UnassignTokenHttpGetIn">
+    <wsdl:part name="serialNumber" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="UnassignTokenHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="CreateUserHttpGetIn">
+    <wsdl:part name="userid" type="s:string" />
+    <wsdl:part name="domain" type="s:string" />
+    <wsdl:part name="orgunit" type="s:string" />
+    <wsdl:part name="username" type="s:string" />
+    <wsdl:part name="desc" type="s:string" />
+    <wsdl:part name="email" type="s:string" />
+    <wsdl:part name="phone" type="s:string" />
+    <wsdl:part name="mobile" type="s:string" />
+    <wsdl:part name="pwd" type="s:string" />
+    <wsdl:part name="isDiable" type="s:string" />
+    <wsdl:part name="isLocked" type="s:string" />
+    <wsdl:part name="local_auth" type="s:string" />
+    <wsdl:part name="back_auth" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="CreateUserHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="EnableUserHttpGetIn">
+    <wsdl:part name="domain" type="s:string" />
+    <wsdl:part name="userid" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="EnableUserHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="DisableUserHttpGetIn">
+    <wsdl:part name="domain" type="s:string" />
+    <wsdl:part name="userid" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="DisableUserHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="LinkUserHttpGetIn">
+    <wsdl:part name="domain" type="s:string" />
+    <wsdl:part name="userID" type="s:string" />
+    <wsdl:part name="useDPFromUserDomain" type="s:string" />
+    <wsdl:part name="useDPFromUserID" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="LinkUserHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="UnlinkUserHttpGetIn">
+    <wsdl:part name="domain" type="s:string" />
+    <wsdl:part name="userID" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="UnlinkUserHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="CheckUserHttpGetIn">
+    <wsdl:part name="domain" type="s:string" />
+    <wsdl:part name="userID" type="s:string" />
+    <wsdl:part name="toUserID" type="s:string" />
+    <wsdl:part name="orgUnit" type="s:string" />
+    <wsdl:part name="disabled" type="s:string" />
+    <wsdl:part name="locked" type="s:string" />
+    <wsdl:part name="hasDP" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="CheckUserHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="TokenExistHttpGetIn">
+    <wsdl:part name="serialNumber" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="TokenExistHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="UnlockUserHttpGetIn">
+    <wsdl:part name="domain" type="s:string" />
+    <wsdl:part name="userid" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="UnlockUserHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="DeleteUserHttpGetIn">
+    <wsdl:part name="domain" type="s:string" />
+    <wsdl:part name="userid" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="DeleteUserHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="ResetPinHttpPostIn">
+    <wsdl:part name="serialNumber" type="s:string" />
+    <wsdl:part name="applicationName" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ResetPinHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="SetPinHttpPostIn">
+    <wsdl:part name="serialNumber" type="s:string" />
+    <wsdl:part name="applicationName" type="s:string" />
+    <wsdl:part name="newPIN" type="s:string" />
+    <wsdl:part name="confirmNewPIN" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="SetPinHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="ResetTokenActivationHttpPostIn">
+    <wsdl:part name="serialNumber" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ResetTokenActivationHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="AuthoriseUserHttpPostIn">
+    <wsdl:part name="domain" type="s:string" />
+    <wsdl:part name="userID" type="s:string" />
+    <wsdl:part name="pin" type="s:string" />
+    <wsdl:part name="dpResponse" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="reqHostCode" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="AuthoriseUserHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="ChangePinHttpPostIn">
+    <wsdl:part name="domain" type="s:string" />
+    <wsdl:part name="userID" type="s:string" />
+    <wsdl:part name="pin" type="s:string" />
+    <wsdl:part name="dpResponse" type="s:string" />
+    <wsdl:part name="newPIN" type="s:string" />
+    <wsdl:part name="confirmNewPIN" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ChangePinHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="AssignTokenToUserHttpPostIn">
+    <wsdl:part name="domain" type="s:string" />
+    <wsdl:part name="serialNumber" type="s:string" />
+    <wsdl:part name="userID" type="s:string" />
+    <wsdl:part name="gracePeriod" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="AssignTokenToUserHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="UnassignTokenHttpPostIn">
+    <wsdl:part name="serialNumber" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="UnassignTokenHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="CreateUserHttpPostIn">
+    <wsdl:part name="userid" type="s:string" />
+    <wsdl:part name="domain" type="s:string" />
+    <wsdl:part name="orgunit" type="s:string" />
+    <wsdl:part name="username" type="s:string" />
+    <wsdl:part name="desc" type="s:string" />
+    <wsdl:part name="email" type="s:string" />
+    <wsdl:part name="phone" type="s:string" />
+    <wsdl:part name="mobile" type="s:string" />
+    <wsdl:part name="pwd" type="s:string" />
+    <wsdl:part name="isDiable" type="s:string" />
+    <wsdl:part name="isLocked" type="s:string" />
+    <wsdl:part name="local_auth" type="s:string" />
+    <wsdl:part name="back_auth" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="CreateUserHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="EnableUserHttpPostIn">
+    <wsdl:part name="domain" type="s:string" />
+    <wsdl:part name="userid" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="EnableUserHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="DisableUserHttpPostIn">
+    <wsdl:part name="domain" type="s:string" />
+    <wsdl:part name="userid" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="DisableUserHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="LinkUserHttpPostIn">
+    <wsdl:part name="domain" type="s:string" />
+    <wsdl:part name="userID" type="s:string" />
+    <wsdl:part name="useDPFromUserDomain" type="s:string" />
+    <wsdl:part name="useDPFromUserID" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="LinkUserHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="UnlinkUserHttpPostIn">
+    <wsdl:part name="domain" type="s:string" />
+    <wsdl:part name="userID" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="UnlinkUserHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="CheckUserHttpPostIn">
+    <wsdl:part name="domain" type="s:string" />
+    <wsdl:part name="userID" type="s:string" />
+    <wsdl:part name="toUserID" type="s:string" />
+    <wsdl:part name="orgUnit" type="s:string" />
+    <wsdl:part name="disabled" type="s:string" />
+    <wsdl:part name="locked" type="s:string" />
+    <wsdl:part name="hasDP" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="CheckUserHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="TokenExistHttpPostIn">
+    <wsdl:part name="serialNumber" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="TokenExistHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="UnlockUserHttpPostIn">
+    <wsdl:part name="domain" type="s:string" />
+    <wsdl:part name="userid" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="UnlockUserHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="DeleteUserHttpPostIn">
+    <wsdl:part name="domain" type="s:string" />
+    <wsdl:part name="userid" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="DeleteUserHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:portType name="ServiceSoap">
+    <wsdl:operation name="ResetPin">
+      <wsdl:input message="tns:ResetPinSoapIn" />
+      <wsdl:output message="tns:ResetPinSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetPin">
+      <wsdl:input message="tns:SetPinSoapIn" />
+      <wsdl:output message="tns:SetPinSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ResetTokenActivation">
+      <wsdl:input message="tns:ResetTokenActivationSoapIn" />
+      <wsdl:output message="tns:ResetTokenActivationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AuthoriseUser">
+      <wsdl:input message="tns:AuthoriseUserSoapIn" />
+      <wsdl:output message="tns:AuthoriseUserSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ChangePin">
+      <wsdl:input message="tns:ChangePinSoapIn" />
+      <wsdl:output message="tns:ChangePinSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AssignTokenToUser">
+      <wsdl:input message="tns:AssignTokenToUserSoapIn" />
+      <wsdl:output message="tns:AssignTokenToUserSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UnassignToken">
+      <wsdl:input message="tns:UnassignTokenSoapIn" />
+      <wsdl:output message="tns:UnassignTokenSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateUser">
+      <wsdl:input message="tns:CreateUserSoapIn" />
+      <wsdl:output message="tns:CreateUserSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="EnableUser">
+      <wsdl:input message="tns:EnableUserSoapIn" />
+      <wsdl:output message="tns:EnableUserSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DisableUser">
+      <wsdl:input message="tns:DisableUserSoapIn" />
+      <wsdl:output message="tns:DisableUserSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="LinkUser">
+      <wsdl:input message="tns:LinkUserSoapIn" />
+      <wsdl:output message="tns:LinkUserSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UnlinkUser">
+      <wsdl:input message="tns:UnlinkUserSoapIn" />
+      <wsdl:output message="tns:UnlinkUserSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckUser">
+      <wsdl:input message="tns:CheckUserSoapIn" />
+      <wsdl:output message="tns:CheckUserSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TokenExist">
+      <wsdl:input message="tns:TokenExistSoapIn" />
+      <wsdl:output message="tns:TokenExistSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UnlockUser">
+      <wsdl:input message="tns:UnlockUserSoapIn" />
+      <wsdl:output message="tns:UnlockUserSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteUser">
+      <wsdl:input message="tns:DeleteUserSoapIn" />
+      <wsdl:output message="tns:DeleteUserSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="ServiceHttpGet">
+    <wsdl:operation name="ResetPin">
+      <wsdl:input message="tns:ResetPinHttpGetIn" />
+      <wsdl:output message="tns:ResetPinHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetPin">
+      <wsdl:input message="tns:SetPinHttpGetIn" />
+      <wsdl:output message="tns:SetPinHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ResetTokenActivation">
+      <wsdl:input message="tns:ResetTokenActivationHttpGetIn" />
+      <wsdl:output message="tns:ResetTokenActivationHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AuthoriseUser">
+      <wsdl:input message="tns:AuthoriseUserHttpGetIn" />
+      <wsdl:output message="tns:AuthoriseUserHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ChangePin">
+      <wsdl:input message="tns:ChangePinHttpGetIn" />
+      <wsdl:output message="tns:ChangePinHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AssignTokenToUser">
+      <wsdl:input message="tns:AssignTokenToUserHttpGetIn" />
+      <wsdl:output message="tns:AssignTokenToUserHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UnassignToken">
+      <wsdl:input message="tns:UnassignTokenHttpGetIn" />
+      <wsdl:output message="tns:UnassignTokenHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateUser">
+      <wsdl:input message="tns:CreateUserHttpGetIn" />
+      <wsdl:output message="tns:CreateUserHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="EnableUser">
+      <wsdl:input message="tns:EnableUserHttpGetIn" />
+      <wsdl:output message="tns:EnableUserHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DisableUser">
+      <wsdl:input message="tns:DisableUserHttpGetIn" />
+      <wsdl:output message="tns:DisableUserHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="LinkUser">
+      <wsdl:input message="tns:LinkUserHttpGetIn" />
+      <wsdl:output message="tns:LinkUserHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UnlinkUser">
+      <wsdl:input message="tns:UnlinkUserHttpGetIn" />
+      <wsdl:output message="tns:UnlinkUserHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckUser">
+      <wsdl:input message="tns:CheckUserHttpGetIn" />
+      <wsdl:output message="tns:CheckUserHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TokenExist">
+      <wsdl:input message="tns:TokenExistHttpGetIn" />
+      <wsdl:output message="tns:TokenExistHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UnlockUser">
+      <wsdl:input message="tns:UnlockUserHttpGetIn" />
+      <wsdl:output message="tns:UnlockUserHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteUser">
+      <wsdl:input message="tns:DeleteUserHttpGetIn" />
+      <wsdl:output message="tns:DeleteUserHttpGetOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="ServiceHttpPost">
+    <wsdl:operation name="ResetPin">
+      <wsdl:input message="tns:ResetPinHttpPostIn" />
+      <wsdl:output message="tns:ResetPinHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetPin">
+      <wsdl:input message="tns:SetPinHttpPostIn" />
+      <wsdl:output message="tns:SetPinHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ResetTokenActivation">
+      <wsdl:input message="tns:ResetTokenActivationHttpPostIn" />
+      <wsdl:output message="tns:ResetTokenActivationHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AuthoriseUser">
+      <wsdl:input message="tns:AuthoriseUserHttpPostIn" />
+      <wsdl:output message="tns:AuthoriseUserHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ChangePin">
+      <wsdl:input message="tns:ChangePinHttpPostIn" />
+      <wsdl:output message="tns:ChangePinHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AssignTokenToUser">
+      <wsdl:input message="tns:AssignTokenToUserHttpPostIn" />
+      <wsdl:output message="tns:AssignTokenToUserHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UnassignToken">
+      <wsdl:input message="tns:UnassignTokenHttpPostIn" />
+      <wsdl:output message="tns:UnassignTokenHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateUser">
+      <wsdl:input message="tns:CreateUserHttpPostIn" />
+      <wsdl:output message="tns:CreateUserHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="EnableUser">
+      <wsdl:input message="tns:EnableUserHttpPostIn" />
+      <wsdl:output message="tns:EnableUserHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DisableUser">
+      <wsdl:input message="tns:DisableUserHttpPostIn" />
+      <wsdl:output message="tns:DisableUserHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="LinkUser">
+      <wsdl:input message="tns:LinkUserHttpPostIn" />
+      <wsdl:output message="tns:LinkUserHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UnlinkUser">
+      <wsdl:input message="tns:UnlinkUserHttpPostIn" />
+      <wsdl:output message="tns:UnlinkUserHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckUser">
+      <wsdl:input message="tns:CheckUserHttpPostIn" />
+      <wsdl:output message="tns:CheckUserHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TokenExist">
+      <wsdl:input message="tns:TokenExistHttpPostIn" />
+      <wsdl:output message="tns:TokenExistHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UnlockUser">
+      <wsdl:input message="tns:UnlockUserHttpPostIn" />
+      <wsdl:output message="tns:UnlockUserHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteUser">
+      <wsdl:input message="tns:DeleteUserHttpPostIn" />
+      <wsdl:output message="tns:DeleteUserHttpPostOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ServiceSoap" type="tns:ServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ResetPin">
+      <soap:operation soapAction="http://tempuri.org/ResetPin" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetPin">
+      <soap:operation soapAction="http://tempuri.org/SetPin" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ResetTokenActivation">
+      <soap:operation soapAction="http://tempuri.org/ResetTokenActivation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AuthoriseUser">
+      <soap:operation soapAction="http://tempuri.org/AuthoriseUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ChangePin">
+      <soap:operation soapAction="http://tempuri.org/ChangePin" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AssignTokenToUser">
+      <soap:operation soapAction="http://tempuri.org/AssignTokenToUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UnassignToken">
+      <soap:operation soapAction="http://tempuri.org/UnassignToken" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateUser">
+      <soap:operation soapAction="http://tempuri.org/CreateUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EnableUser">
+      <soap:operation soapAction="http://tempuri.org/EnableUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DisableUser">
+      <soap:operation soapAction="http://tempuri.org/DisableUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LinkUser">
+      <soap:operation soapAction="http://tempuri.org/LinkUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UnlinkUser">
+      <soap:operation soapAction="http://tempuri.org/UnlinkUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckUser">
+      <soap:operation soapAction="http://tempuri.org/CheckUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TokenExist">
+      <soap:operation soapAction="http://tempuri.org/TokenExist" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UnlockUser">
+      <soap:operation soapAction="http://tempuri.org/UnlockUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteUser">
+      <soap:operation soapAction="http://tempuri.org/DeleteUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ServiceSoap12" type="tns:ServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ResetPin">
+      <soap12:operation soapAction="http://tempuri.org/ResetPin" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetPin">
+      <soap12:operation soapAction="http://tempuri.org/SetPin" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ResetTokenActivation">
+      <soap12:operation soapAction="http://tempuri.org/ResetTokenActivation" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AuthoriseUser">
+      <soap12:operation soapAction="http://tempuri.org/AuthoriseUser" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ChangePin">
+      <soap12:operation soapAction="http://tempuri.org/ChangePin" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AssignTokenToUser">
+      <soap12:operation soapAction="http://tempuri.org/AssignTokenToUser" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UnassignToken">
+      <soap12:operation soapAction="http://tempuri.org/UnassignToken" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateUser">
+      <soap12:operation soapAction="http://tempuri.org/CreateUser" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EnableUser">
+      <soap12:operation soapAction="http://tempuri.org/EnableUser" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DisableUser">
+      <soap12:operation soapAction="http://tempuri.org/DisableUser" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LinkUser">
+      <soap12:operation soapAction="http://tempuri.org/LinkUser" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UnlinkUser">
+      <soap12:operation soapAction="http://tempuri.org/UnlinkUser" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckUser">
+      <soap12:operation soapAction="http://tempuri.org/CheckUser" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TokenExist">
+      <soap12:operation soapAction="http://tempuri.org/TokenExist" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UnlockUser">
+      <soap12:operation soapAction="http://tempuri.org/UnlockUser" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteUser">
+      <soap12:operation soapAction="http://tempuri.org/DeleteUser" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ServiceHttpGet" type="tns:ServiceHttpGet">
+    <http:binding verb="GET" />
+    <wsdl:operation name="ResetPin">
+      <http:operation location="/ResetPin" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetPin">
+      <http:operation location="/SetPin" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ResetTokenActivation">
+      <http:operation location="/ResetTokenActivation" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AuthoriseUser">
+      <http:operation location="/AuthoriseUser" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ChangePin">
+      <http:operation location="/ChangePin" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AssignTokenToUser">
+      <http:operation location="/AssignTokenToUser" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UnassignToken">
+      <http:operation location="/UnassignToken" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateUser">
+      <http:operation location="/CreateUser" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EnableUser">
+      <http:operation location="/EnableUser" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DisableUser">
+      <http:operation location="/DisableUser" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LinkUser">
+      <http:operation location="/LinkUser" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UnlinkUser">
+      <http:operation location="/UnlinkUser" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckUser">
+      <http:operation location="/CheckUser" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TokenExist">
+      <http:operation location="/TokenExist" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UnlockUser">
+      <http:operation location="/UnlockUser" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteUser">
+      <http:operation location="/DeleteUser" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ServiceHttpPost" type="tns:ServiceHttpPost">
+    <http:binding verb="POST" />
+    <wsdl:operation name="ResetPin">
+      <http:operation location="/ResetPin" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetPin">
+      <http:operation location="/SetPin" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ResetTokenActivation">
+      <http:operation location="/ResetTokenActivation" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AuthoriseUser">
+      <http:operation location="/AuthoriseUser" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ChangePin">
+      <http:operation location="/ChangePin" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AssignTokenToUser">
+      <http:operation location="/AssignTokenToUser" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UnassignToken">
+      <http:operation location="/UnassignToken" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateUser">
+      <http:operation location="/CreateUser" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EnableUser">
+      <http:operation location="/EnableUser" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DisableUser">
+      <http:operation location="/DisableUser" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LinkUser">
+      <http:operation location="/LinkUser" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UnlinkUser">
+      <http:operation location="/UnlinkUser" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckUser">
+      <http:operation location="/CheckUser" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TokenExist">
+      <http:operation location="/TokenExist" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UnlockUser">
+      <http:operation location="/UnlockUser" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteUser">
+      <http:operation location="/DeleteUser" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Service">
+    <wsdl:port name="ServiceSoap" binding="tns:ServiceSoap">
+      <soap:address location="https://10.238.22.27/ACCESS_STAFF/Service.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ServiceSoap12" binding="tns:ServiceSoap12">
+      <soap12:address location="https://10.238.22.27/ACCESS_STAFF/Service.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ServiceHttpGet" binding="tns:ServiceHttpGet">
+      <http:address location="https://10.238.22.27/ACCESS_STAFF/Service.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ServiceHttpPost" binding="tns:ServiceHttpPost">
+      <http:address location="https://10.238.22.27/ACCESS_STAFF/Service.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,2307 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.Net.Compilers.Toolset.4.0.1\build\Microsoft.Net.Compilers.Toolset.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.Toolset.4.0.1\build\Microsoft.Net.Compilers.Toolset.props')" />
+  <Import Project="..\packages\Microsoft.Net.Compilers.2.8.2\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.8.2\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{515D8B0B-9686-4662-9FA1-BF67415F9B7B}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FintrakBanking.APICore</RootNamespace>
+    <AssemblyName>FintrakBanking.APICore</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
+    <TypeScriptToolsVersion>2.3</TypeScriptToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <FilesToIncludeForPublish>AllFilesInTheProject</FilesToIncludeForPublish>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ExcludeGeneratedDebugSymbol>false</ExcludeGeneratedDebugSymbol>
+    <FilesToIncludeForPublish>OnlyFilesToRunTheApp</FilesToIncludeForPublish>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetZip, Version=1.11.0.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetZip.1.11.0\lib\net20\DotNetZip.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServerCompact, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.SqlServerCompact.6.2.0\lib\net45\EntityFramework.SqlServerCompact.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AI.Agent.Intercept, Version=2.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.4.0\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AI.DependencyCollector, Version=2.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.6.4\lib\net45\Microsoft.AI.DependencyCollector.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AI.PerfCounterCollector, Version=2.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.PerfCounterCollector.2.6.4\lib\net45\Microsoft.AI.PerfCounterCollector.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AI.ServerTelemetryChannel, Version=2.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.6.4\lib\net45\Microsoft.AI.ServerTelemetryChannel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AI.Web, Version=2.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Web.2.6.4\lib\net45\Microsoft.AI.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AI.WindowsServer, Version=2.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.2.6.4\lib\net45\Microsoft.AI.WindowsServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationInsights, Version=2.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.2.6.4\lib\net46\Microsoft.ApplicationInsights.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.3\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.3\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.3\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.TelemetryCorrelation, Version=1.0.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.TelemetryCorrelation.1.0.3\lib\net45\Microsoft.AspNet.TelemetryCorrelation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.WebApi.Extensions.Compression.Server, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Extensions.Compression.Server.2.0.6\lib\net45\Microsoft.AspNet.WebApi.Extensions.Compression.Server.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=3.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.3.6.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.IO.RecyclableMemoryStream, Version=1.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IO.RecyclableMemoryStream.1.2.2\lib\net45\Microsoft.IO.RecyclableMemoryStream.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Office.Interop.Excel.15.0.4795.1000\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.Owin, Version=4.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.4.2.0\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Cors, Version=4.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Cors.4.2.0\lib\net45\Microsoft.Owin.Cors.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.4.0.0\lib\net451\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=4.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.4.2.0\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.4.0.0\lib\net451\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Facebook, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Facebook.4.0.0\lib\net451\Microsoft.Owin.Security.Facebook.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Google, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Google.4.0.0\lib\net451\Microsoft.Owin.Security.Google.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.MicrosoftAccount, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.MicrosoftAccount.4.0.0\lib\net451\Microsoft.Owin.Security.MicrosoftAccount.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth, Version=4.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.4.2.0\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Twitter, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Twitter.4.0.0\lib\net451\Microsoft.Owin.Security.Twitter.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.Common, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.WebForms.140.1000.523\lib\net40\Microsoft.ReportViewer.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.DataVisualization, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.WebForms.140.1000.523\lib\net40\Microsoft.ReportViewer.DataVisualization.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.Design, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.WebForms.140.1000.523\lib\net40\Microsoft.ReportViewer.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.ProcessingObjectModel, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.WebForms.140.1000.523\lib\net40\Microsoft.ReportViewer.ProcessingObjectModel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WebDesign, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.WebForms.140.1000.523\lib\net40\Microsoft.ReportViewer.WebDesign.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.WebForms.140.1000.523\lib\net40\Microsoft.ReportViewer.WebForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WinForms, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.WebForms.140.1000.523\lib\net40\Microsoft.ReportViewer.WinForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Types, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.Types.14.0.314.76\lib\net40\Microsoft.SqlServer.Types.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.Common, Version=3.3.1.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Web.Common.3.3.1\lib\net45\Ninject.Web.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.Common.WebHost, Version=3.3.1.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Web.Common.WebHost.3.3.1\lib\net45\Ninject.Web.Common.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.Mvc, Version=3.3.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.MVC5.3.3.0\lib\net45\Ninject.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="Oracle.ManagedDataAccess, Version=4.122.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oracle.ManagedDataAccess.12.2.1100\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
+    </Reference>
+    <Reference Include="Oracle.ManagedDataAccess.EntityFramework, Version=6.122.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oracle.ManagedDataAccess.EntityFramework.12.2.1100\lib\net45\Oracle.ManagedDataAccess.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="RestSharp, Version=106.15.0.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.106.15.0\lib\net452\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp.Serializers.NewtonsoftJson, Version=106.15.0.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.Serializers.NewtonsoftJson.106.15.0\lib\net452\RestSharp.Serializers.NewtonsoftJson.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.2.7.1\lib\net46\Serilog.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog.Sinks.File, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.Sinks.File.4.0.0\lib\net45\Serilog.Sinks.File.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog.Sinks.MSSqlServer, Version=5.1.2.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.Sinks.MSSqlServer.5.1.2\lib\net452\Serilog.Sinks.MSSqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog.Sinks.PeriodicBatching, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.Sinks.PeriodicBatching.2.1.1\lib\net45\Serilog.Sinks.PeriodicBatching.dll</HintPath>
+    </Reference>
+    <Reference Include="SerilogWeb.Classic, Version=4.2.0.0, Culture=neutral, PublicKeyToken=9462ddd55fbc0e7f, processorArchitecture=MSIL">
+      <HintPath>..\packages\SerilogWeb.Classic.4.2.42\lib\net45\SerilogWeb.Classic.dll</HintPath>
+    </Reference>
+    <Reference Include="SerilogWeb.Classic.WebApi, Version=3.0.0.0, Culture=neutral, PublicKeyToken=9462ddd55fbc0e7f, processorArchitecture=MSIL">
+      <HintPath>..\packages\SerilogWeb.Classic.WebApi.3.0.1\lib\net45\SerilogWeb.Classic.WebApi.dll</HintPath>
+    </Reference>
+    <Reference Include="Swashbuckle.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cd1bb07a5ac7c7bc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Swashbuckle.Core.5.6.0\lib\net40\Swashbuckle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Services.Design" />
+    <Reference Include="System.Data.SqlServerCe, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.Compact.4.0.8876.1\lib\net40\System.Data.SqlServerCe.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
+    <Reference Include="System.DirectoryServices.Protocols" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.FileSystem.Primitives.4.3.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Packaging, Version=4.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Packaging.4.5.0\lib\net46\System.IO.Packaging.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Management" />
+    <Reference Include="System.Net.Http.Extensions.Compression.Core, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Extensions.Compression.Server.2.0.6\lib\net45\System.Net.Http.Extensions.Compression.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Cors, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.6\lib\net45\System.Web.Cors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.7\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.Cors, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Cors.5.2.6\lib\net45\System.Web.Http.Cors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.Owin, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Owin.5.2.7\lib\net45\System.Web.Http.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.7\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.6\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.6\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="Topshelf, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b800c4cfcdeea87b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Topshelf.4.0.4\lib\net452\Topshelf.dll</HintPath>
+    </Reference>
+    <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebActivatorEx.2.2.0\lib\net40\WebActivatorEx.dll</HintPath>
+    </Reference>
+    <Reference Include="WebApiContrib.IoC.Ninject, Version=0.9.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebApiContrib.IoC.Ninject.0.9.3.0\lib\net40\WebApiContrib.IoC.Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="XLeratorDLL-financial, Version=1.17.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\XLeratorDLL-financial.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Owin">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\ClaimsAuthorizationAttribute.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\IdentityConfig.cs" />
+    <Compile Include="App_Start\NinjectWebCommon.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="App_Start\SwaggerConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="CFLAuthentication\BasicAuthenticationFilter.cs" />
+    <Compile Include="CFLAuthentication\BasicAuthenticationIdentity.cs" />
+    <Compile Include="CFLAuthentication\MyBasicAuthenticationFilter.cs" />
+    <Compile Include="Controllers\AccountCategoryController.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AccountSensitivityController.cs" />
+    <Compile Include="Controllers\AccountTypeController.cs" />
+    <Compile Include="Controllers\AccreditedConsultantsController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\AlertController.cs" />
+    <Compile Include="Controllers\AlertTestingController.cs" />
+    <Compile Include="Controllers\APILogController.cs" />
+    <Compile Include="Controllers\AppraisalMemorandumController.cs" />
+    <Compile Include="Controllers\ApprovalGroupController.cs" />
+    <Compile Include="Controllers\ApprovalLevelController.cs" />
+    <Compile Include="Controllers\ApprovalLevelStaffController.cs" />
+    <Compile Include="Controllers\AtcLodgmentController.cs" />
+    <Compile Include="Controllers\AtcLodgmentDetailController.cs" />
+    <Compile Include="Controllers\AuthorisedSignatoryController.cs" />
+    <Compile Include="Controllers\BulkDisbursementPackageController.cs" />
+    <Compile Include="Controllers\BusinessRuleController.cs" />
+    <Compile Include="Controllers\CashBackController.cs" />
+    <Compile Include="Controllers\CashFlowLendingController.cs" />
+    <Compile Include="Controllers\CollateralValuationController.cs" />
+    <Compile Include="Controllers\CreditDrawdownController.cs" />
+    <Compile Include="Controllers\DeferredFeeController.cs" />
+    <Compile Include="Controllers\DocumentCategoryController.cs" />
+    <Compile Include="Controllers\DocumentCategoryTypeController.cs" />
+    <Compile Include="Controllers\DocumentTypeController.cs" />
+    <Compile Include="Controllers\DocumentUploadController.cs" />
+    <Compile Include="Controllers\DocumentUsageController.cs" />
+    <Compile Include="Controllers\FacilityModificationController.cs" />
+    <Compile Include="Controllers\FinacleIntegrationController.cs" />
+    <Compile Include="Controllers\HeadOfficeToSubController1.cs" />
+    <Compile Include="Controllers\InternationalCustomerController.cs" />
+    <Compile Include="Controllers\LcCashBuildUpPlanController.cs" />
+    <Compile Include="Controllers\LcIssuanceController.cs" />
+    <Compile Include="Controllers\LetterGenerationRequestController.cs" />
+    <Compile Include="Controllers\LoanFeeChargeController.cs" />
+    <Compile Include="Controllers\OriginalDocumentApprovalController.cs" />
+    <Compile Include="Controllers\OriginalDocumentReleaseController.cs" />
+    <Compile Include="Controllers\ProfileSettingsController.cs" />
+    <Compile Include="Controllers\ApprovalReliefController.cs" />
+    <Compile Include="Controllers\AuthenticationController.cs" />
+    <Compile Include="Controllers\AuthorizationController.cs" />
+    <Compile Include="Controllers\BranchController.cs" />
+    <Compile Include="Controllers\CallMemoController.cs" />
+    <Compile Include="Controllers\ConditionPrecedentController.cs" />
+    <Compile Include="Controllers\ContingentLoanUsageController.cs" />
+    <Compile Include="Controllers\CreditOperationsController.cs" />
+    <Compile Include="Controllers\CRMSController.cs" />
+    <Compile Include="Controllers\CrmsRegulatoryController.cs" />
+    <Compile Include="Controllers\CustomChartOfAccountController.cs" />
+    <Compile Include="Controllers\CustomerCreditBureauController.cs" />
+    <Compile Include="Controllers\DashboardController.cs" />
+    <Compile Include="Controllers\EditorController.cs" />
+    <Compile Include="Controllers\EmailAndAlertsController.cs" />
+    <Compile Include="Controllers\EmployerController.cs" />
+    <Compile Include="Controllers\EndOfDayController.cs" />
+    <Compile Include="Controllers\FacilityDetailSummaryController.cs" />
+    <Compile Include="Controllers\FeeConcessionController.cs" />
+    <Compile Include="Controllers\FinanceTransactionController.cs" />
+    <Compile Include="Controllers\CreditLimitValidationsController.cs" />
+    <Compile Include="Controllers\CasaController.cs" />
+    <Compile Include="Controllers\ChargeFeeController.cs" />
+    <Compile Include="Controllers\ChartOfAccountController.cs" />
+    <Compile Include="Controllers\ChecklistController.cs" />
+    <Compile Include="Controllers\CompanyController.cs" />
+    <Compile Include="Controllers\CountryController.cs" />
+    <Compile Include="Controllers\CreditTemplateController.cs" />
+    <Compile Include="Controllers\CurrencyRateController.cs" />
+    <Compile Include="Controllers\CustomerCollateralController.cs" />
+    <Compile Include="Controllers\CustomerController.cs" />
+    <Compile Include="Controllers\CustomerFSController.cs" />
+    <Compile Include="Controllers\CustomerGroupController.cs" />
+    <Compile Include="Controllers\CustomFieldsController.cs" />
+    <Compile Include="Controllers\DepartmentController.cs" />
+    <Compile Include="Controllers\FileUploadController.cs" />
+    <Compile Include="Controllers\FXAccountController.cs" />
+    <Compile Include="Controllers\GeneralSetupController.cs" />
+    <Compile Include="Controllers\GenericDocumentUploadController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\JobRequestController.cs" />
+    <Compile Include="Controllers\JobTitleController.cs" />
+    <Compile Include="Controllers\KYCDocumentUploadController.cs" />
+    <Compile Include="Controllers\LimitAndMonitoringController.cs" />
+    <Compile Include="Controllers\LoanApplicationController.cs" />
+    <Compile Include="Controllers\LoanCamSolController.cs" />
+    <Compile Include="Controllers\LoanController.cs" />
+    <Compile Include="Controllers\LoanCovenantController.cs" />
+    <Compile Include="Controllers\LoanDocumentController.cs" />
+    <Compile Include="Controllers\LoanMarketController.cs" />
+    <Compile Include="Controllers\LoanOperationController.cs" />
+    <Compile Include="Controllers\LoanPerformanceController.cs" />
+    <Compile Include="Controllers\LoanPrincipalController.cs" />
+    <Compile Include="Controllers\LoanReviewApplicationController.cs" />
+    <Compile Include="Controllers\MisInfoController.cs" />
+    <Compile Include="Controllers\LoanRecoveryController.cs" />
+    <Compile Include="Controllers\MonitoringSetupController.cs" />
+    <Compile Include="Controllers\NotificationController.cs" />
+    <Compile Include="Controllers\OfferLetterAndAvailmentController.cs" />
+    <Compile Include="Controllers\OverrideController.cs" />
+    <Compile Include="Controllers\ProductCollateralTypeController.cs" />
+    <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\ProductFeeController.cs" />
+    <Compile Include="Controllers\ProjectSiteReportController.cs" />
+    <Compile Include="Controllers\PrudentialGuidelineController.cs" />
+    <Compile Include="Controllers\PublicHolidayController.cs" />
+    <Compile Include="Controllers\RiskAcceptanceCriteriaController.cs" />
+    <Compile Include="Controllers\StaffAccountHistoryController.cs" />
+    <Compile Include="Controllers\StaffRoleController.cs" />
+    <Compile Include="Controllers\ReportsController.cs" />
+    <Compile Include="Controllers\RiskAssessmentController.cs" />
+    <Compile Include="Controllers\RiskController.cs" />
+    <Compile Include="Controllers\StaffController.cs" />
+    <Compile Include="Controllers\TaxController.cs" />
+    <Compile Include="Controllers\TermSheetController.cs" />
+    <Compile Include="Controllers\TestCollateralController.cs" />
+    <Compile Include="Controllers\TestController.cs" />
+    <Compile Include="Filters\AdministratorLockoutFilter.cs" />
+    <Compile Include="Filters\AuthorizeActivity.cs" />
+    <Compile Include="Filters\SecureExceptionFilterAttribute.cs" />
+    <Compile Include="Providers\ReportServerCredentials.cs" />
+    <Compile Include="Providers\SimpleRefreshTokenProvider.cs" />
+    <Compile Include="Reports\Credit\Credit.cs">
+      <DependentUpon>Credit.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\Credit\Credit.designer.cs">
+      <DependentUpon>Credit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\Credit\Credit1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Credit.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\Credit\OfferLetterGeneration\CFLOfferLetter.aspx.cs">
+      <DependentUpon>CFLOfferLetter.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\Credit\OfferLetterGeneration\CFLOfferLetter.aspx.designer.cs">
+      <DependentUpon>CFLOfferLetter.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\Credit\OfferLetterGeneration\ClassifiedAssetManagement.aspx.cs">
+      <DependentUpon>ClassifiedAssetManagement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\Credit\OfferLetterGeneration\ClassifiedAssetManagement.aspx.designer.cs">
+      <DependentUpon>ClassifiedAssetManagement.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\Credit\OfferLetterGeneration\Credit.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Credit.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\Credit\OfferLetterGeneration\FORM3800B_LMS.aspx.cs">
+      <DependentUpon>FORM3800B_LMS.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\Credit\OfferLetterGeneration\FORM3800B_LMS.aspx.designer.cs">
+      <DependentUpon>FORM3800B_LMS.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\Credit\OfferLetterGeneration\OfferLetterLMSR.aspx.cs">
+      <DependentUpon>OfferLetterLMSR.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\Credit\OfferLetterGeneration\OfferLetterLMSR.aspx.designer.cs">
+      <DependentUpon>OfferLetterLMSR.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportDataset\CollateralDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CollateralDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportDataset\DeferralWaiver.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DeferralWaiver.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportDataset\DisbursalCreditTurnover.Designer.cs" />
+    <Compile Include="Reports\ReportDataset\DisbursalCreditTurnover1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DisbursalCreditTurnover.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportDataset\DRAWDOWN.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DRAWDOWN.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportDataset\FORM3800B.Designer.cs" />
+    <Compile Include="Reports\ReportDataset\LoanDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LoanDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportDataset\MiddleOffice.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MiddleOffice.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportDataset\PSR.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PSR.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportDataset\RecoveryCollections.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RecoveryCollections.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportDataset\ReportDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ReportDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportDataset\TransactionDataSet1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TransactionDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\AgeAnalysisReport.aspx.cs">
+      <DependentUpon>AgeAnalysisReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\AgeAnalysisReport.aspx.designer.cs">
+      <DependentUpon>AgeAnalysisReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\AnalystReport.aspx.cs">
+      <DependentUpon>AnalystReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\AnalystReport.aspx.designer.cs">
+      <DependentUpon>AnalystReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\ApprovalTrailWith_SLA.aspx.cs">
+      <DependentUpon>ApprovalTrailWith_SLA.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\ApprovalTrailWith_SLA.aspx.designer.cs">
+      <DependentUpon>ApprovalTrailWith_SLA.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\ApprovedForm3800BFacilities.aspx.cs">
+      <DependentUpon>ApprovedForm3800BFacilities.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\ApprovedForm3800BFacilities.aspx.designer.cs">
+      <DependentUpon>ApprovedForm3800BFacilities.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\AllContingentsReport.aspx.cs">
+      <DependentUpon>AllContingentsReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\AllContingentsReport.aspx.designer.cs">
+      <DependentUpon>AllContingentsReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\Blacklist.aspx.cs">
+      <DependentUpon>Blacklist.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\Blacklist.aspx.designer.cs">
+      <DependentUpon>Blacklist.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\BandGReport.aspx.cs">
+      <DependentUpon>BandGReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\BandGReport.aspx.designer.cs">
+      <DependentUpon>BandGReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\BondAndGuarantee.aspx.cs">
+      <DependentUpon>BondAndGuarantee.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\BondAndGuarantee.aspx.designer.cs">
+      <DependentUpon>BondAndGuarantee.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\CashBacked.aspx.cs">
+      <DependentUpon>CashBacked.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\CashBacked.aspx.designer.cs">
+      <DependentUpon>CashBacked.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\CashBackedBondAndGuarantee.aspx.cs">
+      <DependentUpon>CashBackedBondAndGuarantee.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\CashBackedBondAndGuarantee.aspx.designer.cs">
+      <DependentUpon>CashBackedBondAndGuarantee.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\CashCollaterizedCredits.aspx.cs">
+      <DependentUpon>CashCollaterizedCredits.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\CashCollaterizedCredits.aspx.designer.cs">
+      <DependentUpon>CashCollaterizedCredits.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\CbnNplTeamReport.aspx.cs">
+      <DependentUpon>CbnNplTeamReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\CbnNplTeamReport.aspx.designer.cs">
+      <DependentUpon>CbnNplTeamReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\CollateralInsurance.aspx.cs">
+      <DependentUpon>CollateralInsurance.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\CollateralInsurance.aspx.designer.cs">
+      <DependentUpon>CollateralInsurance.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\CollateralPerfection.aspx.cs">
+      <DependentUpon>CollateralPerfection.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\CollateralPerfection.aspx.designer.cs">
+      <DependentUpon>CollateralPerfection.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\CollateralPerfectionYetToCommence.aspx.cs">
+      <DependentUpon>CollateralPerfectionYetToCommence.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\CollateralPerfectionYetToCommence.aspx.designer.cs">
+      <DependentUpon>CollateralPerfectionYetToCommence.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\CollateralPropertyRevaluation.aspx.cs">
+      <DependentUpon>CollateralPropertyRevaluation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\CollateralPropertyRevaluation.aspx.designer.cs">
+      <DependentUpon>CollateralPropertyRevaluation.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\CollateralAdequacy.aspx.cs">
+      <DependentUpon>CollateralAdequacy.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\CollateralAdequacy.aspx.designer.cs">
+      <DependentUpon>CollateralAdequacy.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\CollateralRegister.aspx.cs">
+      <DependentUpon>CollateralRegister.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\CollateralRegister.aspx.designer.cs">
+      <DependentUpon>CollateralRegister.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\CorporateCustomerCreation.aspx.cs">
+      <DependentUpon>CorporateCustomerCreation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\CorporateCustomerCreation.aspx.designer.cs">
+      <DependentUpon>CorporateCustomerCreation.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\CorporateLoansReport.aspx.cs">
+      <DependentUpon>CorporateLoansReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\CorporateLoansReport.aspx.designer.cs">
+      <DependentUpon>CorporateLoansReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\CreditBureau.aspx.cs">
+      <DependentUpon>CreditBureau.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\CreditBureau.aspx.designer.cs">
+      <DependentUpon>CreditBureau.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\DisbursedFacilityCollateralReport.aspx.cs">
+      <DependentUpon>DisbursedFacilityCollateralReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\DisbursedFacilityCollateralReport.aspx.designer.cs">
+      <DependentUpon>DisbursedFacilityCollateralReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\FixedDepositCollateral.aspx.cs">
+      <DependentUpon>FixedDepositCollateral.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\FixedDepositCollateral.aspx.designer.cs">
+      <DependentUpon>FixedDepositCollateral.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\FullAndFinalSettlementAndWaivers.aspx.cs">
+      <DependentUpon>FullAndFinalSettlementAndWaivers.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\FullAndFinalSettlementAndWaivers.aspx.designer.cs">
+      <DependentUpon>FullAndFinalSettlementAndWaivers.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\IdleAssetsSales.aspx.cs">
+      <DependentUpon>IdleAssetsSales.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\IdleAssetsSales.aspx.designer.cs">
+      <DependentUpon>IdleAssetsSales.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\InsiderRelatedLoansReport.aspx.cs">
+      <DependentUpon>InsiderRelatedLoansReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\InsiderRelatedLoansReport.aspx.designer.cs">
+      <DependentUpon>InsiderRelatedLoansReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\InsuranceSpoolReport.aspx.cs">
+      <DependentUpon>InsuranceSpoolReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\InsuranceSpoolReport.aspx.designer.cs">
+      <DependentUpon>InsuranceSpoolReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\JobRequestReport.aspx.cs">
+      <DependentUpon>JobRequestReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\JobRequestReport.aspx.designer.cs">
+      <DependentUpon>JobRequestReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\LoanStatusReport.aspx.cs">
+      <DependentUpon>LoanStatusReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\LoanStatusReport.aspx.designer.cs">
+      <DependentUpon>LoanStatusReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\PaydayLoanCollection.aspx.cs">
+      <DependentUpon>PaydayLoanCollection.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\PaydayLoanCollection.aspx.designer.cs">
+      <DependentUpon>PaydayLoanCollection.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\ComputationForExternalAgents.aspx.cs">
+      <DependentUpon>ComputationForExternalAgents.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\ComputationForExternalAgents.aspx.designer.cs">
+      <DependentUpon>ComputationForExternalAgents.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\ComputationForInternalAgents.aspx.cs">
+      <DependentUpon>ComputationForInternalAgents.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\ComputationForInternalAgents.aspx.designer.cs">
+      <DependentUpon>ComputationForInternalAgents.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\DelinquentAccounts.aspx.cs">
+      <DependentUpon>DelinquentAccounts.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\DelinquentAccounts.aspx.designer.cs">
+      <DependentUpon>DelinquentAccounts.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\RecoveryCollectionReport.aspx.cs">
+      <DependentUpon>RecoveryCollectionReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\RecoveryCollectionReport.aspx.designer.cs">
+      <DependentUpon>RecoveryCollectionReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\RevalidationOfFullAndFinalSettlement.aspx.cs">
+      <DependentUpon>RevalidationOfFullAndFinalSettlement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\RevalidationOfFullAndFinalSettlement.aspx.designer.cs">
+      <DependentUpon>RevalidationOfFullAndFinalSettlement.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\LitigationRecoveries.aspx.cs">
+      <DependentUpon>LitigationRecoveries.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\LitigationRecoveries.aspx.designer.cs">
+      <DependentUpon>LitigationRecoveries.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\RecoveryCommission.aspx.cs">
+      <DependentUpon>RecoveryCommission.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\RecoveryCommission.aspx.designer.cs">
+      <DependentUpon>RecoveryCommission.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\RecoveryAgentUpdate.aspx.cs">
+      <DependentUpon>RecoveryAgentUpdate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\RecoveryAgentUpdate.aspx.designer.cs">
+      <DependentUpon>RecoveryAgentUpdate.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\CollateralValuationReport.aspx.cs">
+      <DependentUpon>CollateralValuationReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\CollateralValuationReport.aspx.designer.cs">
+      <DependentUpon>CollateralValuationReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\CollateralVisitation.aspx.cs">
+      <DependentUpon>CollateralVisitation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\CollateralVisitation.aspx.designer.cs">
+      <DependentUpon>CollateralVisitation.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\ContigentLiabilityInformation.aspx.cs">
+      <DependentUpon>ContigentLiabilityInformation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\ContigentLiabilityInformation.aspx.designer.cs">
+      <DependentUpon>ContigentLiabilityInformation.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\ContigentLiabilityReport.aspx.cs">
+      <DependentUpon>ContigentLiabilityReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\ContigentLiabilityReport.aspx.designer.cs">
+      <DependentUpon>ContigentLiabilityReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\ContigentLiabilityReportMain.aspx.cs">
+      <DependentUpon>ContigentLiabilityReportMain.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\ContigentLiabilityReportMain.aspx.designer.cs">
+      <DependentUpon>ContigentLiabilityReportMain.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\ContigentLiabilityReportMain1.aspx.cs">
+      <DependentUpon>ContigentLiabilityReportMain1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\ContigentLiabilityReportMain1.aspx.designer.cs">
+      <DependentUpon>ContigentLiabilityReportMain1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\ContigentReport.aspx.cs">
+      <DependentUpon>ContigentReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\ContigentReport.aspx.designer.cs">
+      <DependentUpon>ContigentReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\CopyOfRiskAssetByIfrsClassification.aspx.cs">
+      <DependentUpon>CopyOfRiskAssetByIfrsClassification.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\CopyOfRiskAssetByIfrsClassification.aspx.designer.cs">
+      <DependentUpon>CopyOfRiskAssetByIfrsClassification.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\CopyOfRiskAssetMain.aspx.cs">
+      <DependentUpon>CopyOfRiskAssetMain.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\CopyOfRiskAssetMain.aspx.designer.cs">
+      <DependentUpon>CopyOfRiskAssetMain.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\CovenantsApproachingDueDate.aspx.cs">
+      <DependentUpon>CovenantsApproachingDueDate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\CovenantsApproachingDueDate.aspx.designer.cs">
+      <DependentUpon>CovenantsApproachingDueDate.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\CreditScheduleReport.aspx.cs">
+      <DependentUpon>CreditScheduleReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\CreditScheduleReport.aspx.designer.cs">
+      <DependentUpon>CreditScheduleReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\CustomeFacilityRepayment.aspx.cs">
+      <DependentUpon>CustomeFacilityRepayment.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\CustomeFacilityRepayment.aspx.designer.cs">
+      <DependentUpon>CustomeFacilityRepayment.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\CollateralSales.aspx.cs">
+      <DependentUpon>CollateralSales.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\CollateralSales.aspx.designer.cs">
+      <DependentUpon>CollateralSales.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\OutOfCourtSettlement.aspx.cs">
+      <DependentUpon>OutOfCourtSettlement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\OutOfCourtSettlement.aspx.designer.cs">
+      <DependentUpon>OutOfCourtSettlement.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\RecoveryAgentPerformance.aspx.cs">
+      <DependentUpon>RecoveryAgentPerformance.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\RecoveryAgentPerformance.aspx.designer.cs">
+      <DependentUpon>RecoveryAgentPerformance.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\DailyAccrualReport.aspx.cs">
+      <DependentUpon>DailyAccrualReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\DailyAccrualReport.aspx.designer.cs">
+      <DependentUpon>DailyAccrualReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\DeferralWaiver.aspx.cs">
+      <DependentUpon>DeferralWaiver.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\DeferralWaiver.aspx.designer.cs">
+      <DependentUpon>DeferralWaiver.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\DisbursalCreditTurnover.aspx.cs">
+      <DependentUpon>DisbursalCreditTurnover.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\DisbursalCreditTurnover.aspx.designer.cs">
+      <DependentUpon>DisbursalCreditTurnover.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\DrawdownMemo.aspx.cs">
+      <DependentUpon>DrawdownMemo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\DrawdownMemo.aspx.designer.cs">
+      <DependentUpon>DrawdownMemo.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\ExcessReport.aspx.cs">
+      <DependentUpon>ExcessReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\ExcessReport.aspx.designer.cs">
+      <DependentUpon>ExcessReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\ExpiredFacilityReport.aspx.cs">
+      <DependentUpon>ExpiredFacilityReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\ExpiredFacilityReport.aspx.designer.cs">
+      <DependentUpon>ExpiredFacilityReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\ExpiredOverdraftLoans.aspx.cs">
+      <DependentUpon>ExpiredOverdraftLoans.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\ExpiredOverdraftLoans.aspx.designer.cs">
+      <DependentUpon>ExpiredOverdraftLoans.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\ExpiredReport.aspx.cs">
+      <DependentUpon>ExpiredReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\ExpiredReport.aspx.designer.cs">
+      <DependentUpon>ExpiredReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\ExpiredSelfLiquidatingLoans.aspx.cs">
+      <DependentUpon>ExpiredSelfLiquidatingLoans.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\ExpiredSelfLiquidatingLoans.aspx.designer.cs">
+      <DependentUpon>ExpiredSelfLiquidatingLoans.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\ExtensionReport.aspx.cs">
+      <DependentUpon>ExtensionReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\ExtensionReport.aspx.designer.cs">
+      <DependentUpon>ExtensionReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\FinancialTransactions.aspx.cs">
+      <DependentUpon>FinancialTransactions.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\FinancialTransactions.aspx.designer.cs">
+      <DependentUpon>FinancialTransactions.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\Credit\OfferLetterGeneration\FORM3800B_LOS.aspx.cs">
+      <DependentUpon>FORM3800B_LOS.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\Credit\OfferLetterGeneration\FORM3800B_LOS.aspx.designer.cs">
+      <DependentUpon>FORM3800B_LOS.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\IfrsClassificationTeam.aspx.cs">
+      <DependentUpon>IfrsClassificationTeam.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\IfrsClassificationTeam.aspx.designer.cs">
+      <DependentUpon>IfrsClassificationTeam.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\ImpairedWatchListReport.aspx.cs">
+      <DependentUpon>ImpairedWatchListReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\ImpairedWatchListReport.aspx.designer.cs">
+      <DependentUpon>ImpairedWatchListReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\InsuranceReport.aspx.cs">
+      <DependentUpon>InsuranceReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\InsuranceReport.aspx.designer.cs">
+      <DependentUpon>InsuranceReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\Lein.aspx.cs">
+      <DependentUpon>Lein.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\Lein.aspx.designer.cs">
+      <DependentUpon>Lein.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\LoanBookingReport.aspx.cs">
+      <DependentUpon>LoanBookingReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\LoanBookingReport.aspx.designer.cs">
+      <DependentUpon>LoanBookingReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\LoanClassification.aspx.cs">
+      <DependentUpon>LoanClassification.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\LoanClassification.aspx.designer.cs">
+      <DependentUpon>LoanClassification.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\LoanDocumentDeferalsForMCC.aspx.cs">
+      <DependentUpon>LoanDocumentDeferalsForMCC.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\LoanDocumentDeferalsForMCC.aspx.designer.cs">
+      <DependentUpon>LoanDocumentDeferalsForMCC.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\LoanDocumentDeferred.aspx.cs">
+      <DependentUpon>LoanDocumentDeferred.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\LoanDocumentDeferred.aspx.designer.cs">
+      <DependentUpon>LoanDocumentDeferred.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\LoggingStatus.aspx.cs">
+      <DependentUpon>LoggingStatus.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\LoggingStatus.aspx.designer.cs">
+      <DependentUpon>LoggingStatus.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\MaturityReport.aspx.cs">
+      <DependentUpon>MaturityReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\MaturityReport.aspx.designer.cs">
+      <DependentUpon>MaturityReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\MiddleOfficeReport.aspx.cs">
+      <DependentUpon>MiddleOfficeReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\MiddleOfficeReport.aspx.designer.cs">
+      <DependentUpon>MiddleOfficeReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\NonPeformingLoans.aspx.cs">
+      <DependentUpon>NonPeformingLoans.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\NonPeformingLoans.aspx.designer.cs">
+      <DependentUpon>NonPeformingLoans.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\OutPutTemplate.aspx.cs">
+      <DependentUpon>OutPutTemplate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\OutPutTemplate.aspx.designer.cs">
+      <DependentUpon>OutPutTemplate.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\OverDraft.aspx.cs">
+      <DependentUpon>OverDraft.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\OverDraft.aspx.designer.cs">
+      <DependentUpon>OverDraft.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\Overline.aspx.cs">
+      <DependentUpon>Overline.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\Overline.aspx.designer.cs">
+      <DependentUpon>Overline.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\PostedTransactions.aspx.cs">
+      <DependentUpon>PostedTransactions.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\PostedTransactions.aspx.designer.cs">
+      <DependentUpon>PostedTransactions.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\ProfileActivityReport.aspx.cs">
+      <DependentUpon>ProfileActivityReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\ProfileActivityReport.aspx.designer.cs">
+      <DependentUpon>ProfileActivityReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\InterestIncome.aspx.cs">
+      <DependentUpon>InterestIncome.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\InterestIncome.aspx.designer.cs">
+      <DependentUpon>InterestIncome.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\PSR.aspx.cs">
+      <DependentUpon>PSR.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\PSR.aspx.designer.cs">
+      <DependentUpon>PSR.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\RACCR.aspx.cs">
+      <DependentUpon>RACCR.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\RACCR.aspx.designer.cs">
+      <DependentUpon>RACCR.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\RACCRT.aspx.cs">
+      <DependentUpon>RACCRT.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\RACCRT.aspx.designer.cs">
+      <DependentUpon>RACCRT.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\RACRM.aspx.cs">
+      <DependentUpon>RACRM.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\RACRM.aspx.designer.cs">
+      <DependentUpon>RACRM.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\ReceivableInterest.aspx.cs">
+      <DependentUpon>ReceivableInterest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\ReceivableInterest.aspx.designer.cs">
+      <DependentUpon>ReceivableInterest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\Repayment.aspx.cs">
+      <DependentUpon>Repayment.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\Repayment.aspx.designer.cs">
+      <DependentUpon>Repayment.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\RiskAssetByCbnClassification.aspx.cs">
+      <DependentUpon>RiskAssetByCbnClassification.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\RiskAssetByCbnClassification.aspx.designer.cs">
+      <DependentUpon>RiskAssetByCbnClassification.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\RiskAssetByIFRSClassificationaspx.aspx.cs">
+      <DependentUpon>RiskAssetByIFRSClassificationaspx.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\RiskAssetByIFRSClassificationaspx.aspx.designer.cs">
+      <DependentUpon>RiskAssetByIFRSClassificationaspx.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\RiskAssetByVariance.aspx.cs">
+      <DependentUpon>RiskAssetByVariance.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\RiskAssetByVariance.aspx.designer.cs">
+      <DependentUpon>RiskAssetByVariance.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\RiskAssetCombinedReport.aspx.cs">
+      <DependentUpon>RiskAssetCombinedReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\RiskAssetCombinedReport.aspx.designer.cs">
+      <DependentUpon>RiskAssetCombinedReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\RiskAssetContigentReportMain.aspx.cs">
+      <DependentUpon>RiskAssetContigentReportMain.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\RiskAssetContigentReportMain.aspx.designer.cs">
+      <DependentUpon>RiskAssetContigentReportMain.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\RiskAssetDistributionBySector.aspx.cs">
+      <DependentUpon>RiskAssetDistributionBySector.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\RiskAssetDistributionBySector.aspx.designer.cs">
+      <DependentUpon>RiskAssetDistributionBySector.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\RiskAssetMain.aspx.cs">
+      <DependentUpon>RiskAssetMain.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\RiskAssetMain.aspx.designer.cs">
+      <DependentUpon>RiskAssetMain.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\RiskAssetMain1.aspx.cs">
+      <DependentUpon>RiskAssetMain1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\RiskAssetMain1.aspx.designer.cs">
+      <DependentUpon>RiskAssetMain1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\RiskAssetsReport.aspx.cs">
+      <DependentUpon>RiskAssetsReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\RiskAssetsReport.aspx.designer.cs">
+      <DependentUpon>RiskAssetsReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\RiskAssetTeam.aspx.cs">
+      <DependentUpon>RiskAssetTeam.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\RiskAssetTeam.aspx.designer.cs">
+      <DependentUpon>RiskAssetTeam.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\RunningLoanReport.aspx.cs">
+      <DependentUpon>RunningLoanReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\RunningLoanReport.aspx.designer.cs">
+      <DependentUpon>RunningLoanReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\RunningFacilitiesReport.aspx.cs">
+      <DependentUpon>RunningFacilitiesReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\RunningFacilitiesReport.aspx.designer.cs">
+      <DependentUpon>RunningFacilitiesReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\SanctionLimitReport.aspx.cs">
+      <DependentUpon>SanctionLimitReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\SanctionLimitReport.aspx.designer.cs">
+      <DependentUpon>SanctionLimitReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\SecurityReleaseReport.aspx.cs">
+      <DependentUpon>SecurityReleaseReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\SecurityReleaseReport.aspx.designer.cs">
+      <DependentUpon>SecurityReleaseReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\SeftLiquidatingLoans.aspx.cs">
+      <DependentUpon>SeftLiquidatingLoans.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\SeftLiquidatingLoans.aspx.designer.cs">
+      <DependentUpon>SeftLiquidatingLoans.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Controllers\TransactionDynamicsController.cs" />
+    <Compile Include="core\ApiControllerBase.cs" />
+    <Compile Include="Filters\DeflateCompressionAttribute.cs" />
+    <Compile Include="Filters\JWTAuthorizeAttribute.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="JWTAuth\TokenDecryptionHelper.cs" />
+    <Compile Include="Models\AccountBindingModels.cs" />
+    <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\ApplicationOAuthProvider.cs" />
+    <Compile Include="Reports\Collateral\ScheduledCollateralReport.aspx.cs">
+      <DependentUpon>ScheduledCollateralReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\Collateral\ScheduledCollateralReport.aspx.designer.cs">
+      <DependentUpon>ScheduledCollateralReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\Credit\OfferLetterGeneration\OfferLetter.aspx.cs">
+      <DependentUpon>OfferLetter.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\Credit\OfferLetterGeneration\OfferLetter.aspx.designer.cs">
+      <DependentUpon>OfferLetter.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\Credit\TestReport.aspx.cs">
+      <DependentUpon>TestReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\Credit\TestReport.aspx.designer.cs">
+      <DependentUpon>TestReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\AuditTrailView.aspx.cs">
+      <DependentUpon>AuditTrailView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\AuditTrailView.aspx.designer.cs">
+      <DependentUpon>AuditTrailView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\CollateralEstimated.aspx.cs">
+      <DependentUpon>CollateralEstimated.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\CollateralEstimated.aspx.designer.cs">
+      <DependentUpon>CollateralEstimated.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\LoanInterestReceivableAndPayable.aspx.cs">
+      <DependentUpon>LoanInterestReceivableAndPayable.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\LoanInterestReceivableAndPayable.aspx.designer.cs">
+      <DependentUpon>LoanInterestReceivableAndPayable.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\RuningLoansByLoanType.aspx.cs">
+      <DependentUpon>RuningLoansByLoanType.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\RuningLoansByLoanType.aspx.designer.cs">
+      <DependentUpon>RuningLoansByLoanType.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\DisbursedLoans.aspx.cs">
+      <DependentUpon>DisbursedLoans.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\DisbursedLoans.aspx.designer.cs">
+      <DependentUpon>DisbursedLoans.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\FacilityApprovedNotUntilized.aspx.cs">
+      <DependentUpon>FacilityApprovedNotUntilized.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\FacilityApprovedNotUntilized.aspx.designer.cs">
+      <DependentUpon>FacilityApprovedNotUntilized.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\FCYScheuledLoan.aspx.cs">
+      <DependentUpon>FCYScheuledLoan.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\FCYScheuledLoan.aspx.designer.cs">
+      <DependentUpon>FCYScheuledLoan.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\GetStakeholdersOnExpirationOfFTP.aspx.cs">
+      <DependentUpon>GetStakeholdersOnExpirationOfFTP.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\GetStakeholdersOnExpirationOfFTP.aspx.designer.cs">
+      <DependentUpon>GetStakeholdersOnExpirationOfFTP.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\GrantedFacilities.aspx.cs">
+      <DependentUpon>GrantedFacilities.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\GrantedFacilities.aspx.designer.cs">
+      <DependentUpon>GrantedFacilities.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\LoanAnniversery.aspx.cs">
+      <DependentUpon>LoanAnniversery.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\LoanAnniversery.aspx.designer.cs">
+      <DependentUpon>LoanAnniversery.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\LoanDocumentDeferral.aspx.cs">
+      <DependentUpon>LoanDocumentDeferral.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\LoanDocumentDeferral.aspx.designer.cs">
+      <DependentUpon>LoanDocumentDeferral.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\LoanDocumentWaived.aspx.cs">
+      <DependentUpon>LoanDocumentWaived.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\LoanDocumentWaived.aspx.designer.cs">
+      <DependentUpon>LoanDocumentWaived.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\LoanRepaymentSchedule.aspx.cs">
+      <DependentUpon>LoanRepaymentSchedule.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\LoanRepaymentSchedule.aspx.designer.cs">
+      <DependentUpon>LoanRepaymentSchedule.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\BranchLimitMonitoring.aspx.cs">
+      <DependentUpon>BranchLimitMonitoring.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\BranchLimitMonitoring.aspx.designer.cs">
+      <DependentUpon>BranchLimitMonitoring.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\LoanStatement.aspx.cs">
+      <DependentUpon>LoanStatement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\LoanStatement.aspx.designer.cs">
+      <DependentUpon>LoanStatement.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\SLAReport.aspx.cs">
+      <DependentUpon>SLAReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\SLAReport.aspx.designer.cs">
+      <DependentUpon>SLAReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\StaffPriviledgeChangeReport.aspx.cs">
+      <DependentUpon>StaffPriviledgeChangeReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\StaffPriviledgeChangeReport.aspx.designer.cs">
+      <DependentUpon>StaffPriviledgeChangeReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\StaffRoleProfileActivityReport.aspx.cs">
+      <DependentUpon>StaffRoleProfileActivityReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\StaffRoleProfileActivityReport.aspx.designer.cs">
+      <DependentUpon>StaffRoleProfileActivityReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\StaffRoleProfileGroupReport.aspx.cs">
+      <DependentUpon>StaffRoleProfileGroupReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\StaffRoleProfileGroupReport.aspx.designer.cs">
+      <DependentUpon>StaffRoleProfileGroupReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\StalledPerfection.aspx.cs">
+      <DependentUpon>StalledPerfection.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\StalledPerfection.aspx.designer.cs">
+      <DependentUpon>StalledPerfection.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\SubmissionOfOriginalDocument.aspx.cs">
+      <DependentUpon>SubmissionOfOriginalDocument.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\SubmissionOfOriginalDocument.aspx.designer.cs">
+      <DependentUpon>SubmissionOfOriginalDocument.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\SubmissionOfOriginalDocuments.aspx.cs">
+      <DependentUpon>SubmissionOfOriginalDocuments.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\SubmissionOfOriginalDocuments.aspx.designer.cs">
+      <DependentUpon>SubmissionOfOriginalDocuments.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\TrialBalance.aspx.cs">
+      <DependentUpon>TrialBalance.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\TrialBalance.aspx.designer.cs">
+      <DependentUpon>TrialBalance.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\TurnOverConvenant.aspx.cs">
+      <DependentUpon>TurnOverConvenant.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\TurnOverConvenant.aspx.designer.cs">
+      <DependentUpon>TurnOverConvenant.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\UnearnedLoanInterest.aspx.cs">
+      <DependentUpon>UnearnedLoanInterest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\UnearnedLoanInterest.aspx.designer.cs">
+      <DependentUpon>UnearnedLoanInterest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\UnpaidObligationReport.aspx.cs">
+      <DependentUpon>UnpaidObligationReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\UnpaidObligationReport.aspx.designer.cs">
+      <DependentUpon>UnpaidObligationReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\UnutilizedFacilityReport.aspx.cs">
+      <DependentUpon>UnutilizedFacilityReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\UnutilizedFacilityReport.aspx.designer.cs">
+      <DependentUpon>UnutilizedFacilityReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\UserGroupChangeReport.aspx.cs">
+      <DependentUpon>UserGroupChangeReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\UserGroupChangeReport.aspx.designer.cs">
+      <DependentUpon>UserGroupChangeReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\ValidCollaterals.aspx.cs">
+      <DependentUpon>ValidCollaterals.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\ValidCollaterals.aspx.designer.cs">
+      <DependentUpon>ValidCollaterals.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\WeeklyRecoveryReportForFINCON.aspx.cs">
+      <DependentUpon>WeeklyRecoveryReportForFINCON.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\WeeklyRecoveryReportForFINCON.aspx.designer.cs">
+      <DependentUpon>WeeklyRecoveryReportForFINCON.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\Workflow.aspx.cs">
+      <DependentUpon>Workflow.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\Workflow.aspx.designer.cs">
+      <DependentUpon>Workflow.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViews\SectorialLimitMonitoring.aspx.cs">
+      <DependentUpon>SectorialLimitMonitoring.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViews\SectorialLimitMonitoring.aspx.designer.cs">
+      <DependentUpon>SectorialLimitMonitoring.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Results\ChallengeResult.cs" />
+    <Compile Include="Startup.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap-grid.css" />
+    <Content Include="Content\bootstrap-grid.min.css" />
+    <Content Include="Content\bootstrap-reboot.css" />
+    <Content Include="Content\bootstrap-reboot.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Icons\Draft.png" />
+    <Content Include="Content\Icons\firstbank-logo.jpg" />
+    <Content Include="Content\Icons\first_bank_logo_kmH_icon.ico" />
+    <Content Include="Content\Icons\first_bank_new_logo_2sm_icon.ico" />
+    <Content Include="Content\Images\Editor\Uploads\index.html" />
+    <Content Include="Content\Images\firstbank-logo.jpg" />
+    <Content Include="EmailTemplates\ApprovalWorkflow.html" />
+    <Content Include="EmailTemplates\FORM-3800B-BG.html" />
+    <Content Include="EmailTemplates\FORM-3800B-CashBackedOnly.html" />
+    <Content Include="EmailTemplates\FORM-3800B-FirstEdu.html" />
+    <Content Include="EmailTemplates\FORM-3800B-FirstTrader.html" />
+    <Content Include="EmailTemplates\FORM-3800B-IDF.html" />
+    <Content Include="EmailTemplates\FORM-3800B-ImportFinance.html" />
+    <Content Include="EmailTemplates\FORM-3800B-Template.html" />
+    <Content Include="EmailTemplates\Monitoring.html" />
+    <Content Include="EmailTemplates\OfferLetter.html" />
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <Content Include="Reports\Collateral\ScheduledCollateralReport.aspx" />
+    <Content Include="Reports\Credit\OfferLetterGeneration\CFLOfferLetter.aspx" />
+    <Content Include="Reports\Credit\OfferLetterGeneration\ClassifiedAssetManagement.aspx" />
+    <Content Include="Reports\Credit\OfferLetterGeneration\FORM3800B_LMS.aspx" />
+    <Content Include="Reports\Credit\OfferLetterGeneration\OfferLetter.aspx" />
+    <Content Include="Reports\Credit\OfferLetterGeneration\OfferLetterLMSR.aspx" />
+    <Content Include="Reports\Credit\TestReport.aspx" />
+    <Content Include="Reports\ReportViews\AgeAnalysisReport.aspx" />
+    <Content Include="Reports\ReportViews\AnalystReport.aspx" />
+    <Content Include="Reports\ReportViews\ApprovalTrailWith_SLA.aspx" />
+    <Content Include="Reports\ReportViews\ApprovedForm3800BFacilities.aspx" />
+    <Content Include="Reports\ReportViews\AuditTrailView.aspx" />
+    <Content Include="Reports\ReportViews\AllContingentsReport.aspx" />
+    <Content Include="Reports\ReportViews\Blacklist.aspx" />
+    <Content Include="Reports\ReportViews\BandGReport.aspx" />
+    <Content Include="Reports\ReportViews\BondAndGuarantee.aspx" />
+    <Content Include="Reports\ReportViews\CashBacked.aspx" />
+    <Content Include="Reports\ReportViews\CashBackedBondAndGuarantee.aspx" />
+    <Content Include="Reports\ReportViews\CashCollaterizedCredits.aspx" />
+    <Content Include="Reports\ReportViews\CbnNplTeamReport.aspx" />
+    <Content Include="Reports\ReportViews\CollateralEstimated.aspx" />
+    <Content Include="Reports\ReportViews\CollateralInsurance.aspx" />
+    <Content Include="Reports\ReportViews\CollateralPerfection.aspx" />
+    <Content Include="Reports\ReportViews\CollateralPerfectionYetToCommence.aspx" />
+    <Content Include="Reports\ReportViews\CollateralPropertyRevaluation.aspx" />
+    <Content Include="Reports\ReportViews\CollateralAdequacy.aspx" />
+    <Content Include="Reports\ReportViews\CollateralRegister.aspx" />
+    <Content Include="Reports\ReportViews\CorporateCustomerCreation.aspx" />
+    <Content Include="Reports\ReportViews\CorporateLoansReport.aspx" />
+    <Content Include="Reports\ReportViews\CreditBureau.aspx" />
+    <Content Include="Reports\ReportViews\DisbursedFacilityCollateralReport.aspx" />
+    <Content Include="Reports\ReportViews\FixedDepositCollateral.aspx" />
+    <Content Include="Reports\ReportViews\FullAndFinalSettlementAndWaivers.aspx" />
+    <Content Include="Reports\ReportViews\IdleAssetsSales.aspx" />
+    <Content Include="Reports\ReportViews\InsiderRelatedLoansReport.aspx" />
+    <Content Include="Reports\ReportViews\InsuranceSpoolReport.aspx" />
+    <Content Include="Reports\ReportViews\JobRequestReport.aspx" />
+    <Content Include="Reports\ReportViews\LoanStatusReport.aspx" />
+    <Content Include="Reports\ReportViews\PaydayLoanCollection.aspx" />
+    <Content Include="Reports\ReportViews\ComputationForExternalAgents.aspx" />
+    <Content Include="Reports\ReportViews\ComputationForInternalAgents.aspx" />
+    <Content Include="Reports\ReportViews\DelinquentAccounts.aspx" />
+    <Content Include="Reports\ReportViews\RecoveryCollectionReport.aspx" />
+    <Content Include="Reports\ReportViews\RevalidationOfFullAndFinalSettlement.aspx" />
+    <Content Include="Reports\ReportViews\LitigationRecoveries.aspx" />
+    <Content Include="Reports\ReportViews\RecoveryCommission.aspx" />
+    <Content Include="Reports\ReportViews\RecoveryAgentUpdate.aspx" />
+    <Content Include="Reports\ReportViews\CollateralValuationReport.aspx" />
+    <Content Include="Reports\ReportViews\CollateralVisitation.aspx" />
+    <Content Include="Reports\ReportViews\ContigentLiabilityInformation.aspx" />
+    <Content Include="Reports\ReportViews\ContigentLiabilityReport.aspx" />
+    <Content Include="Reports\ReportViews\ContigentLiabilityReportMain.aspx" />
+    <Content Include="Reports\ReportViews\ContigentLiabilityReportMain1.aspx" />
+    <Content Include="Reports\ReportViews\ContigentReport.aspx" />
+    <Content Include="Reports\ReportViews\CopyOfRiskAssetByIfrsClassification.aspx" />
+    <Content Include="Reports\ReportViews\CopyOfRiskAssetMain.aspx" />
+    <Content Include="Reports\ReportViews\CovenantsApproachingDueDate.aspx" />
+    <Content Include="Reports\ReportViews\CreditScheduleReport.aspx" />
+    <Content Include="Reports\ReportViews\CustomeFacilityRepayment.aspx" />
+    <Content Include="Reports\ReportViews\CollateralSales.aspx" />
+    <Content Include="Reports\ReportViews\OutOfCourtSettlement.aspx" />
+    <Content Include="Reports\ReportViews\RecoveryAgentPerformance.aspx" />
+    <Content Include="Reports\ReportViews\DailyAccrualReport.aspx" />
+    <Content Include="Reports\ReportViews\DeferralWaiver.aspx" />
+    <Content Include="Reports\ReportViews\DisbursalCreditTurnover.aspx" />
+    <Content Include="Reports\ReportViews\DrawdownMemo.aspx" />
+    <Content Include="Reports\ReportViews\ExcessReport.aspx" />
+    <Content Include="Reports\ReportViews\ExpiredFacilityReport.aspx" />
+    <Content Include="Reports\ReportViews\ExpiredOverdraftLoans.aspx" />
+    <Content Include="Reports\ReportViews\ExpiredReport.aspx" />
+    <Content Include="Reports\ReportViews\ExpiredSelfLiquidatingLoans.aspx" />
+    <Content Include="Reports\ReportViews\ExtensionReport.aspx" />
+    <Content Include="Reports\ReportViews\FinancialTransactions.aspx" />
+    <Content Include="Reports\Credit\OfferLetterGeneration\FORM3800B_LOS.aspx" />
+    <Content Include="Reports\ReportViews\IfrsClassificationTeam.aspx" />
+    <Content Include="Reports\ReportViews\ImpairedWatchListReport.aspx" />
+    <Content Include="Reports\ReportViews\InsuranceReport.aspx" />
+    <Content Include="Reports\ReportViews\Lein.aspx" />
+    <Content Include="Reports\ReportViews\LoanBookingReport.aspx" />
+    <Content Include="Reports\ReportViews\LoanClassification.aspx" />
+    <Content Include="Reports\ReportViews\LoanDocumentDeferalsForMCC.aspx" />
+    <Content Include="Reports\ReportViews\LoanDocumentDeferred.aspx" />
+    <Content Include="Reports\ReportViews\LoanInterestReceivableAndPayable.aspx" />
+    <Content Include="Reports\ReportViews\LoggingStatus.aspx" />
+    <Content Include="Reports\ReportViews\MaturityReport.aspx" />
+    <Content Include="Reports\ReportViews\MiddleOfficeReport.aspx" />
+    <Content Include="Reports\ReportViews\NonPeformingLoans.aspx" />
+    <Content Include="Reports\ReportViews\OutPutTemplate.aspx" />
+    <Content Include="Reports\ReportViews\OverDraft.aspx" />
+    <Content Include="Reports\ReportViews\Overline.aspx" />
+    <Content Include="Reports\ReportViews\PostedTransactions.aspx" />
+    <Content Include="Reports\ReportViews\ProfileActivityReport.aspx" />
+    <Content Include="Reports\ReportViews\InterestIncome.aspx" />
+    <Content Include="Reports\ReportViews\PSR.aspx" />
+    <Content Include="Reports\ReportViews\RACCR.aspx" />
+    <Content Include="Reports\ReportViews\RACCRT.aspx" />
+    <Content Include="Reports\ReportViews\RACRM.aspx" />
+    <Content Include="Reports\ReportViews\ReceivableInterest.aspx" />
+    <Content Include="Reports\ReportViews\Repayment.aspx" />
+    <Content Include="Reports\ReportViews\RiskAssetByCbnClassification.aspx" />
+    <Content Include="Reports\ReportViews\RiskAssetByIFRSClassificationaspx.aspx" />
+    <Content Include="Reports\ReportViews\RiskAssetByVariance.aspx" />
+    <Content Include="Reports\ReportViews\RiskAssetCombinedReport.aspx" />
+    <Content Include="Reports\ReportViews\RiskAssetContigentReportMain.aspx" />
+    <Content Include="Reports\ReportViews\RiskAssetDistributionBySector.aspx" />
+    <Content Include="Reports\ReportViews\RiskAssetMain.aspx" />
+    <Content Include="Reports\ReportViews\RiskAssetMain1.aspx" />
+    <Content Include="Reports\ReportViews\RiskAssetsReport.aspx" />
+    <Content Include="Reports\ReportViews\RiskAssetTeam.aspx" />
+    <Content Include="Reports\ReportViews\RuningLoansByLoanType.aspx" />
+    <Content Include="Reports\ReportViews\DisbursedLoans.aspx" />
+    <Content Include="Reports\ReportViews\FacilityApprovedNotUntilized.aspx" />
+    <Content Include="Reports\ReportViews\FCYScheuledLoan.aspx" />
+    <Content Include="Reports\ReportViews\GetStakeholdersOnExpirationOfFTP.aspx" />
+    <Content Include="Reports\ReportViews\GrantedFacilities.aspx" />
+    <Content Include="Reports\ReportViews\LoanAnniversery.aspx" />
+    <Content Include="Reports\ReportViews\LoanDocumentDeferral.aspx" />
+    <Content Include="Reports\ReportViews\LoanDocumentWaived.aspx" />
+    <Content Include="Reports\ReportViews\LoanRepaymentSchedule.aspx" />
+    <Content Include="Reports\ReportViews\BranchLimitMonitoring.aspx" />
+    <Content Include="Reports\ReportViews\LoanStatement.aspx" />
+    <Content Include="Reports\ReportViews\RunningLoanReport.aspx" />
+    <Content Include="Reports\ReportViews\RunningFacilitiesReport.aspx" />
+    <Content Include="Reports\ReportViews\SanctionLimitReport.aspx" />
+    <Content Include="Reports\ReportViews\SecurityReleaseReport.aspx" />
+    <Content Include="Reports\ReportViews\SeftLiquidatingLoans.aspx" />
+    <Content Include="Reports\ReportViews\SLAReport.aspx" />
+    <Content Include="Reports\ReportViews\StaffPriviledgeChangeReport.aspx" />
+    <Content Include="Reports\ReportViews\StaffRoleProfileActivityReport.aspx" />
+    <Content Include="Reports\ReportViews\StaffRoleProfileGroupReport.aspx" />
+    <Content Include="Reports\ReportViews\StalledPerfection.aspx" />
+    <Content Include="Reports\ReportViews\SubmissionOfOriginalDocument.aspx" />
+    <Content Include="Reports\ReportViews\SubmissionOfOriginalDocuments.aspx" />
+    <Content Include="Reports\ReportViews\TrialBalance.aspx" />
+    <Content Include="Reports\ReportViews\TurnOverConvenant.aspx" />
+    <Content Include="Reports\ReportViews\UnearnedLoanInterest.aspx" />
+    <Content Include="Reports\ReportViews\UnpaidObligationReport.aspx" />
+    <Content Include="Reports\ReportViews\UnutilizedFacilityReport.aspx" />
+    <Content Include="Reports\ReportViews\UserGroupChangeReport.aspx" />
+    <Content Include="Reports\ReportViews\ValidCollaterals.aspx" />
+    <Content Include="Reports\ReportViews\WeeklyRecoveryReportForFINCON.aspx" />
+    <Content Include="Reports\ReportViews\Workflow.aspx" />
+    <Content Include="Reports\ReportViews\SectorialLimitMonitoring.aspx" />
+    <Content Include="ApplicationInsights.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\IndustryWideAnalysisDocuments\Fitch Nigeria Agribusiness Report - 2019-03-14.pdf" />
+    <Content Include="Content\IndustryWideAnalysisDocuments\Fitch Nigeria Autos Report - 2019-04-02.pdf" />
+    <Content Include="Content\IndustryWideAnalysisDocuments\Fitch Nigeria Banking &amp; Financial Services Report -2019-03-19.pdf" />
+    <Content Include="Content\IndustryWideAnalysisDocuments\Fitch Nigeria Consumer &amp; Retail Report - 2019-04-16.pdf" />
+    <Content Include="Content\IndustryWideAnalysisDocuments\Fitch Nigeria Country Risk Report - 2019-05-23.pdf" />
+    <Content Include="Content\IndustryWideAnalysisDocuments\Fitch Nigeria Food &amp; Drink Report - 2019-05-02.pdf" />
+    <Content Include="Content\IndustryWideAnalysisDocuments\Fitch Nigeria Infrastructure Report - 2019-05-30.pdf" />
+    <Content Include="Content\IndustryWideAnalysisDocuments\Fitch Nigeria Insurance Report - 2019-05-28.pdf" />
+    <Content Include="Content\IndustryWideAnalysisDocuments\Fitch Nigeria Logistics Risk Report - 2019-03-27.pdf" />
+    <Content Include="Content\IndustryWideAnalysisDocuments\Fitch Nigeria Medical Devices Report - 2019-04-23.pdf" />
+    <Content Include="Content\IndustryWideAnalysisDocuments\Fitch Nigeria Oil &amp; Gas Report - 2019-05-14 %281%29.pdf" />
+    <Content Include="Content\IndustryWideAnalysisDocuments\Fitch Nigeria Pharmaceuticals &amp; Healthcare Report -2019-05-29.pdf" />
+    <Content Include="Content\IndustryWideAnalysisDocuments\Fitch Nigeria Power Report - 2019-05-08.pdf" />
+    <Content Include="Content\IndustryWideAnalysisDocuments\Fitch Nigeria Telecommunications Report - 2019-03-13.pdf" />
+    <Content Include="libman.json" />
+    <Content Include="Reports\Report\Lein.rdlc" />
+    <Content Include="Reports\ReportDataset\FORM3800B.xsc">
+      <DependentUpon>FORM3800B.xsd</DependentUpon>
+    </Content>
+    <Content Include="Reports\ReportDataset\DRAWDOWN.xsc">
+      <DependentUpon>DRAWDOWN.xsd</DependentUpon>
+    </Content>
+    <Content Include="Reports\ReportDataset\DeferralWaiver.xsc">
+      <DependentUpon>DeferralWaiver.xsd</DependentUpon>
+    </Content>
+    <Content Include="Reports\Credit\OfferLetterGeneration\Credit.xsc">
+      <DependentUpon>Credit.xsd</DependentUpon>
+    </Content>
+    <Content Include="Reports\Credit\Credit.xsc">
+      <DependentUpon>Credit.xsd</DependentUpon>
+    </Content>
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-reboot.min.css.map" />
+    <Content Include="Content\bootstrap-reboot.css.map" />
+    <Content Include="Content\bootstrap-grid.min.css.map" />
+    <Content Include="Content\bootstrap-grid.css.map" />
+    <None Include="Properties\PublishProfiles\PUBLISH.pubxml" />
+    <None Include="Properties\PublishProfiles\try.pubxml" />
+    <None Include="Reports\Credit\Credit.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>Credit1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Reports\Credit\Credit.xss">
+      <DependentUpon>Credit.xsd</DependentUpon>
+    </Content>
+    <None Include="Reports\Credit\OfferLetterGeneration\Credit.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>Credit.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Reports\Credit\OfferLetterGeneration\Credit.xss">
+      <DependentUpon>Credit.xsd</DependentUpon>
+    </Content>
+    <Content Include="Reports\ReportDataset\CollateralDataSet.xsc">
+      <DependentUpon>CollateralDataSet.xsd</DependentUpon>
+    </Content>
+    <None Include="Reports\ReportDataset\CollateralDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>CollateralDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Reports\ReportDataset\CollateralDataSet.xss">
+      <DependentUpon>CollateralDataSet.xsd</DependentUpon>
+    </Content>
+    <None Include="Reports\ReportDataset\DeferralWaiver.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DeferralWaiver.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Reports\ReportDataset\DeferralWaiver.xss">
+      <DependentUpon>DeferralWaiver.xsd</DependentUpon>
+    </Content>
+    <Content Include="Reports\ReportDataset\DisbursalCreditTurnover.xsc">
+      <DependentUpon>DisbursalCreditTurnover.xsd</DependentUpon>
+    </Content>
+    <None Include="Reports\ReportDataset\DisbursalCreditTurnover.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DisbursalCreditTurnover1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Reports\ReportDataset\DisbursalCreditTurnover.xss">
+      <DependentUpon>DisbursalCreditTurnover.xsd</DependentUpon>
+    </Content>
+    <None Include="Reports\ReportDataset\DRAWDOWN.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DRAWDOWN.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Reports\ReportDataset\DRAWDOWN.xss">
+      <DependentUpon>DRAWDOWN.xsd</DependentUpon>
+    </Content>
+    <None Include="Reports\ReportDataset\FORM3800B.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>FORM3800B1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Reports\ReportDataset\FORM3800B.xss">
+      <DependentUpon>FORM3800B.xsd</DependentUpon>
+    </Content>
+    <Content Include="Reports\ReportDataset\MiddleOffice.xsc">
+      <DependentUpon>MiddleOffice.xsd</DependentUpon>
+    </Content>
+    <Content Include="Reports\ReportDataset\LoanDataSet.xsc">
+      <DependentUpon>LoanDataSet.xsd</DependentUpon>
+    </Content>
+    <None Include="Reports\ReportDataset\LoanDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>LoanDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Reports\ReportDataset\LoanDataSet.xss">
+      <DependentUpon>LoanDataSet.xsd</DependentUpon>
+    </Content>
+    <None Include="Reports\ReportDataset\MiddleOffice.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>MiddleOffice.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Reports\ReportDataset\MiddleOffice.xss">
+      <DependentUpon>MiddleOffice.xsd</DependentUpon>
+    </Content>
+    <Content Include="Reports\ReportDataset\OutputDocument.xsc">
+      <DependentUpon>OutputDocument.xsd</DependentUpon>
+    </Content>
+    <None Include="Reports\ReportDataset\OutputDocument.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>OutputDocument1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Reports\ReportDataset\OutputDocument.xss">
+      <DependentUpon>OutputDocument.xsd</DependentUpon>
+    </Content>
+    <Content Include="Reports\ReportDataset\PSR.xsc">
+      <DependentUpon>PSR.xsd</DependentUpon>
+    </Content>
+    <None Include="Reports\ReportDataset\PSR.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>PSR.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Reports\ReportDataset\PSR.xss">
+      <DependentUpon>PSR.xsd</DependentUpon>
+    </Content>
+    <Content Include="Reports\ReportDataset\StaffInfoDataSet.xsc">
+      <DependentUpon>StaffInfoDataSet.xsd</DependentUpon>
+    </Content>
+    <Content Include="Reports\ReportDataset\RecoveryReporting.xsc">
+      <DependentUpon>RecoveryReporting.xsd</DependentUpon>
+    </Content>
+    <Content Include="Reports\ReportDataset\RecoveryCollections.xsc">
+      <DependentUpon>RecoveryCollections.xsd</DependentUpon>
+    </Content>
+    <None Include="Reports\ReportDataset\RecoveryCollections.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>RecoveryCollections.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Reports\ReportDataset\RecoveryCollections.xss">
+      <DependentUpon>RecoveryCollections.xsd</DependentUpon>
+    </Content>
+    <None Include="Reports\ReportDataset\RecoveryReporting.xsd" />
+    <Content Include="Reports\ReportDataset\RecoveryReporting.xss">
+      <DependentUpon>RecoveryReporting.xsd</DependentUpon>
+    </Content>
+    <Content Include="Reports\ReportDataset\ReportDataSet.xsc">
+      <DependentUpon>ReportDataSet.xsd</DependentUpon>
+    </Content>
+    <None Include="Reports\ReportDataset\ReportDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ReportDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Reports\ReportDataset\ReportDataSet.xss">
+      <DependentUpon>ReportDataSet.xsd</DependentUpon>
+    </Content>
+    <None Include="Reports\ReportDataset\StaffInfoDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>StaffInfoDataSet1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Reports\ReportDataset\StaffInfoDataSet.xss">
+      <DependentUpon>StaffInfoDataSet.xsd</DependentUpon>
+    </Content>
+    <Content Include="Reports\ReportDataset\TransactionDataSet.xsc">
+      <DependentUpon>TransactionDataSet.xsd</DependentUpon>
+    </Content>
+    <None Include="Reports\ReportDataset\TransactionDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>TransactionDataSet1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Reports\ReportDataset\TransactionDataSet.xss">
+      <DependentUpon>TransactionDataSet.xsd</DependentUpon>
+    </Content>
+    <Content Include="Scripts\bootstrap.bundle.js" />
+    <Content Include="Scripts\bootstrap.bundle.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\esm\popper-utils.js" />
+    <Content Include="Scripts\esm\popper-utils.min.js" />
+    <Content Include="Scripts\esm\popper.js" />
+    <Content Include="Scripts\esm\popper.min.js" />
+    <Content Include="Scripts\index.js.flow" />
+    <Content Include="Scripts\esm\popper.min.js.map" />
+    <Content Include="Scripts\esm\popper.js.map" />
+    <Content Include="Scripts\esm\popper-utils.min.js.map" />
+    <Content Include="Scripts\esm\popper-utils.js.map" />
+    <Content Include="Scripts\bootstrap.min.js.map" />
+    <Content Include="Scripts\bootstrap.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.min.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.js.map" />
+    <None Include="Scripts\jquery-3.5.1.intellisense.js" />
+    <Content Include="Scripts\jquery-3.5.1.js" />
+    <Content Include="Scripts\jquery-3.5.1.min.js" />
+    <Content Include="Scripts\jquery-3.5.1.slim.js" />
+    <Content Include="Scripts\jquery-3.5.1.slim.min.js" />
+    <Content Include="Scripts\jquery-3.5.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.5.1.min.map" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\popper-utils.js" />
+    <Content Include="Scripts\popper-utils.min.js" />
+    <Content Include="Scripts\popper.js" />
+    <Content Include="Scripts\popper.min.js" />
+    <Content Include="Scripts\respond.js" />
+    <Content Include="Scripts\respond.matchmedia.addListener.js" />
+    <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
+    <Content Include="Scripts\respond.min.js" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Scripts\src\index.js" />
+    <Content Include="Scripts\src\methods\defaults.js" />
+    <Content Include="Scripts\src\methods\destroy.js" />
+    <Content Include="Scripts\src\methods\disableEventListeners.js" />
+    <Content Include="Scripts\src\methods\enableEventListeners.js" />
+    <Content Include="Scripts\src\methods\placements.js" />
+    <Content Include="Scripts\src\methods\update.js" />
+    <Content Include="Scripts\src\modifiers\applyStyle.js" />
+    <Content Include="Scripts\src\modifiers\arrow.js" />
+    <Content Include="Scripts\src\modifiers\computeStyle.js" />
+    <Content Include="Scripts\src\modifiers\flip.js" />
+    <Content Include="Scripts\src\modifiers\hide.js" />
+    <Content Include="Scripts\src\modifiers\index.js" />
+    <Content Include="Scripts\src\modifiers\inner.js" />
+    <Content Include="Scripts\src\modifiers\keepTogether.js" />
+    <Content Include="Scripts\src\modifiers\offset.js" />
+    <Content Include="Scripts\src\modifiers\preventOverflow.js" />
+    <Content Include="Scripts\src\modifiers\shift.js" />
+    <Content Include="Scripts\src\utils\clockwise.js" />
+    <Content Include="Scripts\src\utils\computeAutoPlacement.js" />
+    <Content Include="Scripts\src\utils\debounce.js" />
+    <Content Include="Scripts\src\utils\find.js" />
+    <Content Include="Scripts\src\utils\findCommonOffsetParent.js" />
+    <Content Include="Scripts\src\utils\findIndex.js" />
+    <Content Include="Scripts\src\utils\getBordersSize.js" />
+    <Content Include="Scripts\src\utils\getBoundaries.js" />
+    <Content Include="Scripts\src\utils\getBoundingClientRect.js" />
+    <Content Include="Scripts\src\utils\getClientRect.js" />
+    <Content Include="Scripts\src\utils\getFixedPositionOffsetParent.js" />
+    <Content Include="Scripts\src\utils\getOffsetParent.js" />
+    <Content Include="Scripts\src\utils\getOffsetRect.js" />
+    <Content Include="Scripts\src\utils\getOffsetRectRelativeToArbitraryNode.js" />
+    <Content Include="Scripts\src\utils\getOppositePlacement.js" />
+    <Content Include="Scripts\src\utils\getOppositeVariation.js" />
+    <Content Include="Scripts\src\utils\getOuterSizes.js" />
+    <Content Include="Scripts\src\utils\getParentNode.js" />
+    <Content Include="Scripts\src\utils\getPopperOffsets.js" />
+    <Content Include="Scripts\src\utils\getReferenceNode.js" />
+    <Content Include="Scripts\src\utils\getReferenceOffsets.js" />
+    <Content Include="Scripts\src\utils\getRoot.js" />
+    <Content Include="Scripts\src\utils\getRoundedOffsets.js" />
+    <Content Include="Scripts\src\utils\getScroll.js" />
+    <Content Include="Scripts\src\utils\getScrollParent.js" />
+    <Content Include="Scripts\src\utils\getStyleComputedProperty.js" />
+    <Content Include="Scripts\src\utils\getSupportedPropertyName.js" />
+    <Content Include="Scripts\src\utils\getViewportOffsetRectRelativeToArtbitraryNode.js" />
+    <Content Include="Scripts\src\utils\getWindow.js" />
+    <Content Include="Scripts\src\utils\getWindowSizes.js" />
+    <Content Include="Scripts\src\utils\includeScroll.js" />
+    <Content Include="Scripts\src\utils\index.js" />
+    <Content Include="Scripts\src\utils\isBrowser.js" />
+    <Content Include="Scripts\src\utils\isFixed.js" />
+    <Content Include="Scripts\src\utils\isFunction.js" />
+    <Content Include="Scripts\src\utils\isIE.js" />
+    <Content Include="Scripts\src\utils\isModifierEnabled.js" />
+    <Content Include="Scripts\src\utils\isModifierRequired.js" />
+    <Content Include="Scripts\src\utils\isNumeric.js" />
+    <Content Include="Scripts\src\utils\isOffsetContainer.js" />
+    <Content Include="Scripts\src\utils\removeEventListeners.js" />
+    <Content Include="Scripts\src\utils\runModifiers.js" />
+    <Content Include="Scripts\src\utils\setAttributes.js" />
+    <Content Include="Scripts\src\utils\setStyles.js" />
+    <Content Include="Scripts\src\utils\setupEventListeners.js" />
+    <Content Include="Scripts\umd\popper-utils.js" />
+    <Content Include="Scripts\umd\popper-utils.min.js" />
+    <Content Include="Scripts\umd\popper.js" />
+    <Content Include="Scripts\umd\popper.min.js" />
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Scripts\umd\popper.min.js.map" />
+    <Content Include="Scripts\umd\popper.js.map" />
+    <Content Include="Scripts\umd\popper.js.flow" />
+    <Content Include="Scripts\umd\popper-utils.min.js.map" />
+    <Content Include="Scripts\umd\popper-utils.js.map" />
+    <Content Include="Scripts\README.md" />
+    <Content Include="Scripts\popper.min.js.map" />
+    <Content Include="Scripts\popper.js.map" />
+    <Content Include="Scripts\popper-utils.min.js.map" />
+    <Content Include="Scripts\popper-utils.js.map" />
+    <None Include="Web.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web.config__">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Views\Report\FintrakReport.cshtml" />
+    <Content Include="Views\Editor\Index.cshtml" />
+    <Content Include="Views\Editor\Upload.cshtml" />
+    <None Include="Web.Debug.config_">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config_">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Debug.config__">
+      <DependentUpon>Web.config__</DependentUpon>
+    </None>
+    <None Include="Web.Release.config__">
+      <DependentUpon>Web.config__</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Reports\Credit\OfferLetterGeneration\FORM3800B_LMS.rdlc" />
+    <EmbeddedResource Include="Reports\Credit\OfferLetterGeneration\FORM3800B_LMS12.rdlc" />
+    <EmbeddedResource Include="Reports\Credit\OfferLetterGeneration\ClassifiedAssetManagement.rdlc" />
+    <EmbeddedResource Include="Reports\Credit\OfferLetterGeneration\FORM3800B_LOS - Copy %282%29.rdlc" />
+    <EmbeddedResource Include="Reports\Credit\OfferLetterGeneration\FORM3800B_LOS.rdlc" />
+    <EmbeddedResource Include="Reports\Credit\OfferLetterGeneration\FORM3800B_LOS11.rdlc" />
+    <EmbeddedResource Include="Reports\Credit\OfferLetterGeneration\OfferLetter - 24052019.rdlc" />
+    <EmbeddedResource Include="Reports\Credit\OfferLetterGeneration\OfferLetter.rdlc" />
+    <EmbeddedResource Include="Reports\Credit\OfferLetterGeneration\OfferLetterLMSR.rdlc" />
+    <EmbeddedResource Include="Reports\Credit\OfferLetterGeneration\OfferLetter_ImportFinance.rdlc" />
+    <EmbeddedResource Include="Reports\Credit\OfferLetterGeneration\OfferLetter_LeaseFacility.rdlc" />
+    <EmbeddedResource Include="Reports\Credit\OfferLetterGeneration\OfferLetter_MHSS.rdlc" />
+    <EmbeddedResource Include="Reports\Credit\OfferLetterGeneration\OfferLetter_OtherGuarantee.rdlc" />
+    <EmbeddedResource Include="Reports\Credit\OfferLetterGeneration\OfferLetter_OverDraftFacility.rdlc" />
+    <EmbeddedResource Include="Reports\Credit\OfferLetterGeneration\ScheduledCollateral.rdlc" />
+    <EmbeddedResource Include="Reports\Credit\Header.rdlc" />
+    <EmbeddedResource Include="Reports\Credit\OfferLetterGeneration\OfferLetterCAMBase.rdlc" />
+    <EmbeddedResource Include="Reports\Credit\OfferLetterGeneration\OfferLetter000.rdlc" />
+    <Content Include="Reports\Report\ApprovalTrailWithSLA.rdlc" />
+    <Content Include="Reports\Report\Blacklist.rdlc" />
+    <EmbeddedResource Include="Reports\Credit\OfferLetterGeneration\OfferLetterLMSR 060219.rdlc" />
+    <EmbeddedResource Include="Reports\Report\AgeAnalysisReport.rdlc" />
+    <EmbeddedResource Include="Reports\Report\Amortization.rdlc" />
+    <EmbeddedResource Include="Reports\Report\AnalystReport.rdlc" />
+    <EmbeddedResource Include="Reports\Report\ApprovedLoans.rdlc" />
+    <EmbeddedResource Include="Reports\Report\AuditTrailReports.rdlc" />
+    <EmbeddedResource Include="Reports\Report\BandGReport.rdlc" />
+    <EmbeddedResource Include="Reports\Report\BondAndGuarantee.rdlc" />
+    <EmbeddedResource Include="Reports\Report\BranchLimits.rdlc" />
+    <EmbeddedResource Include="Reports\Report\CancelledLoans.rdlc" />
+    <EmbeddedResource Include="Reports\Report\CashBackedBondAndGuarantee.rdlc" />
+    <EmbeddedResource Include="Reports\Report\CashBackedReport.rdlc" />
+    <EmbeddedResource Include="Reports\Report\CashCollaterizedCredits.rdlc" />
+    <EmbeddedResource Include="Reports\Report\CollateralAdequacy.rdlc" />
+    <EmbeddedResource Include="Reports\Report\CollateralInsuranceReport.rdlc" />
+    <EmbeddedResource Include="Reports\Report\CollateralPerfection.rdlc" />
+    <EmbeddedResource Include="Reports\Report\CollateralPerfectionYetToCommence.rdlc" />
+    <EmbeddedResource Include="Reports\Report\CollateralPropertyRevaluation.rdlc" />
+    <EmbeddedResource Include="Reports\Report\CollateralRegister.rdlc" />
+    <EmbeddedResource Include="Reports\Report\CollateralSales.rdlc" />
+    <EmbeddedResource Include="Reports\Report\CollateralValuationReport.rdlc" />
+    <EmbeddedResource Include="Reports\Report\CollateralVisitation.rdlc" />
+    <EmbeddedResource Include="Reports\Report\ComputationForExternalAgents.rdlc" />
+    <EmbeddedResource Include="Reports\Report\ContigentLiabilityInformation.rdlc" />
+    <EmbeddedResource Include="Reports\Report\CorporateCustomerCreation.rdlc" />
+    <EmbeddedResource Include="Reports\Report\CorporateLoansReport.rdlc" />
+    <EmbeddedResource Include="Reports\Report\CovenantsApproachingDueDate.rdlc" />
+    <EmbeddedResource Include="Reports\Report\CreditBureau.rdlc" />
+    <EmbeddedResource Include="Reports\Report\CreditScheduleReport.rdlc" />
+    <EmbeddedResource Include="Reports\Report\CustomFacilityRepayment.rdlc" />
+    <EmbeddedResource Include="Reports\Report\DailyAccrualReport.rdlc" />
+    <EmbeddedResource Include="Reports\Report\DeferralWaiver.rdlc" />
+    <EmbeddedResource Include="Reports\Report\DelinquentAccounts.rdlc" />
+    <EmbeddedResource Include="Reports\Report\DisbursalCreditTurnover.rdlc" />
+    <EmbeddedResource Include="Reports\Report\DisbursedFacilityCollateralReport.rdlc" />
+    <EmbeddedResource Include="Reports\Report\DisbursedLoans.rdlc" />
+    <EmbeddedResource Include="Reports\Report\Discharge.rdlc" />
+    <EmbeddedResource Include="Reports\Report\DrawdownMemo.rdlc" />
+    <EmbeddedResource Include="Reports\Report\Error.rdlc" />
+    <EmbeddedResource Include="Reports\Report\ExcessReport.rdlc" />
+    <EmbeddedResource Include="Reports\Report\ExpiredOverdraftLoans.rdlc" />
+    <EmbeddedResource Include="Reports\Report\ExpiredReport.rdlc" />
+    <EmbeddedResource Include="Reports\Report\ExpiredSelfLiquidatingLoans.rdlc" />
+    <EmbeddedResource Include="Reports\Report\FCYScheuledLoan.rdlc" />
+    <EmbeddedResource Include="Reports\Report\FixedDepositCollateral.rdlc" />
+    <EmbeddedResource Include="Reports\Report\Form3800BFacilityReport.rdlc" />
+    <EmbeddedResource Include="Reports\Report\FullAndFinalSettlementAndWaivers.rdlc" />
+    <EmbeddedResource Include="Reports\Report\IdleAssetsSales.rdlc" />
+    <EmbeddedResource Include="Reports\Report\ImpairedWatchListReport.rdlc" />
+    <EmbeddedResource Include="Reports\Report\InitiatedLoans.rdlc" />
+    <EmbeddedResource Include="Reports\Report\InsiderRelatedLoanReport.rdlc" />
+    <EmbeddedResource Include="Reports\Report\InsuranceReport.rdlc" />
+    <EmbeddedResource Include="Reports\Report\InsuranceSpoolReport.rdlc" />
+    <EmbeddedResource Include="Reports\Report\InterestAccrualReport.rdlc" />
+    <EmbeddedResource Include="Reports\Report\InterestIncome.rdlc" />
+    <EmbeddedResource Include="Reports\Report\JobRequestReport.rdlc" />
+    <EmbeddedResource Include="Reports\Report\Lein.rdlc" />
+    <EmbeddedResource Include="Reports\Report\ListOfCustomers.rdlc" />
+    <EmbeddedResource Include="Reports\Report\LitigationRecoveries.rdlc" />
+    <EmbeddedResource Include="Reports\Report\LoanBookingReport.rdlc" />
+    <EmbeddedResource Include="Reports\Report\LoanClassification.rdlc" />
+    <EmbeddedResource Include="Reports\Report\LoanDeferrals.rdlc" />
+    <EmbeddedResource Include="Reports\Report\LoanDisbursement.rdlc" />
+    <EmbeddedResource Include="Reports\Report\LoanDocumentDeferred.rdlc" />
+    <EmbeddedResource Include="Reports\Report\LoanDocumentWaived.rdlc" />
+    <EmbeddedResource Include="Reports\Report\LoanInterestReceivableAndPayable.rdlc" />
+    <EmbeddedResource Include="Reports\Credit\TestReport.rdlc" />
+    <EmbeddedResource Include="Reports\Report\CollateralEstimated.rdlc" />
+    <EmbeddedResource Include="Reports\Report\FacilityApprovedNotUtilised.rdlc" />
+    <EmbeddedResource Include="Reports\Report\FinanceTransactions.rdlc" />
+    <EmbeddedResource Include="Reports\Report\LoanAnniversery.rdlc" />
+    <EmbeddedResource Include="Reports\Report\LoanDocumentDeferralForMCC.rdlc" />
+    <EmbeddedResource Include="Reports\Report\LoanRepayment.rdlc" />
+    <EmbeddedResource Include="Reports\Report\LoanScheduleSimulation.rdlc" />
+    <EmbeddedResource Include="Reports\Report\LoanStatement.rdlc" />
+    <EmbeddedResource Include="Reports\Report\LoanSchedule.rdlc" />
+    <EmbeddedResource Include="Reports\Report\LoggingStatus.rdlc" />
+    <EmbeddedResource Include="Reports\Report\MaturedLoans.rdlc" />
+    <EmbeddedResource Include="Reports\Report\MiddleOfficeReport.rdlc" />
+    <EmbeddedResource Include="Reports\Report\NonPeformingLoans.rdlc" />
+    <EmbeddedResource Include="Reports\Report\OriginalDocumentSubmission.rdlc" />
+    <EmbeddedResource Include="Reports\Report\OutOfCourtSettlement.rdlc" />
+    <EmbeddedResource Include="Reports\Report\OutputDocument.rdlc">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Report\OverDraft.rdlc" />
+    <EmbeddedResource Include="Reports\Report\PaydayLoanCollection.rdlc" />
+    <EmbeddedResource Include="Reports\Report\ProfileActivityReport.rdlc" />
+    <EmbeddedResource Include="Reports\Report\PSR_APG.rdlc" />
+    <EmbeddedResource Include="Reports\Report\PSR_Direct.rdlc" />
+    <EmbeddedResource Include="Reports\Report\Rebooking.rdlc" />
+    <EmbeddedResource Include="Reports\Report\ReceivableInterestReport.rdlc" />
+    <EmbeddedResource Include="Reports\Report\RecoveryAgentPerformance.rdlc" />
+    <EmbeddedResource Include="Reports\Report\RecoveryAgentUpdate.rdlc" />
+    <EmbeddedResource Include="Reports\Report\RecoveryCollectionReport.rdlc" />
+    <EmbeddedResource Include="Reports\Report\RecoveryCommission.rdlc" />
+    <EmbeddedResource Include="Reports\Report\RecoveryComputation.rdlc" />
+    <EmbeddedResource Include="Reports\Report\ReferredLoans.rdlc" />
+    <EmbeddedResource Include="Reports\Report\RevalidationOfFullAndFinalSettlement.rdlc" />
+    <EmbeddedResource Include="Reports\Report\RuningLoansByLoanType.rdlc" />
+    <EmbeddedResource Include="Reports\Report\RunningFacilities.rdlc" />
+    <EmbeddedResource Include="Reports\Report\SanctionLimitReport.rdlc" />
+    <EmbeddedResource Include="Reports\Report\ScheduledCollateral.rdlc" />
+    <EmbeddedResource Include="Reports\Report\SectorialLimits.rdlc" />
+    <EmbeddedResource Include="Reports\Report\SecurityReleaseReport.rdlc" />
+    <EmbeddedResource Include="Reports\Report\SelfLiquidatingLoan.rdlc" />
+    <EmbeddedResource Include="Reports\Report\SLAMonitoringReport.rdlc" />
+    <EmbeddedResource Include="Reports\Report\StaffPrivilegeChangeReport.rdlc" />
+    <EmbeddedResource Include="Reports\Report\StaffRoleProfileActivityReport.rdlc" />
+    <EmbeddedResource Include="Reports\Report\StaffRoleProfileGroupReport.rdlc" />
+    <EmbeddedResource Include="Reports\Report\StakeholderWithExpiredFTP.rdlc" />
+    <EmbeddedResource Include="Reports\Report\StalledPerfection.rdlc" />
+    <EmbeddedResource Include="Reports\Report\SubmissionOfOriginalDocument.rdlc" />
+    <EmbeddedResource Include="Reports\Report\TerminatedLoans.rdlc" />
+    <EmbeddedResource Include="Reports\Report\TestReport.rdlc" />
+    <EmbeddedResource Include="Reports\Report\TrialBalance.rdlc" />
+    <EmbeddedResource Include="Reports\Report\TurnoverCovenant.rdlc" />
+    <EmbeddedResource Include="Reports\Report\UnearnedLoanInterest.rdlc" />
+    <EmbeddedResource Include="Reports\Report\UnutilizedFacilityReport.rdlc" />
+    <EmbeddedResource Include="Reports\Report\UserGroupChangeReport.rdlc" />
+    <EmbeddedResource Include="Reports\Report\ValidCollaterals.rdlc" />
+    <EmbeddedResource Include="Reports\Report\WeeklyRecoveryReportFINCON.rdlc" />
+    <EmbeddedResource Include="Reports\Report\WorkflowDefinition.rdlc" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Areas\" />
+    <Folder Include="Views\Testing\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FintrakBanking.AccessSubsediary\FintrakBanking.AccessSubsediaryRepo.csproj">
+      <Project>{e018722d-75ba-41de-9812-8f3aa3ff10dc}</Project>
+      <Name>FintrakBanking.AccessSubsediaryRepo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FintrakBanking.Common\FintrakBanking.Common.csproj">
+      <Project>{18cefc20-2662-4757-94de-23d623ffc98d}</Project>
+      <Name>FintrakBanking.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FintrakBanking.Entities\FintrakBanking.Entities.csproj">
+      <Project>{fb338a9b-9c63-46ed-a8c3-d75a08dad6f0}</Project>
+      <Name>FintrakBanking.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FintrakBanking.Interfaces\FintrakBanking.Interfaces.csproj">
+      <Project>{6a7c3564-00b2-45d4-a40c-4b52a06c296a}</Project>
+      <Name>FintrakBanking.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FintrakBanking.ReportObjects\FintrakBanking.ReportObjects.csproj">
+      <Project>{335b391e-60c0-47c2-9d7f-10cef0de800e}</Project>
+      <Name>FintrakBanking.ReportObjects</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FintrakBanking.Repositories\FintrakBanking.Repositories.csproj">
+      <Project>{2853b1d8-af5f-4691-a513-9eb63a45dd4d}</Project>
+      <Name>FintrakBanking.Repositories</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FinTrakBanking.ThirdPartyIntegration\FinTrakBanking.ThirdPartyIntegration.csproj">
+      <Project>{81c64d5d-3674-499e-b718-257aa862b1b2}</Project>
+      <Name>FinTrakBanking.ThirdPartyIntegration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FintrakBanking.ViewModels\FintrakBanking.ViewModels.csproj">
+      <Project>{53a300f2-b78d-4708-bfb4-2b86de64ec7d}</Project>
+      <Name>FintrakBanking.ViewModels</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="Scripts\index.d.ts" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:51104/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.8.2\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.8.2\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.3.6.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.3.6.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.Toolset.4.0.1\build\Microsoft.Net.Compilers.Toolset.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.Toolset.4.0.1\build\Microsoft.Net.Compilers.Toolset.props'))" />
+  </Target>
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.3.6.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.3.6.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

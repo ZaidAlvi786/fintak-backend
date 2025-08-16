@@ -1,0 +1,3381 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://types.ws.gw.fcubs.ofss.com" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="FCUBSCLService" targetNamespace="http://types.ws.gw.fcubs.ofss.com" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <xsd:schema>
+      <xsd:import schemaLocation="http://10.239.45.21:7001/FCUBSCLService/FCUBSCLService?xsd=1" namespace="http://fcubs.ofss.com/service/FCUBSCLService" />
+    </xsd:schema>
+  </types>
+  <message name="AuthorizeManualStatusChangeIO">
+    <part xmlns:ns1="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns1:AUTHORIZEMANUALSTATUSCHANGE_IOPK_REQ" />
+  </message>
+  <message name="AuthorizeManualStatusChangeIOResponse">
+    <part xmlns:ns2="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns2:AUTHORIZEMANUALSTATUSCHANGE_IOPK_RES" />
+  </message>
+  <message name="AuthorizeMortgageFS">
+    <part xmlns:ns3="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns3:AUTHORIZEMORTGAGE_FSFS_REQ" />
+  </message>
+  <message name="AuthorizeMortgageFSResponse">
+    <part xmlns:ns4="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns4:AUTHORIZEMORTGAGE_FSFS_RES" />
+  </message>
+  <message name="AuthorizeMortgageIO">
+    <part xmlns:ns5="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns5:AUTHORIZEMORTGAGE_IOPK_REQ" />
+  </message>
+  <message name="AuthorizeMortgageIOResponse">
+    <part xmlns:ns6="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns6:AUTHORIZEMORTGAGE_IOPK_RES" />
+  </message>
+  <message name="AuthorizeNotaryConfirmFS">
+    <part xmlns:ns7="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns7:AUTHORIZENOTARYCONFIRM_FSFS_REQ" />
+  </message>
+  <message name="AuthorizeNotaryConfirmFSResponse">
+    <part xmlns:ns8="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns8:AUTHORIZENOTARYCONFIRM_FSFS_RES" />
+  </message>
+  <message name="AuthorizeNotaryConfirmIO">
+    <part xmlns:ns9="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns9:AUTHORIZENOTARYCONFIRM_IOPK_REQ" />
+  </message>
+  <message name="AuthorizeNotaryConfirmIOResponse">
+    <part xmlns:ns10="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns10:AUTHORIZENOTARYCONFIRM_IOPK_RES" />
+  </message>
+  <message name="AuthorizePaymentFS">
+    <part xmlns:ns11="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns11:AUTHORIZEPAYMENT_FSFS_REQ" />
+  </message>
+  <message name="AuthorizePaymentFSResponse">
+    <part xmlns:ns12="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns12:AUTHORIZEPAYMENT_FSFS_RES" />
+  </message>
+  <message name="AuthorizePaymentIO">
+    <part xmlns:ns13="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns13:AUTHORIZEPAYMENT_IOPK_REQ" />
+  </message>
+  <message name="AuthorizePaymentIOResponse">
+    <part xmlns:ns14="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns14:AUTHORIZEPAYMENT_IOPK_RES" />
+  </message>
+  <message name="AuthorizeProdTrfrFS">
+    <part xmlns:ns15="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns15:AUTHORIZEPRODTRFR_FSFS_REQ" />
+  </message>
+  <message name="AuthorizeProdTrfrFSResponse">
+    <part xmlns:ns16="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns16:AUTHORIZEPRODTRFR_FSFS_RES" />
+  </message>
+  <message name="AuthorizeProdTrfrIO">
+    <part xmlns:ns17="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns17:AUTHORIZEPRODTRFR_IOPK_REQ" />
+  </message>
+  <message name="AuthorizeProdTrfrIOResponse">
+    <part xmlns:ns18="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns18:AUTHORIZEPRODTRFR_IOPK_RES" />
+  </message>
+  <message name="AuthorizeProductFS">
+    <part xmlns:ns19="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns19:AUTHORIZEPRODUCT_FSFS_REQ" />
+  </message>
+  <message name="AuthorizeProductFSResponse">
+    <part xmlns:ns20="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns20:AUTHORIZEPRODUCT_FSFS_RES" />
+  </message>
+  <message name="AuthorizeProductIO">
+    <part xmlns:ns21="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns21:AUTHORIZEPRODUCT_IOPK_REQ" />
+  </message>
+  <message name="AuthorizeProductIOResponse">
+    <part xmlns:ns22="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns22:AUTHORIZEPRODUCT_IOPK_RES" />
+  </message>
+  <message name="AuthorizeRollFS">
+    <part xmlns:ns23="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns23:AUTHORIZEROLL_FSFS_REQ" />
+  </message>
+  <message name="AuthorizeRollFSResponse">
+    <part xmlns:ns24="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns24:AUTHORIZEROLL_FSFS_RES" />
+  </message>
+  <message name="AuthorizeRollIO">
+    <part xmlns:ns25="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns25:AUTHORIZEROLL_IOPK_REQ" />
+  </message>
+  <message name="AuthorizeRollIOResponse">
+    <part xmlns:ns26="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns26:AUTHORIZEROLL_IOPK_RES" />
+  </message>
+  <message name="AuthorizeVamiFS">
+    <part xmlns:ns27="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns27:AUTHORIZEVAMI_FSFS_REQ" />
+  </message>
+  <message name="AuthorizeVamiFSResponse">
+    <part xmlns:ns28="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns28:AUTHORIZEVAMI_FSFS_RES" />
+  </message>
+  <message name="AuthorizeVamiIO">
+    <part xmlns:ns29="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns29:AUTHORIZEVAMI_IOPK_REQ" />
+  </message>
+  <message name="AuthorizeVamiIOResponse">
+    <part xmlns:ns30="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns30:AUTHORIZEVAMI_IOPK_RES" />
+  </message>
+  <message name="CloseAccountTrfrFS">
+    <part xmlns:ns31="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns31:CLOSEACCOUNTTRFR_FSFS_REQ" />
+  </message>
+  <message name="CloseAccountTrfrFSResponse">
+    <part xmlns:ns32="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns32:CLOSEACCOUNTTRFR_FSFS_RES" />
+  </message>
+  <message name="CloseAccountTrfrIO">
+    <part xmlns:ns33="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns33:CLOSEACCOUNTTRFR_IOPK_REQ" />
+  </message>
+  <message name="CloseAccountTrfrIOResponse">
+    <part xmlns:ns34="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns34:CLOSEACCOUNTTRFR_IOPK_RES" />
+  </message>
+  <message name="CloseProdTrfrFS">
+    <part xmlns:ns35="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns35:CLOSEPRODTRFR_FSFS_REQ" />
+  </message>
+  <message name="CloseProdTrfrFSResponse">
+    <part xmlns:ns36="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns36:CLOSEPRODTRFR_FSFS_RES" />
+  </message>
+  <message name="CloseProdTrfrIO">
+    <part xmlns:ns37="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns37:CLOSEPRODTRFR_IOPK_REQ" />
+  </message>
+  <message name="CloseProdTrfrIOResponse">
+    <part xmlns:ns38="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns38:CLOSEPRODTRFR_IOPK_RES" />
+  </message>
+  <message name="CreateAccountInactiveFS">
+    <part xmlns:ns39="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns39:CREATEACCOUNTINACTIVE_FSFS_REQ" />
+  </message>
+  <message name="CreateAccountInactiveFSResponse">
+    <part xmlns:ns40="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns40:CREATEACCOUNTINACTIVE_FSFS_RES" />
+  </message>
+  <message name="CreateAccountInactiveIO">
+    <part xmlns:ns41="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns41:CREATEACCOUNTINACTIVE_IOPK_REQ" />
+  </message>
+  <message name="CreateAccountInactiveIOResponse">
+    <part xmlns:ns42="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns42:CREATEACCOUNTINACTIVE_IOPK_RES" />
+  </message>
+  <message name="CreateAccountSimulationFS">
+    <part xmlns:ns43="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns43:CREATEACCOUNTSIMULATION_FSFS_REQ" />
+  </message>
+  <message name="CreateAccountSimulationFSResponse">
+    <part xmlns:ns44="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns44:CREATEACCOUNTSIMULATION_FSFS_RES" />
+  </message>
+  <message name="CreateAccountSimulationIO">
+    <part xmlns:ns45="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns45:CREATEACCOUNTSIMULATION_IOPK_REQ" />
+  </message>
+  <message name="CreateAccountSimulationIOResponse">
+    <part xmlns:ns46="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns46:CREATEACCOUNTSIMULATION_IOPK_RES" />
+  </message>
+  <message name="CreateAccountTrfrFS">
+    <part xmlns:ns47="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns47:CREATEACCOUNTTRFR_FSFS_REQ" />
+  </message>
+  <message name="CreateAccountTrfrFSResponse">
+    <part xmlns:ns48="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns48:CREATEACCOUNTTRFR_FSFS_RES" />
+  </message>
+  <message name="CreateAccountTrfrIO">
+    <part xmlns:ns49="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns49:CREATEACCOUNTTRFR_IOPK_REQ" />
+  </message>
+  <message name="CreateAccountTrfrIOResponse">
+    <part xmlns:ns50="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns50:CREATEACCOUNTTRFR_IOPK_RES" />
+  </message>
+  <message name="CreateCLUDEventIO">
+    <part xmlns:ns51="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns51:CREATECLUDEVENT_IOPK_REQ" />
+  </message>
+  <message name="CreateCLUDEventIOResponse">
+    <part xmlns:ns52="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns52:CREATECLUDEVENT_IOPK_RES" />
+  </message>
+  <message name="CreateCommitAccountFS">
+    <part xmlns:ns53="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns53:CREATECOMMITACCOUNT_FSFS_REQ" />
+  </message>
+  <message name="CreateCommitAccountFSResponse">
+    <part xmlns:ns54="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns54:CREATECOMMITACCOUNT_FSFS_RES" />
+  </message>
+  <message name="CreateCommitAccountIO">
+    <part xmlns:ns55="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns55:CREATECOMMITACCOUNT_IOPK_REQ" />
+  </message>
+  <message name="CreateCommitAccountIOResponse">
+    <part xmlns:ns56="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns56:CREATECOMMITACCOUNT_IOPK_RES" />
+  </message>
+  <message name="CreateCommitVamiFS">
+    <part xmlns:ns57="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns57:CREATECOMMITVAMI_FSFS_REQ" />
+  </message>
+  <message name="CreateCommitVamiFSResponse">
+    <part xmlns:ns58="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns58:CREATECOMMITVAMI_FSFS_RES" />
+  </message>
+  <message name="CreateCommitVamiIO">
+    <part xmlns:ns59="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns59:CREATECOMMITVAMI_IOPK_REQ" />
+  </message>
+  <message name="CreateCommitVamiIOResponse">
+    <part xmlns:ns60="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns60:CREATECOMMITVAMI_IOPK_RES" />
+  </message>
+  <message name="CreateDisbursementFS">
+    <part xmlns:ns61="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns61:CREATEDISBURSEMENT_FSFS_REQ" />
+  </message>
+  <message name="CreateDisbursementFSResponse">
+    <part xmlns:ns62="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns62:CREATEDISBURSEMENT_FSFS_RES" />
+  </message>
+  <message name="CreateDisbursementIO">
+    <part xmlns:ns63="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns63:CREATEDISBURSEMENT_IOPK_REQ" />
+  </message>
+  <message name="CreateDisbursementIOResponse">
+    <part xmlns:ns64="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns64:CREATEDISBURSEMENT_IOPK_RES" />
+  </message>
+  <message name="CreateManualStatusChangeFS">
+    <part xmlns:ns65="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns65:CREATEMANUALSTATUSCHANGE_FSFS_REQ" />
+  </message>
+  <message name="CreateManualStatusChangeFSResponse">
+    <part xmlns:ns66="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns66:CREATEMANUALSTATUSCHANGE_FSFS_RES" />
+  </message>
+  <message name="CreateManualStatusChangeIO">
+    <part xmlns:ns67="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns67:CREATEMANUALSTATUSCHANGE_IOPK_REQ" />
+  </message>
+  <message name="CreateManualStatusChangeIOResponse">
+    <part xmlns:ns68="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns68:CREATEMANUALSTATUSCHANGE_IOPK_RES" />
+  </message>
+  <message name="CreateNotaryConfirmFS">
+    <part xmlns:ns69="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns69:CREATENOTARYCONFIRM_FSFS_REQ" />
+  </message>
+  <message name="CreateNotaryConfirmFSResponse">
+    <part xmlns:ns70="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns70:CREATENOTARYCONFIRM_FSFS_RES" />
+  </message>
+  <message name="CreateNotaryConfirmIO">
+    <part xmlns:ns71="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns71:CREATENOTARYCONFIRM_IOPK_REQ" />
+  </message>
+  <message name="CreateNotaryConfirmIOResponse">
+    <part xmlns:ns72="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns72:CREATENOTARYCONFIRM_IOPK_RES" />
+  </message>
+  <message name="CreatePaymentFS">
+    <part xmlns:ns73="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns73:CREATEPAYMENT_FSFS_REQ" />
+  </message>
+  <message name="CreatePaymentFSResponse">
+    <part xmlns:ns74="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns74:CREATEPAYMENT_FSFS_RES" />
+  </message>
+  <message name="CreatePaymentIO">
+    <part xmlns:ns75="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns75:CREATEPAYMENT_IOPK_REQ" />
+  </message>
+  <message name="CreatePaymentIOResponse">
+    <part xmlns:ns76="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns76:CREATEPAYMENT_IOPK_RES" />
+  </message>
+  <message name="CreateProdTrfrFS">
+    <part xmlns:ns77="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns77:CREATEPRODTRFR_FSFS_REQ" />
+  </message>
+  <message name="CreateProdTrfrFSResponse">
+    <part xmlns:ns78="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns78:CREATEPRODTRFR_FSFS_RES" />
+  </message>
+  <message name="CreateProdTrfrIO">
+    <part xmlns:ns79="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns79:CREATEPRODTRFR_IOPK_REQ" />
+  </message>
+  <message name="CreateProdTrfrIOResponse">
+    <part xmlns:ns80="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns80:CREATEPRODTRFR_IOPK_RES" />
+  </message>
+  <message name="CreateProductFS">
+    <part xmlns:ns81="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns81:CREATEPRODUCT_FSFS_REQ" />
+  </message>
+  <message name="CreateProductFSResponse">
+    <part xmlns:ns82="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns82:CREATEPRODUCT_FSFS_RES" />
+  </message>
+  <message name="CreateProductIO">
+    <part xmlns:ns83="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns83:CREATEPRODUCT_IOPK_REQ" />
+  </message>
+  <message name="CreateProductIOResponse">
+    <part xmlns:ns84="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns84:CREATEPRODUCT_IOPK_RES" />
+  </message>
+  <message name="CreateRollFS">
+    <part xmlns:ns85="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns85:CREATEROLL_FSFS_REQ" />
+  </message>
+  <message name="CreateRollFSResponse">
+    <part xmlns:ns86="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns86:CREATEROLL_FSFS_RES" />
+  </message>
+  <message name="CreateRollIO">
+    <part xmlns:ns87="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns87:CREATEROLL_IOPK_REQ" />
+  </message>
+  <message name="CreateRollIOResponse">
+    <part xmlns:ns88="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns88:CREATEROLL_IOPK_RES" />
+  </message>
+  <message name="CreateSimulationVamiFS">
+    <part xmlns:ns89="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns89:CREATESIMULATIONVAMI_FSFS_REQ" />
+  </message>
+  <message name="CreateSimulationVamiFSResponse">
+    <part xmlns:ns90="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns90:CREATESIMULATIONVAMI_FSFS_RES" />
+  </message>
+  <message name="CreateSimulationVamiIO">
+    <part xmlns:ns91="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns91:CREATESIMULATIONVAMI_IOPK_REQ" />
+  </message>
+  <message name="CreateSimulationVamiIOResponse">
+    <part xmlns:ns92="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns92:CREATESIMULATIONVAMI_IOPK_RES" />
+  </message>
+  <message name="CreateVamiFS">
+    <part xmlns:ns93="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns93:CREATEVAMI_FSFS_REQ" />
+  </message>
+  <message name="CreateVamiFSResponse">
+    <part xmlns:ns94="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns94:CREATEVAMI_FSFS_RES" />
+  </message>
+  <message name="CreateVamiIO">
+    <part xmlns:ns95="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns95:CREATEVAMI_IOPK_REQ" />
+  </message>
+  <message name="CreateVamiIOResponse">
+    <part xmlns:ns96="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns96:CREATEVAMI_IOPK_RES" />
+  </message>
+  <message name="DeleteAccountInactiveFS">
+    <part xmlns:ns97="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns97:DELETEACCOUNTINACTIVE_FSFS_REQ" />
+  </message>
+  <message name="DeleteAccountInactiveFSResponse">
+    <part xmlns:ns98="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns98:DELETEACCOUNTINACTIVE_FSFS_RES" />
+  </message>
+  <message name="DeleteAccountInactiveIO">
+    <part xmlns:ns99="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns99:DELETEACCOUNTINACTIVE_IOPK_REQ" />
+  </message>
+  <message name="DeleteAccountInactiveIOResponse">
+    <part xmlns:ns100="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns100:DELETEACCOUNTINACTIVE_IOPK_RES" />
+  </message>
+  <message name="DeleteAccountTrfrFS">
+    <part xmlns:ns101="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns101:DELETEACCOUNTTRFR_FSFS_REQ" />
+  </message>
+  <message name="DeleteAccountTrfrFSResponse">
+    <part xmlns:ns102="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns102:DELETEACCOUNTTRFR_FSFS_RES" />
+  </message>
+  <message name="DeleteAccountTrfrIO">
+    <part xmlns:ns103="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns103:DELETEACCOUNTTRFR_IOPK_REQ" />
+  </message>
+  <message name="DeleteAccountTrfrIOResponse">
+    <part xmlns:ns104="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns104:DELETEACCOUNTTRFR_IOPK_RES" />
+  </message>
+  <message name="DeleteCLAdhocIO">
+    <part xmlns:ns105="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns105:DELETECLADHOC_IOPK_REQ" />
+  </message>
+  <message name="DeleteCLAdhocIOResponse">
+    <part xmlns:ns106="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns106:DELETECLADHOC_IOPK_RES" />
+  </message>
+  <message name="DeleteCLUDEventIO">
+    <part xmlns:ns107="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns107:DELETECLUDEVENT_IOPK_REQ" />
+  </message>
+  <message name="DeleteCLUDEventIOResponse">
+    <part xmlns:ns108="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns108:DELETECLUDEVENT_IOPK_RES" />
+  </message>
+  <message name="DeleteCommitAccountFS">
+    <part xmlns:ns109="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns109:DELETECOMMITACCOUNT_FSFS_REQ" />
+  </message>
+  <message name="DeleteCommitAccountFSResponse">
+    <part xmlns:ns110="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns110:DELETECOMMITACCOUNT_FSFS_RES" />
+  </message>
+  <message name="DeleteCommitAccountIO">
+    <part xmlns:ns111="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns111:DELETECOMMITACCOUNT_IOPK_REQ" />
+  </message>
+  <message name="DeleteCommitAccountIOResponse">
+    <part xmlns:ns112="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns112:DELETECOMMITACCOUNT_IOPK_RES" />
+  </message>
+  <message name="DeleteCommitVamiFS">
+    <part xmlns:ns113="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns113:DELETECOMMITVAMI_FSFS_REQ" />
+  </message>
+  <message name="DeleteCommitVamiFSResponse">
+    <part xmlns:ns114="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns114:DELETECOMMITVAMI_FSFS_RES" />
+  </message>
+  <message name="DeleteCommitVamiIO">
+    <part xmlns:ns115="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns115:DELETECOMMITVAMI_IOPK_REQ" />
+  </message>
+  <message name="DeleteCommitVamiIOResponse">
+    <part xmlns:ns116="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns116:DELETECOMMITVAMI_IOPK_RES" />
+  </message>
+  <message name="DeleteDisbursementFS">
+    <part xmlns:ns117="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns117:DELETEDISBURSEMENT_FSFS_REQ" />
+  </message>
+  <message name="DeleteDisbursementFSResponse">
+    <part xmlns:ns118="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns118:DELETEDISBURSEMENT_FSFS_RES" />
+  </message>
+  <message name="DeleteDisbursementIO">
+    <part xmlns:ns119="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns119:DELETEDISBURSEMENT_IOPK_REQ" />
+  </message>
+  <message name="DeleteDisbursementIOResponse">
+    <part xmlns:ns120="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns120:DELETEDISBURSEMENT_IOPK_RES" />
+  </message>
+  <message name="DeleteInstStatChgIO">
+    <part xmlns:ns121="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns121:DELETEINSTSTATCHG_IOPK_REQ" />
+  </message>
+  <message name="DeleteInstStatChgIOResponse">
+    <part xmlns:ns122="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns122:DELETEINSTSTATCHG_IOPK_RES" />
+  </message>
+  <message name="DeleteManualStatusChangeFS">
+    <part xmlns:ns123="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns123:DELETEMANUALSTATUSCHANGE_FSFS_REQ" />
+  </message>
+  <message name="DeleteManualStatusChangeFSResponse">
+    <part xmlns:ns124="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns124:DELETEMANUALSTATUSCHANGE_FSFS_RES" />
+  </message>
+  <message name="DeleteManualStatusChangeIO">
+    <part xmlns:ns125="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns125:DELETEMANUALSTATUSCHANGE_IOPK_REQ" />
+  </message>
+  <message name="DeleteManualStatusChangeIOResponse">
+    <part xmlns:ns126="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns126:DELETEMANUALSTATUSCHANGE_IOPK_RES" />
+  </message>
+  <message name="DeleteNotaryConfirmFS">
+    <part xmlns:ns127="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns127:DELETENOTARYCONFIRM_FSFS_REQ" />
+  </message>
+  <message name="DeleteNotaryConfirmFSResponse">
+    <part xmlns:ns128="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns128:DELETENOTARYCONFIRM_FSFS_RES" />
+  </message>
+  <message name="DeleteNotaryConfirmIO">
+    <part xmlns:ns129="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns129:DELETENOTARYCONFIRM_IOPK_REQ" />
+  </message>
+  <message name="DeleteNotaryConfirmIOResponse">
+    <part xmlns:ns130="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns130:DELETENOTARYCONFIRM_IOPK_RES" />
+  </message>
+  <message name="DeletePaymentFS">
+    <part xmlns:ns131="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns131:DELETEPAYMENT_FSFS_REQ" />
+  </message>
+  <message name="DeletePaymentFSResponse">
+    <part xmlns:ns132="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns132:DELETEPAYMENT_FSFS_RES" />
+  </message>
+  <message name="DeletePaymentIO">
+    <part xmlns:ns133="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns133:DELETEPAYMENT_IOPK_REQ" />
+  </message>
+  <message name="DeletePaymentIOResponse">
+    <part xmlns:ns134="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns134:DELETEPAYMENT_IOPK_RES" />
+  </message>
+  <message name="DeleteProdTrfrFS">
+    <part xmlns:ns135="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns135:DELETEPRODTRFR_FSFS_REQ" />
+  </message>
+  <message name="DeleteProdTrfrFSResponse">
+    <part xmlns:ns136="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns136:DELETEPRODTRFR_FSFS_RES" />
+  </message>
+  <message name="DeleteProdTrfrIO">
+    <part xmlns:ns137="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns137:DELETEPRODTRFR_IOPK_REQ" />
+  </message>
+  <message name="DeleteProdTrfrIOResponse">
+    <part xmlns:ns138="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns138:DELETEPRODTRFR_IOPK_RES" />
+  </message>
+  <message name="DeleteProductFS">
+    <part xmlns:ns139="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns139:DELETEPRODUCT_FSFS_REQ" />
+  </message>
+  <message name="DeleteProductFSResponse">
+    <part xmlns:ns140="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns140:DELETEPRODUCT_FSFS_RES" />
+  </message>
+  <message name="DeleteProductIO">
+    <part xmlns:ns141="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns141:DELETEPRODUCT_IOPK_REQ" />
+  </message>
+  <message name="DeleteProductIOResponse">
+    <part xmlns:ns142="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns142:DELETEPRODUCT_IOPK_RES" />
+  </message>
+  <message name="DeleteRenogIO">
+    <part xmlns:ns143="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns143:DELETERENOG_IOPK_REQ" />
+  </message>
+  <message name="DeleteRenogIOResponse">
+    <part xmlns:ns144="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns144:DELETERENOG_IOPK_RES" />
+  </message>
+  <message name="DeleteRollFS">
+    <part xmlns:ns145="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns145:DELETEROLL_FSFS_REQ" />
+  </message>
+  <message name="DeleteRollFSResponse">
+    <part xmlns:ns146="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns146:DELETEROLL_FSFS_RES" />
+  </message>
+  <message name="DeleteRollIO">
+    <part xmlns:ns147="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns147:DELETEROLL_IOPK_REQ" />
+  </message>
+  <message name="DeleteRollIOResponse">
+    <part xmlns:ns148="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns148:DELETEROLL_IOPK_RES" />
+  </message>
+  <message name="DeleteRolloverIO">
+    <part xmlns:ns149="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns149:DELETEROLLOVER_IOPK_REQ" />
+  </message>
+  <message name="DeleteRolloverIOResponse">
+    <part xmlns:ns150="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns150:DELETEROLLOVER_IOPK_RES" />
+  </message>
+  <message name="DeleteSimulationVamiFS">
+    <part xmlns:ns151="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns151:DELETESIMULATIONVAMI_FSFS_REQ" />
+  </message>
+  <message name="DeleteSimulationVamiFSResponse">
+    <part xmlns:ns152="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns152:DELETESIMULATIONVAMI_FSFS_RES" />
+  </message>
+  <message name="DeleteSimulationVamiIO">
+    <part xmlns:ns153="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns153:DELETESIMULATIONVAMI_IOPK_REQ" />
+  </message>
+  <message name="DeleteSimulationVamiIOResponse">
+    <part xmlns:ns154="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns154:DELETESIMULATIONVAMI_IOPK_RES" />
+  </message>
+  <message name="DeleteStatusChangeIO">
+    <part xmlns:ns155="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns155:DELETESTATUSCHANGE_IOPK_REQ" />
+  </message>
+  <message name="DeleteStatusChangeIOResponse">
+    <part xmlns:ns156="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns156:DELETESTATUSCHANGE_IOPK_RES" />
+  </message>
+  <message name="DeleteVamiFS">
+    <part xmlns:ns157="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns157:DELETEVAMI_FSFS_REQ" />
+  </message>
+  <message name="DeleteVamiFSResponse">
+    <part xmlns:ns158="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns158:DELETEVAMI_FSFS_RES" />
+  </message>
+  <message name="DeleteVamiIO">
+    <part xmlns:ns159="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns159:DELETEVAMI_IOPK_REQ" />
+  </message>
+  <message name="DeleteVamiIOResponse">
+    <part xmlns:ns160="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns160:DELETEVAMI_IOPK_RES" />
+  </message>
+  <message name="ModifyAccountInactiveFS">
+    <part xmlns:ns161="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns161:MODIFYACCOUNTINACTIVE_FSFS_REQ" />
+  </message>
+  <message name="ModifyAccountInactiveFSResponse">
+    <part xmlns:ns162="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns162:MODIFYACCOUNTINACTIVE_FSFS_RES" />
+  </message>
+  <message name="ModifyAccountInactiveIO">
+    <part xmlns:ns163="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns163:MODIFYACCOUNTINACTIVE_IOPK_REQ" />
+  </message>
+  <message name="ModifyAccountInactiveIOResponse">
+    <part xmlns:ns164="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns164:MODIFYACCOUNTINACTIVE_IOPK_RES" />
+  </message>
+  <message name="ModifyAccountTrfrFS">
+    <part xmlns:ns165="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns165:MODIFYACCOUNTTRFR_FSFS_REQ" />
+  </message>
+  <message name="ModifyAccountTrfrFSResponse">
+    <part xmlns:ns166="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns166:MODIFYACCOUNTTRFR_FSFS_RES" />
+  </message>
+  <message name="ModifyAccountTrfrIO">
+    <part xmlns:ns167="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns167:MODIFYACCOUNTTRFR_IOPK_REQ" />
+  </message>
+  <message name="ModifyAccountTrfrIOResponse">
+    <part xmlns:ns168="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns168:MODIFYACCOUNTTRFR_IOPK_RES" />
+  </message>
+  <message name="ModifyManualStatusChangeFS">
+    <part xmlns:ns169="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns169:MODIFYMANUALSTATUSCHANGE_FSFS_REQ" />
+  </message>
+  <message name="ModifyManualStatusChangeFSResponse">
+    <part xmlns:ns170="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns170:MODIFYMANUALSTATUSCHANGE_FSFS_RES" />
+  </message>
+  <message name="ModifyManualStatusChangeIO">
+    <part xmlns:ns171="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns171:MODIFYMANUALSTATUSCHANGE_IOPK_REQ" />
+  </message>
+  <message name="ModifyManualStatusChangeIOResponse">
+    <part xmlns:ns172="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns172:MODIFYMANUALSTATUSCHANGE_IOPK_RES" />
+  </message>
+  <message name="ModifyProdTrfrFS">
+    <part xmlns:ns173="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns173:MODIFYPRODTRFR_FSFS_REQ" />
+  </message>
+  <message name="ModifyProdTrfrFSResponse">
+    <part xmlns:ns174="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns174:MODIFYPRODTRFR_FSFS_RES" />
+  </message>
+  <message name="ModifyProdTrfrIO">
+    <part xmlns:ns175="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns175:MODIFYPRODTRFR_IOPK_REQ" />
+  </message>
+  <message name="ModifyProdTrfrIOResponse">
+    <part xmlns:ns176="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns176:MODIFYPRODTRFR_IOPK_RES" />
+  </message>
+  <message name="ModifyProductFS">
+    <part xmlns:ns177="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns177:MODIFYPRODUCT_FSFS_REQ" />
+  </message>
+  <message name="ModifyProductFSResponse">
+    <part xmlns:ns178="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns178:MODIFYPRODUCT_FSFS_RES" />
+  </message>
+  <message name="ModifyProductIO">
+    <part xmlns:ns179="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns179:MODIFYPRODUCT_IOPK_REQ" />
+  </message>
+  <message name="ModifyProductIOResponse">
+    <part xmlns:ns180="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns180:MODIFYPRODUCT_IOPK_RES" />
+  </message>
+  <message name="QueryAccountInactiveIO">
+    <part xmlns:ns181="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns181:QUERYACCOUNTINACTIVE_IOFS_REQ" />
+  </message>
+  <message name="QueryAccountInactiveIOResponse">
+    <part xmlns:ns182="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns182:QUERYACCOUNTINACTIVE_IOFS_RES" />
+  </message>
+  <message name="QueryAccountStatsIO">
+    <part xmlns:ns183="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns183:QUERYACCOUNTSTATS_IOFS_REQ" />
+  </message>
+  <message name="QueryAccountStatsIOResponse">
+    <part xmlns:ns184="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns184:QUERYACCOUNTSTATS_IOFS_RES" />
+  </message>
+  <message name="QueryAccountTrfrIO">
+    <part xmlns:ns185="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns185:QUERYACCOUNTTRFR_IOFS_REQ" />
+  </message>
+  <message name="QueryAccountTrfrIOResponse">
+    <part xmlns:ns186="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns186:QUERYACCOUNTTRFR_IOFS_RES" />
+  </message>
+  <message name="QueryAutosuspInfoIO">
+    <part xmlns:ns187="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns187:QUERYAUTOSUSPINFO_IOFS_REQ" />
+  </message>
+  <message name="QueryAutosuspInfoIOResponse">
+    <part xmlns:ns188="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns188:QUERYAUTOSUSPINFO_IOFS_RES" />
+  </message>
+  <message name="QueryCLEventsIO">
+    <part xmlns:ns189="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns189:QUERYCLEVENTS_IOFS_REQ" />
+  </message>
+  <message name="QueryCLEventsIOResponse">
+    <part xmlns:ns190="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns190:QUERYCLEVENTS_IOFS_RES" />
+  </message>
+  <message name="QueryCLUDEventIO">
+    <part xmlns:ns191="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns191:QUERYCLUDEVENT_IOFS_REQ" />
+  </message>
+  <message name="QueryCLUDEventIOResponse">
+    <part xmlns:ns192="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns192:QUERYCLUDEVENT_IOFS_RES" />
+  </message>
+  <message name="QueryClInfoIO">
+    <part xmlns:ns193="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns193:QUERYCLINFO_IOFS_REQ" />
+  </message>
+  <message name="QueryClInfoIOResponse">
+    <part xmlns:ns194="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns194:QUERYCLINFO_IOFS_RES" />
+  </message>
+  <message name="QueryCommitAccountIO">
+    <part xmlns:ns195="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns195:QUERYCOMMITACCOUNT_IOFS_REQ" />
+  </message>
+  <message name="QueryCommitAccountIOResponse">
+    <part xmlns:ns196="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns196:QUERYCOMMITACCOUNT_IOFS_RES" />
+  </message>
+  <message name="QueryCommitVamiIO">
+    <part xmlns:ns197="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns197:QUERYCOMMITVAMI_IOFS_REQ" />
+  </message>
+  <message name="QueryCommitVamiIOResponse">
+    <part xmlns:ns198="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns198:QUERYCOMMITVAMI_IOFS_RES" />
+  </message>
+  <message name="QueryCustSumIO">
+    <part xmlns:ns199="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns199:QUERYCUSTSUM_IOFS_REQ" />
+  </message>
+  <message name="QueryCustSumIOResponse">
+    <part xmlns:ns200="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns200:QUERYCUSTSUM_IOFS_RES" />
+  </message>
+  <message name="QueryDisbursementIO">
+    <part xmlns:ns201="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns201:QUERYDISBURSEMENT_IOFS_REQ" />
+  </message>
+  <message name="QueryDisbursementIOResponse">
+    <part xmlns:ns202="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns202:QUERYDISBURSEMENT_IOFS_RES" />
+  </message>
+  <message name="QueryManualStatusChangeIO">
+    <part xmlns:ns203="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns203:QUERYMANUALSTATUSCHANGE_IOFS_REQ" />
+  </message>
+  <message name="QueryManualStatusChangeIOResponse">
+    <part xmlns:ns204="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns204:QUERYMANUALSTATUSCHANGE_IOFS_RES" />
+  </message>
+  <message name="QueryNotaryConfirmIO">
+    <part xmlns:ns205="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns205:QUERYNOTARYCONFIRM_IOFS_REQ" />
+  </message>
+  <message name="QueryNotaryConfirmIOResponse">
+    <part xmlns:ns206="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns206:QUERYNOTARYCONFIRM_IOFS_RES" />
+  </message>
+  <message name="QueryPaymentIO">
+    <part xmlns:ns207="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns207:QUERYPAYMENT_IOFS_REQ" />
+  </message>
+  <message name="QueryPaymentIOResponse">
+    <part xmlns:ns208="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns208:QUERYPAYMENT_IOFS_RES" />
+  </message>
+  <message name="QueryPmntSchIO">
+    <part xmlns:ns209="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns209:QUERYPMNTSCH_IOFS_REQ" />
+  </message>
+  <message name="QueryPmntSchIOResponse">
+    <part xmlns:ns210="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns210:QUERYPMNTSCH_IOFS_RES" />
+  </message>
+  <message name="QueryProdTrfrIO">
+    <part xmlns:ns211="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns211:QUERYPRODTRFR_IOFS_REQ" />
+  </message>
+  <message name="QueryProdTrfrIOResponse">
+    <part xmlns:ns212="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns212:QUERYPRODTRFR_IOFS_RES" />
+  </message>
+  <message name="QueryProductIO">
+    <part xmlns:ns213="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns213:QUERYPRODUCT_IOFS_REQ" />
+  </message>
+  <message name="QueryProductIOResponse">
+    <part xmlns:ns214="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns214:QUERYPRODUCT_IOFS_RES" />
+  </message>
+  <message name="QueryRenogIO">
+    <part xmlns:ns215="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns215:QUERYRENOG_IOFS_REQ" />
+  </message>
+  <message name="QueryRenogIOResponse">
+    <part xmlns:ns216="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns216:QUERYRENOG_IOFS_RES" />
+  </message>
+  <message name="QueryRollIO">
+    <part xmlns:ns217="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns217:QUERYROLL_IOFS_REQ" />
+  </message>
+  <message name="QueryRollIOResponse">
+    <part xmlns:ns218="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns218:QUERYROLL_IOFS_RES" />
+  </message>
+  <message name="QueryRolloverIO">
+    <part xmlns:ns219="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns219:QUERYROLLOVER_IOFS_REQ" />
+  </message>
+  <message name="QueryRolloverIOResponse">
+    <part xmlns:ns220="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns220:QUERYROLLOVER_IOFS_RES" />
+  </message>
+  <message name="QuerySimulationVamiIO">
+    <part xmlns:ns221="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns221:QUERYSIMULATIONVAMI_IOFS_REQ" />
+  </message>
+  <message name="QuerySimulationVamiIOResponse">
+    <part xmlns:ns222="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns222:QUERYSIMULATIONVAMI_IOFS_RES" />
+  </message>
+  <message name="QueryVamiIO">
+    <part xmlns:ns223="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns223:QUERYVAMI_IOFS_REQ" />
+  </message>
+  <message name="QueryVamiIOResponse">
+    <part xmlns:ns224="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns224:QUERYVAMI_IOFS_RES" />
+  </message>
+  <message name="ReopenAccountTrfrFS">
+    <part xmlns:ns225="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns225:REOPENACCOUNTTRFR_FSFS_REQ" />
+  </message>
+  <message name="ReopenAccountTrfrFSResponse">
+    <part xmlns:ns226="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns226:REOPENACCOUNTTRFR_FSFS_RES" />
+  </message>
+  <message name="ReopenAccountTrfrIO">
+    <part xmlns:ns227="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns227:REOPENACCOUNTTRFR_IOPK_REQ" />
+  </message>
+  <message name="ReopenAccountTrfrIOResponse">
+    <part xmlns:ns228="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns228:REOPENACCOUNTTRFR_IOPK_RES" />
+  </message>
+  <message name="ReopenProdTrfrFS">
+    <part xmlns:ns229="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns229:REOPENPRODTRFR_FSFS_REQ" />
+  </message>
+  <message name="ReopenProdTrfrFSResponse">
+    <part xmlns:ns230="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns230:REOPENPRODTRFR_FSFS_RES" />
+  </message>
+  <message name="ReopenProdTrfrIO">
+    <part xmlns:ns231="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns231:REOPENPRODTRFR_IOPK_REQ" />
+  </message>
+  <message name="ReopenProdTrfrIOResponse">
+    <part xmlns:ns232="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns232:REOPENPRODTRFR_IOPK_RES" />
+  </message>
+  <message name="RevCLAdhocIO">
+    <part xmlns:ns233="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns233:REVCLADHOC_IOPK_REQ" />
+  </message>
+  <message name="RevCLAdhocIOResponse">
+    <part xmlns:ns234="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns234:REVCLADHOC_IOPK_RES" />
+  </message>
+  <message name="ReverseCLUDEventIO">
+    <part xmlns:ns235="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns235:REVERSECLUDEVENT_IOPK_REQ" />
+  </message>
+  <message name="ReverseCLUDEventIOResponse">
+    <part xmlns:ns236="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns236:REVERSECLUDEVENT_IOPK_RES" />
+  </message>
+  <message name="ReverseDisbursementFS">
+    <part xmlns:ns237="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns237:REVERSEDISBURSEMENT_FSFS_REQ" />
+  </message>
+  <message name="ReverseDisbursementFSResponse">
+    <part xmlns:ns238="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns238:REVERSEDISBURSEMENT_FSFS_RES" />
+  </message>
+  <message name="ReverseDisbursementIO">
+    <part xmlns:ns239="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns239:REVERSEDISBURSEMENT_IOPK_REQ" />
+  </message>
+  <message name="ReverseDisbursementIOResponse">
+    <part xmlns:ns240="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns240:REVERSEDISBURSEMENT_IOPK_RES" />
+  </message>
+  <message name="ReverseInstStatChgIO">
+    <part xmlns:ns241="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns241:REVERSEINSTSTATCHG_IOPK_REQ" />
+  </message>
+  <message name="ReverseInstStatChgIOResponse">
+    <part xmlns:ns242="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns242:REVERSEINSTSTATCHG_IOPK_RES" />
+  </message>
+  <message name="ReversePaymentFS">
+    <part xmlns:ns243="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns243:REVERSEPAYMENT_FSFS_REQ" />
+  </message>
+  <message name="ReversePaymentFSResponse">
+    <part xmlns:ns244="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns244:REVERSEPAYMENT_FSFS_RES" />
+  </message>
+  <message name="ReversePaymentIO">
+    <part xmlns:ns245="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns245:REVERSEPAYMENT_IOPK_REQ" />
+  </message>
+  <message name="ReversePaymentIOResponse">
+    <part xmlns:ns246="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns246:REVERSEPAYMENT_IOPK_RES" />
+  </message>
+  <message name="ReverseRenogIO">
+    <part xmlns:ns247="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns247:REVERSERENOG_IOPK_REQ" />
+  </message>
+  <message name="ReverseRenogIOResponse">
+    <part xmlns:ns248="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns248:REVERSERENOG_IOPK_RES" />
+  </message>
+  <message name="ReverseRollFS">
+    <part xmlns:ns249="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns249:REVERSEROLL_FSFS_REQ" />
+  </message>
+  <message name="ReverseRollFSResponse">
+    <part xmlns:ns250="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns250:REVERSEROLL_FSFS_RES" />
+  </message>
+  <message name="ReverseRollIO">
+    <part xmlns:ns251="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns251:REVERSEROLL_IOPK_REQ" />
+  </message>
+  <message name="ReverseRollIOResponse">
+    <part xmlns:ns252="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns252:REVERSEROLL_IOPK_RES" />
+  </message>
+  <message name="ReverseRolloverIO">
+    <part xmlns:ns253="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns253:REVERSEROLLOVER_IOPK_REQ" />
+  </message>
+  <message name="ReverseRolloverIOResponse">
+    <part xmlns:ns254="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns254:REVERSEROLLOVER_IOPK_RES" />
+  </message>
+  <message name="SaveALiqdSuspFS">
+    <part xmlns:ns255="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns255:SAVEALIQDSUSP_FSFS_REQ" />
+  </message>
+  <message name="SaveALiqdSuspFSResponse">
+    <part xmlns:ns256="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns256:SAVEALIQDSUSP_FSFS_RES" />
+  </message>
+  <message name="SaveALiqdSuspIO">
+    <part xmlns:ns257="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns257:SAVEALIQDSUSP_IOPK_REQ" />
+  </message>
+  <message name="SaveALiqdSuspIOResponse">
+    <part xmlns:ns258="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns258:SAVEALIQDSUSP_IOPK_RES" />
+  </message>
+  <message name="SaveAccSimFS">
+    <part xmlns:ns259="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns259:SAVEACCSIM_FSFS_REQ" />
+  </message>
+  <message name="SaveAccSimFSResponse">
+    <part xmlns:ns260="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns260:SAVEACCSIM_FSFS_RES" />
+  </message>
+  <message name="SaveAccSimIO">
+    <part xmlns:ns261="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns261:SAVEACCSIM_IOPK_REQ" />
+  </message>
+  <message name="SaveAccSimIOResponse">
+    <part xmlns:ns262="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns262:SAVEACCSIM_IOPK_RES" />
+  </message>
+  <message name="SaveAccountActivateIO">
+    <part xmlns:ns263="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns263:SAVEACCOUNTACTIVATE_IOPK_REQ" />
+  </message>
+  <message name="SaveAccountActivateIOResponse">
+    <part xmlns:ns264="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns264:SAVEACCOUNTACTIVATE_IOPK_RES" />
+  </message>
+  <message name="SaveCLAdhocFS">
+    <part xmlns:ns265="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns265:SAVECLADHOC_FSFS_REQ" />
+  </message>
+  <message name="SaveCLAdhocFSResponse">
+    <part xmlns:ns266="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns266:SAVECLADHOC_FSFS_RES" />
+  </message>
+  <message name="SaveCLAdhocIO">
+    <part xmlns:ns267="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns267:SAVECLADHOC_IOPK_REQ" />
+  </message>
+  <message name="SaveCLAdhocIOResponse">
+    <part xmlns:ns268="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns268:SAVECLADHOC_IOPK_RES" />
+  </message>
+  <message name="SaveInactiveFS">
+    <part xmlns:ns269="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns269:SAVEINACTIVE_FSFS_REQ" />
+  </message>
+  <message name="SaveInactiveFSResponse">
+    <part xmlns:ns270="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns270:SAVEINACTIVE_FSFS_RES" />
+  </message>
+  <message name="SaveInactiveIO">
+    <part xmlns:ns271="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns271:SAVEINACTIVE_IOPK_REQ" />
+  </message>
+  <message name="SaveInactiveIOResponse">
+    <part xmlns:ns272="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns272:SAVEINACTIVE_IOPK_RES" />
+  </message>
+  <message name="SaveInstStatChgFS">
+    <part xmlns:ns273="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns273:SAVEINSTSTATCHG_FSFS_REQ" />
+  </message>
+  <message name="SaveInstStatChgFSResponse">
+    <part xmlns:ns274="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns274:SAVEINSTSTATCHG_FSFS_RES" />
+  </message>
+  <message name="SaveInstStatChgIO">
+    <part xmlns:ns275="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns275:SAVEINSTSTATCHG_IOPK_REQ" />
+  </message>
+  <message name="SaveInstStatChgIOResponse">
+    <part xmlns:ns276="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns276:SAVEINSTSTATCHG_IOPK_RES" />
+  </message>
+  <message name="SaveReassignFS">
+    <part xmlns:ns277="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns277:SAVEREASSIGN_FSFS_REQ" />
+  </message>
+  <message name="SaveReassignFSResponse">
+    <part xmlns:ns278="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns278:SAVEREASSIGN_FSFS_RES" />
+  </message>
+  <message name="SaveReassignIO">
+    <part xmlns:ns279="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns279:SAVEREASSIGN_IOPK_REQ" />
+  </message>
+  <message name="SaveReassignIOResponse">
+    <part xmlns:ns280="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns280:SAVEREASSIGN_IOPK_RES" />
+  </message>
+  <message name="SaveRenogFS">
+    <part xmlns:ns281="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns281:SAVERENOG_FSFS_REQ" />
+  </message>
+  <message name="SaveRenogFSResponse">
+    <part xmlns:ns282="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns282:SAVERENOG_FSFS_RES" />
+  </message>
+  <message name="SaveRenogIO">
+    <part xmlns:ns283="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns283:SAVERENOG_IOPK_REQ" />
+  </message>
+  <message name="SaveRenogIOResponse">
+    <part xmlns:ns284="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns284:SAVERENOG_IOPK_RES" />
+  </message>
+  <message name="SaveReversalFS">
+    <part xmlns:ns285="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns285:SAVEREVERSAL_FSFS_REQ" />
+  </message>
+  <message name="SaveReversalFSResponse">
+    <part xmlns:ns286="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns286:SAVEREVERSAL_FSFS_RES" />
+  </message>
+  <message name="SaveRolloverFS">
+    <part xmlns:ns287="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns287:SAVEROLLOVER_FSFS_REQ" />
+  </message>
+  <message name="SaveRolloverFSResponse">
+    <part xmlns:ns288="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns288:SAVEROLLOVER_FSFS_RES" />
+  </message>
+  <message name="SaveRolloverIO">
+    <part xmlns:ns289="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns289:SAVEROLLOVER_IOPK_REQ" />
+  </message>
+  <message name="SaveRolloverIOResponse">
+    <part xmlns:ns290="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns290:SAVEROLLOVER_IOPK_RES" />
+  </message>
+  <message name="SaveStatusChangeFS">
+    <part xmlns:ns291="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns291:SAVESTATUSCHANGE_FSFS_REQ" />
+  </message>
+  <message name="SaveStatusChangeFSResponse">
+    <part xmlns:ns292="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns292:SAVESTATUSCHANGE_FSFS_RES" />
+  </message>
+  <message name="SaveStatusChangeIO">
+    <part xmlns:ns293="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns293:SAVESTATUSCHANGE_IOPK_REQ" />
+  </message>
+  <message name="SaveStatusChangeIOResponse">
+    <part xmlns:ns294="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns294:SAVESTATUSCHANGE_IOPK_RES" />
+  </message>
+  <message name="SimPaymentFS">
+    <part xmlns:ns295="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns295:SIMPAYMENT_FSFS_REQ" />
+  </message>
+  <message name="SimPaymentFSResponse">
+    <part xmlns:ns296="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns296:SIMPAYMENT_FSFS_RES" />
+  </message>
+  <message name="SimPaymentIO">
+    <part xmlns:ns297="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns297:SIMPAYMENT_IOPK_REQ" />
+  </message>
+  <message name="SimPaymentIOResponse">
+    <part xmlns:ns298="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns298:SIMPAYMENT_IOPK_RES" />
+  </message>
+  <message name="CreateAccountFS">
+    <part xmlns:ns299="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns299:CREATEACCOUNT_FSFS_REQ" />
+  </message>
+  <message name="CreateAccountFSResponse">
+    <part xmlns:ns300="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns300:CREATEACCOUNT_FSFS_RES" />
+  </message>
+  <message name="AuthorizeManualStatusChangeFS">
+    <part xmlns:ns301="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns301:AUTHORIZEMANUALSTATUSCHANGE_FSFS_REQ" />
+  </message>
+  <message name="AuthorizeManualStatusChangeFSResponse">
+    <part xmlns:ns302="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns302:AUTHORIZEMANUALSTATUSCHANGE_FSFS_RES" />
+  </message>
+  <message name="AuthCLUDEventIO">
+    <part xmlns:ns303="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns303:AUTHCLUDEVENT_IOPK_REQ" />
+  </message>
+  <message name="AuthCLUDEventIOResponse">
+    <part xmlns:ns304="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns304:AUTHCLUDEVENT_IOPK_RES" />
+  </message>
+  <message name="AuthorizeAccountFS">
+    <part xmlns:ns305="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns305:AUTHORIZEACCOUNT_FSFS_REQ" />
+  </message>
+  <message name="AuthorizeAccountFSResponse">
+    <part xmlns:ns306="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns306:AUTHORIZEACCOUNT_FSFS_RES" />
+  </message>
+  <message name="DeleteAccountFS">
+    <part xmlns:ns307="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns307:DELETEACCOUNT_FSFS_REQ" />
+  </message>
+  <message name="DeleteAccountFSResponse">
+    <part xmlns:ns308="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns308:DELETEACCOUNT_FSFS_RES" />
+  </message>
+  <message name="CreateAccountIO">
+    <part xmlns:ns309="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns309:CREATEACCOUNT_IOPK_REQ" />
+  </message>
+  <message name="CreateAccountIOResponse">
+    <part xmlns:ns310="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns310:CREATEACCOUNT_IOPK_RES" />
+  </message>
+  <message name="DeleteAccountIO">
+    <part xmlns:ns311="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns311:DELETEACCOUNT_IOPK_REQ" />
+  </message>
+  <message name="DeleteAccountIOResponse">
+    <part xmlns:ns312="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns312:DELETEACCOUNT_IOPK_RES" />
+  </message>
+  <message name="AuthorizeAccountIO">
+    <part xmlns:ns313="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns313:AUTHORIZEACCOUNT_IOPK_REQ" />
+  </message>
+  <message name="AuthorizeAccountIOResponse">
+    <part xmlns:ns314="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns314:AUTHORIZEACCOUNT_IOPK_RES" />
+  </message>
+  <message name="QueryAccountIO">
+    <part xmlns:ns315="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns315:QUERYACCOUNT_IOFS_REQ" />
+  </message>
+  <message name="QueryAccountIOResponse">
+    <part xmlns:ns316="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns316:QUERYACCOUNT_IOFS_RES" />
+  </message>
+  <message name="AuthInstStatChgIO">
+    <part xmlns:ns317="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns317:AUTHINSTSTATCHG_IOPK_REQ" />
+  </message>
+  <message name="AuthInstStatChgIOResponse">
+    <part xmlns:ns318="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns318:AUTHINSTSTATCHG_IOPK_RES" />
+  </message>
+  <message name="AuthStatusChangeIO">
+    <part xmlns:ns319="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns319:AUTHSTATUSCHANGE_IOPK_REQ" />
+  </message>
+  <message name="AuthStatusChangeIOResponse">
+    <part xmlns:ns320="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns320:AUTHSTATUSCHANGE_IOPK_RES" />
+  </message>
+  <message name="AuthVamiFS">
+    <part xmlns:ns321="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns321:AUTHVAMI_FSFS_REQ" />
+  </message>
+  <message name="AuthVamiFSResponse">
+    <part xmlns:ns322="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns322:AUTHVAMI_FSFS_RES" />
+  </message>
+  <message name="AuthVamiIO">
+    <part xmlns:ns323="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns323:AUTHVAMI_IOPK_REQ" />
+  </message>
+  <message name="AuthVamiIOResponse">
+    <part xmlns:ns324="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns324:AUTHVAMI_IOPK_RES" />
+  </message>
+  <message name="AuthorizeAccountInactiveFS">
+    <part xmlns:ns325="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns325:AUTHORIZEACCOUNTINACTIVE_FSFS_REQ" />
+  </message>
+  <message name="AuthorizeAccountInactiveFSResponse">
+    <part xmlns:ns326="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns326:AUTHORIZEACCOUNTINACTIVE_FSFS_RES" />
+  </message>
+  <message name="AuthorizeAccountInactiveIO">
+    <part xmlns:ns327="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns327:AUTHORIZEACCOUNTINACTIVE_IOPK_REQ" />
+  </message>
+  <message name="AuthorizeAccountInactiveIOResponse">
+    <part xmlns:ns328="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns328:AUTHORIZEACCOUNTINACTIVE_IOPK_RES" />
+  </message>
+  <message name="AuthorizeAccountTrfrFS">
+    <part xmlns:ns329="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns329:AUTHORIZEACCOUNTTRFR_FSFS_REQ" />
+  </message>
+  <message name="AuthorizeAccountTrfrFSResponse">
+    <part xmlns:ns330="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns330:AUTHORIZEACCOUNTTRFR_FSFS_RES" />
+  </message>
+  <message name="AuthorizeAccountTrfrIO">
+    <part xmlns:ns331="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns331:AUTHORIZEACCOUNTTRFR_IOPK_REQ" />
+  </message>
+  <message name="AuthorizeAccountTrfrIOResponse">
+    <part xmlns:ns332="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns332:AUTHORIZEACCOUNTTRFR_IOPK_RES" />
+  </message>
+  <message name="AuthorizeCommitAccountFS">
+    <part xmlns:ns333="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns333:AUTHORIZECOMMITACCOUNT_FSFS_REQ" />
+  </message>
+  <message name="AuthorizeCommitAccountFSResponse">
+    <part xmlns:ns334="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns334:AUTHORIZECOMMITACCOUNT_FSFS_RES" />
+  </message>
+  <message name="AuthorizeCommitAccountIO">
+    <part xmlns:ns335="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns335:AUTHORIZECOMMITACCOUNT_IOPK_REQ" />
+  </message>
+  <message name="AuthorizeCommitAccountIOResponse">
+    <part xmlns:ns336="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns336:AUTHORIZECOMMITACCOUNT_IOPK_RES" />
+  </message>
+  <message name="AuthorizeCommitVamiFS">
+    <part xmlns:ns337="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns337:AUTHORIZECOMMITVAMI_FSFS_REQ" />
+  </message>
+  <message name="AuthorizeCommitVamiFSResponse">
+    <part xmlns:ns338="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns338:AUTHORIZECOMMITVAMI_FSFS_RES" />
+  </message>
+  <message name="AuthorizeCommitVamiIO">
+    <part xmlns:ns339="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns339:AUTHORIZECOMMITVAMI_IOPK_REQ" />
+  </message>
+  <message name="AuthorizeCommitVamiIOResponse">
+    <part xmlns:ns340="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns340:AUTHORIZECOMMITVAMI_IOPK_RES" />
+  </message>
+  <message name="AuthorizeDisbursementFS">
+    <part xmlns:ns341="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns341:AUTHORIZEDISBURSEMENT_FSFS_REQ" />
+  </message>
+  <message name="AuthorizeDisbursementFSResponse">
+    <part xmlns:ns342="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns342:AUTHORIZEDISBURSEMENT_FSFS_RES" />
+  </message>
+  <message name="AuthorizeDisbursementIO">
+    <part xmlns:ns343="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns343:AUTHORIZEDISBURSEMENT_IOPK_REQ" />
+  </message>
+  <message name="AuthorizeDisbursementIOResponse">
+    <part xmlns:ns344="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns344:AUTHORIZEDISBURSEMENT_IOPK_RES" />
+  </message>
+  <message name="ActiveRolloverIO">
+    <part xmlns:ns345="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns345:ACTIVEROLLOVER_IOPK_REQ" />
+  </message>
+  <message name="ActiveRolloverIOResponse">
+    <part xmlns:ns346="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns346:ACTIVEROLLOVER_IOPK_RES" />
+  </message>
+  <message name="AuthCLAdhocIO">
+    <part xmlns:ns347="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns347:AUTHCLADHOC_IOPK_REQ" />
+  </message>
+  <message name="AuthCLAdhocIOResponse">
+    <part xmlns:ns348="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns348:AUTHCLADHOC_IOPK_RES" />
+  </message>
+  <message name="AuthReassignIO">
+    <part xmlns:ns349="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns349:AUTHREASSIGN_IOPK_REQ" />
+  </message>
+  <message name="AuthReassignIOResponse">
+    <part xmlns:ns350="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns350:AUTHREASSIGN_IOPK_RES" />
+  </message>
+  <message name="AuthRenogIO">
+    <part xmlns:ns351="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns351:AUTHRENOG_IOPK_REQ" />
+  </message>
+  <message name="AuthRenogIOResponse">
+    <part xmlns:ns352="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns352:AUTHRENOG_IOPK_RES" />
+  </message>
+  <message name="AuthRolloverIO">
+    <part xmlns:ns353="http://fcubs.ofss.com/service/FCUBSCLService" name="RequestMsg" element="ns353:AUTHROLLOVER_IOPK_REQ" />
+  </message>
+  <message name="AuthRolloverIOResponse">
+    <part xmlns:ns354="http://fcubs.ofss.com/service/FCUBSCLService" name="ResponseMsg" element="ns354:AUTHROLLOVER_IOPK_RES" />
+  </message>
+  <portType name="FCUBSCLServiceSEI">
+    <operation name="AuthorizeManualStatusChangeIO">
+      <input message="tns:AuthorizeManualStatusChangeIO" />
+      <output message="tns:AuthorizeManualStatusChangeIOResponse" />
+    </operation>
+    <operation name="AuthorizeMortgageFS">
+      <input message="tns:AuthorizeMortgageFS" />
+      <output message="tns:AuthorizeMortgageFSResponse" />
+    </operation>
+    <operation name="AuthorizeMortgageIO">
+      <input message="tns:AuthorizeMortgageIO" />
+      <output message="tns:AuthorizeMortgageIOResponse" />
+    </operation>
+    <operation name="AuthorizeNotaryConfirmFS">
+      <input message="tns:AuthorizeNotaryConfirmFS" />
+      <output message="tns:AuthorizeNotaryConfirmFSResponse" />
+    </operation>
+    <operation name="AuthorizeNotaryConfirmIO">
+      <input message="tns:AuthorizeNotaryConfirmIO" />
+      <output message="tns:AuthorizeNotaryConfirmIOResponse" />
+    </operation>
+    <operation name="AuthorizePaymentFS">
+      <input message="tns:AuthorizePaymentFS" />
+      <output message="tns:AuthorizePaymentFSResponse" />
+    </operation>
+    <operation name="AuthorizePaymentIO">
+      <input message="tns:AuthorizePaymentIO" />
+      <output message="tns:AuthorizePaymentIOResponse" />
+    </operation>
+    <operation name="AuthorizeProdTrfrFS">
+      <input message="tns:AuthorizeProdTrfrFS" />
+      <output message="tns:AuthorizeProdTrfrFSResponse" />
+    </operation>
+    <operation name="AuthorizeProdTrfrIO">
+      <input message="tns:AuthorizeProdTrfrIO" />
+      <output message="tns:AuthorizeProdTrfrIOResponse" />
+    </operation>
+    <operation name="AuthorizeProductFS">
+      <input message="tns:AuthorizeProductFS" />
+      <output message="tns:AuthorizeProductFSResponse" />
+    </operation>
+    <operation name="AuthorizeProductIO">
+      <input message="tns:AuthorizeProductIO" />
+      <output message="tns:AuthorizeProductIOResponse" />
+    </operation>
+    <operation name="AuthorizeRollFS">
+      <input message="tns:AuthorizeRollFS" />
+      <output message="tns:AuthorizeRollFSResponse" />
+    </operation>
+    <operation name="AuthorizeRollIO">
+      <input message="tns:AuthorizeRollIO" />
+      <output message="tns:AuthorizeRollIOResponse" />
+    </operation>
+    <operation name="AuthorizeVamiFS">
+      <input message="tns:AuthorizeVamiFS" />
+      <output message="tns:AuthorizeVamiFSResponse" />
+    </operation>
+    <operation name="AuthorizeVamiIO">
+      <input message="tns:AuthorizeVamiIO" />
+      <output message="tns:AuthorizeVamiIOResponse" />
+    </operation>
+    <operation name="CloseAccountTrfrFS">
+      <input message="tns:CloseAccountTrfrFS" />
+      <output message="tns:CloseAccountTrfrFSResponse" />
+    </operation>
+    <operation name="CloseAccountTrfrIO">
+      <input message="tns:CloseAccountTrfrIO" />
+      <output message="tns:CloseAccountTrfrIOResponse" />
+    </operation>
+    <operation name="CloseProdTrfrFS">
+      <input message="tns:CloseProdTrfrFS" />
+      <output message="tns:CloseProdTrfrFSResponse" />
+    </operation>
+    <operation name="CloseProdTrfrIO">
+      <input message="tns:CloseProdTrfrIO" />
+      <output message="tns:CloseProdTrfrIOResponse" />
+    </operation>
+    <operation name="CreateAccountInactiveFS">
+      <input message="tns:CreateAccountInactiveFS" />
+      <output message="tns:CreateAccountInactiveFSResponse" />
+    </operation>
+    <operation name="CreateAccountInactiveIO">
+      <input message="tns:CreateAccountInactiveIO" />
+      <output message="tns:CreateAccountInactiveIOResponse" />
+    </operation>
+    <operation name="CreateAccountSimulationFS">
+      <input message="tns:CreateAccountSimulationFS" />
+      <output message="tns:CreateAccountSimulationFSResponse" />
+    </operation>
+    <operation name="CreateAccountSimulationIO">
+      <input message="tns:CreateAccountSimulationIO" />
+      <output message="tns:CreateAccountSimulationIOResponse" />
+    </operation>
+    <operation name="CreateAccountTrfrFS">
+      <input message="tns:CreateAccountTrfrFS" />
+      <output message="tns:CreateAccountTrfrFSResponse" />
+    </operation>
+    <operation name="CreateAccountTrfrIO">
+      <input message="tns:CreateAccountTrfrIO" />
+      <output message="tns:CreateAccountTrfrIOResponse" />
+    </operation>
+    <operation name="CreateCLUDEventIO">
+      <input message="tns:CreateCLUDEventIO" />
+      <output message="tns:CreateCLUDEventIOResponse" />
+    </operation>
+    <operation name="CreateCommitAccountFS">
+      <input message="tns:CreateCommitAccountFS" />
+      <output message="tns:CreateCommitAccountFSResponse" />
+    </operation>
+    <operation name="CreateCommitAccountIO">
+      <input message="tns:CreateCommitAccountIO" />
+      <output message="tns:CreateCommitAccountIOResponse" />
+    </operation>
+    <operation name="CreateCommitVamiFS">
+      <input message="tns:CreateCommitVamiFS" />
+      <output message="tns:CreateCommitVamiFSResponse" />
+    </operation>
+    <operation name="CreateCommitVamiIO">
+      <input message="tns:CreateCommitVamiIO" />
+      <output message="tns:CreateCommitVamiIOResponse" />
+    </operation>
+    <operation name="CreateDisbursementFS">
+      <input message="tns:CreateDisbursementFS" />
+      <output message="tns:CreateDisbursementFSResponse" />
+    </operation>
+    <operation name="CreateDisbursementIO">
+      <input message="tns:CreateDisbursementIO" />
+      <output message="tns:CreateDisbursementIOResponse" />
+    </operation>
+    <operation name="CreateManualStatusChangeFS">
+      <input message="tns:CreateManualStatusChangeFS" />
+      <output message="tns:CreateManualStatusChangeFSResponse" />
+    </operation>
+    <operation name="CreateManualStatusChangeIO">
+      <input message="tns:CreateManualStatusChangeIO" />
+      <output message="tns:CreateManualStatusChangeIOResponse" />
+    </operation>
+    <operation name="CreateNotaryConfirmFS">
+      <input message="tns:CreateNotaryConfirmFS" />
+      <output message="tns:CreateNotaryConfirmFSResponse" />
+    </operation>
+    <operation name="CreateNotaryConfirmIO">
+      <input message="tns:CreateNotaryConfirmIO" />
+      <output message="tns:CreateNotaryConfirmIOResponse" />
+    </operation>
+    <operation name="CreatePaymentFS">
+      <input message="tns:CreatePaymentFS" />
+      <output message="tns:CreatePaymentFSResponse" />
+    </operation>
+    <operation name="CreatePaymentIO">
+      <input message="tns:CreatePaymentIO" />
+      <output message="tns:CreatePaymentIOResponse" />
+    </operation>
+    <operation name="CreateProdTrfrFS">
+      <input message="tns:CreateProdTrfrFS" />
+      <output message="tns:CreateProdTrfrFSResponse" />
+    </operation>
+    <operation name="CreateProdTrfrIO">
+      <input message="tns:CreateProdTrfrIO" />
+      <output message="tns:CreateProdTrfrIOResponse" />
+    </operation>
+    <operation name="CreateProductFS">
+      <input message="tns:CreateProductFS" />
+      <output message="tns:CreateProductFSResponse" />
+    </operation>
+    <operation name="CreateProductIO">
+      <input message="tns:CreateProductIO" />
+      <output message="tns:CreateProductIOResponse" />
+    </operation>
+    <operation name="CreateRollFS">
+      <input message="tns:CreateRollFS" />
+      <output message="tns:CreateRollFSResponse" />
+    </operation>
+    <operation name="CreateRollIO">
+      <input message="tns:CreateRollIO" />
+      <output message="tns:CreateRollIOResponse" />
+    </operation>
+    <operation name="CreateSimulationVamiFS">
+      <input message="tns:CreateSimulationVamiFS" />
+      <output message="tns:CreateSimulationVamiFSResponse" />
+    </operation>
+    <operation name="CreateSimulationVamiIO">
+      <input message="tns:CreateSimulationVamiIO" />
+      <output message="tns:CreateSimulationVamiIOResponse" />
+    </operation>
+    <operation name="CreateVamiFS">
+      <input message="tns:CreateVamiFS" />
+      <output message="tns:CreateVamiFSResponse" />
+    </operation>
+    <operation name="CreateVamiIO">
+      <input message="tns:CreateVamiIO" />
+      <output message="tns:CreateVamiIOResponse" />
+    </operation>
+    <operation name="DeleteAccountInactiveFS">
+      <input message="tns:DeleteAccountInactiveFS" />
+      <output message="tns:DeleteAccountInactiveFSResponse" />
+    </operation>
+    <operation name="DeleteAccountInactiveIO">
+      <input message="tns:DeleteAccountInactiveIO" />
+      <output message="tns:DeleteAccountInactiveIOResponse" />
+    </operation>
+    <operation name="DeleteAccountTrfrFS">
+      <input message="tns:DeleteAccountTrfrFS" />
+      <output message="tns:DeleteAccountTrfrFSResponse" />
+    </operation>
+    <operation name="DeleteAccountTrfrIO">
+      <input message="tns:DeleteAccountTrfrIO" />
+      <output message="tns:DeleteAccountTrfrIOResponse" />
+    </operation>
+    <operation name="DeleteCLAdhocIO">
+      <input message="tns:DeleteCLAdhocIO" />
+      <output message="tns:DeleteCLAdhocIOResponse" />
+    </operation>
+    <operation name="DeleteCLUDEventIO">
+      <input message="tns:DeleteCLUDEventIO" />
+      <output message="tns:DeleteCLUDEventIOResponse" />
+    </operation>
+    <operation name="DeleteCommitAccountFS">
+      <input message="tns:DeleteCommitAccountFS" />
+      <output message="tns:DeleteCommitAccountFSResponse" />
+    </operation>
+    <operation name="DeleteCommitAccountIO">
+      <input message="tns:DeleteCommitAccountIO" />
+      <output message="tns:DeleteCommitAccountIOResponse" />
+    </operation>
+    <operation name="DeleteCommitVamiFS">
+      <input message="tns:DeleteCommitVamiFS" />
+      <output message="tns:DeleteCommitVamiFSResponse" />
+    </operation>
+    <operation name="DeleteCommitVamiIO">
+      <input message="tns:DeleteCommitVamiIO" />
+      <output message="tns:DeleteCommitVamiIOResponse" />
+    </operation>
+    <operation name="DeleteDisbursementFS">
+      <input message="tns:DeleteDisbursementFS" />
+      <output message="tns:DeleteDisbursementFSResponse" />
+    </operation>
+    <operation name="DeleteDisbursementIO">
+      <input message="tns:DeleteDisbursementIO" />
+      <output message="tns:DeleteDisbursementIOResponse" />
+    </operation>
+    <operation name="DeleteInstStatChgIO">
+      <input message="tns:DeleteInstStatChgIO" />
+      <output message="tns:DeleteInstStatChgIOResponse" />
+    </operation>
+    <operation name="DeleteManualStatusChangeFS">
+      <input message="tns:DeleteManualStatusChangeFS" />
+      <output message="tns:DeleteManualStatusChangeFSResponse" />
+    </operation>
+    <operation name="DeleteManualStatusChangeIO">
+      <input message="tns:DeleteManualStatusChangeIO" />
+      <output message="tns:DeleteManualStatusChangeIOResponse" />
+    </operation>
+    <operation name="DeleteNotaryConfirmFS">
+      <input message="tns:DeleteNotaryConfirmFS" />
+      <output message="tns:DeleteNotaryConfirmFSResponse" />
+    </operation>
+    <operation name="DeleteNotaryConfirmIO">
+      <input message="tns:DeleteNotaryConfirmIO" />
+      <output message="tns:DeleteNotaryConfirmIOResponse" />
+    </operation>
+    <operation name="DeletePaymentFS">
+      <input message="tns:DeletePaymentFS" />
+      <output message="tns:DeletePaymentFSResponse" />
+    </operation>
+    <operation name="DeletePaymentIO">
+      <input message="tns:DeletePaymentIO" />
+      <output message="tns:DeletePaymentIOResponse" />
+    </operation>
+    <operation name="DeleteProdTrfrFS">
+      <input message="tns:DeleteProdTrfrFS" />
+      <output message="tns:DeleteProdTrfrFSResponse" />
+    </operation>
+    <operation name="DeleteProdTrfrIO">
+      <input message="tns:DeleteProdTrfrIO" />
+      <output message="tns:DeleteProdTrfrIOResponse" />
+    </operation>
+    <operation name="DeleteProductFS">
+      <input message="tns:DeleteProductFS" />
+      <output message="tns:DeleteProductFSResponse" />
+    </operation>
+    <operation name="DeleteProductIO">
+      <input message="tns:DeleteProductIO" />
+      <output message="tns:DeleteProductIOResponse" />
+    </operation>
+    <operation name="DeleteRenogIO">
+      <input message="tns:DeleteRenogIO" />
+      <output message="tns:DeleteRenogIOResponse" />
+    </operation>
+    <operation name="DeleteRollFS">
+      <input message="tns:DeleteRollFS" />
+      <output message="tns:DeleteRollFSResponse" />
+    </operation>
+    <operation name="DeleteRollIO">
+      <input message="tns:DeleteRollIO" />
+      <output message="tns:DeleteRollIOResponse" />
+    </operation>
+    <operation name="DeleteRolloverIO">
+      <input message="tns:DeleteRolloverIO" />
+      <output message="tns:DeleteRolloverIOResponse" />
+    </operation>
+    <operation name="DeleteSimulationVamiFS">
+      <input message="tns:DeleteSimulationVamiFS" />
+      <output message="tns:DeleteSimulationVamiFSResponse" />
+    </operation>
+    <operation name="DeleteSimulationVamiIO">
+      <input message="tns:DeleteSimulationVamiIO" />
+      <output message="tns:DeleteSimulationVamiIOResponse" />
+    </operation>
+    <operation name="DeleteStatusChangeIO">
+      <input message="tns:DeleteStatusChangeIO" />
+      <output message="tns:DeleteStatusChangeIOResponse" />
+    </operation>
+    <operation name="DeleteVamiFS">
+      <input message="tns:DeleteVamiFS" />
+      <output message="tns:DeleteVamiFSResponse" />
+    </operation>
+    <operation name="DeleteVamiIO">
+      <input message="tns:DeleteVamiIO" />
+      <output message="tns:DeleteVamiIOResponse" />
+    </operation>
+    <operation name="ModifyAccountInactiveFS">
+      <input message="tns:ModifyAccountInactiveFS" />
+      <output message="tns:ModifyAccountInactiveFSResponse" />
+    </operation>
+    <operation name="ModifyAccountInactiveIO">
+      <input message="tns:ModifyAccountInactiveIO" />
+      <output message="tns:ModifyAccountInactiveIOResponse" />
+    </operation>
+    <operation name="ModifyAccountTrfrFS">
+      <input message="tns:ModifyAccountTrfrFS" />
+      <output message="tns:ModifyAccountTrfrFSResponse" />
+    </operation>
+    <operation name="ModifyAccountTrfrIO">
+      <input message="tns:ModifyAccountTrfrIO" />
+      <output message="tns:ModifyAccountTrfrIOResponse" />
+    </operation>
+    <operation name="ModifyManualStatusChangeFS">
+      <input message="tns:ModifyManualStatusChangeFS" />
+      <output message="tns:ModifyManualStatusChangeFSResponse" />
+    </operation>
+    <operation name="ModifyManualStatusChangeIO">
+      <input message="tns:ModifyManualStatusChangeIO" />
+      <output message="tns:ModifyManualStatusChangeIOResponse" />
+    </operation>
+    <operation name="ModifyProdTrfrFS">
+      <input message="tns:ModifyProdTrfrFS" />
+      <output message="tns:ModifyProdTrfrFSResponse" />
+    </operation>
+    <operation name="ModifyProdTrfrIO">
+      <input message="tns:ModifyProdTrfrIO" />
+      <output message="tns:ModifyProdTrfrIOResponse" />
+    </operation>
+    <operation name="ModifyProductFS">
+      <input message="tns:ModifyProductFS" />
+      <output message="tns:ModifyProductFSResponse" />
+    </operation>
+    <operation name="ModifyProductIO">
+      <input message="tns:ModifyProductIO" />
+      <output message="tns:ModifyProductIOResponse" />
+    </operation>
+    <operation name="QueryAccountInactiveIO">
+      <input message="tns:QueryAccountInactiveIO" />
+      <output message="tns:QueryAccountInactiveIOResponse" />
+    </operation>
+    <operation name="QueryAccountStatsIO">
+      <input message="tns:QueryAccountStatsIO" />
+      <output message="tns:QueryAccountStatsIOResponse" />
+    </operation>
+    <operation name="QueryAccountTrfrIO">
+      <input message="tns:QueryAccountTrfrIO" />
+      <output message="tns:QueryAccountTrfrIOResponse" />
+    </operation>
+    <operation name="QueryAutosuspInfoIO">
+      <input message="tns:QueryAutosuspInfoIO" />
+      <output message="tns:QueryAutosuspInfoIOResponse" />
+    </operation>
+    <operation name="QueryCLEventsIO">
+      <input message="tns:QueryCLEventsIO" />
+      <output message="tns:QueryCLEventsIOResponse" />
+    </operation>
+    <operation name="QueryCLUDEventIO">
+      <input message="tns:QueryCLUDEventIO" />
+      <output message="tns:QueryCLUDEventIOResponse" />
+    </operation>
+    <operation name="QueryClInfoIO">
+      <input message="tns:QueryClInfoIO" />
+      <output message="tns:QueryClInfoIOResponse" />
+    </operation>
+    <operation name="QueryCommitAccountIO">
+      <input message="tns:QueryCommitAccountIO" />
+      <output message="tns:QueryCommitAccountIOResponse" />
+    </operation>
+    <operation name="QueryCommitVamiIO">
+      <input message="tns:QueryCommitVamiIO" />
+      <output message="tns:QueryCommitVamiIOResponse" />
+    </operation>
+    <operation name="QueryCustSumIO">
+      <input message="tns:QueryCustSumIO" />
+      <output message="tns:QueryCustSumIOResponse" />
+    </operation>
+    <operation name="QueryDisbursementIO">
+      <input message="tns:QueryDisbursementIO" />
+      <output message="tns:QueryDisbursementIOResponse" />
+    </operation>
+    <operation name="QueryManualStatusChangeIO">
+      <input message="tns:QueryManualStatusChangeIO" />
+      <output message="tns:QueryManualStatusChangeIOResponse" />
+    </operation>
+    <operation name="QueryNotaryConfirmIO">
+      <input message="tns:QueryNotaryConfirmIO" />
+      <output message="tns:QueryNotaryConfirmIOResponse" />
+    </operation>
+    <operation name="QueryPaymentIO">
+      <input message="tns:QueryPaymentIO" />
+      <output message="tns:QueryPaymentIOResponse" />
+    </operation>
+    <operation name="QueryPmntSchIO">
+      <input message="tns:QueryPmntSchIO" />
+      <output message="tns:QueryPmntSchIOResponse" />
+    </operation>
+    <operation name="QueryProdTrfrIO">
+      <input message="tns:QueryProdTrfrIO" />
+      <output message="tns:QueryProdTrfrIOResponse" />
+    </operation>
+    <operation name="QueryProductIO">
+      <input message="tns:QueryProductIO" />
+      <output message="tns:QueryProductIOResponse" />
+    </operation>
+    <operation name="QueryRenogIO">
+      <input message="tns:QueryRenogIO" />
+      <output message="tns:QueryRenogIOResponse" />
+    </operation>
+    <operation name="QueryRollIO">
+      <input message="tns:QueryRollIO" />
+      <output message="tns:QueryRollIOResponse" />
+    </operation>
+    <operation name="QueryRolloverIO">
+      <input message="tns:QueryRolloverIO" />
+      <output message="tns:QueryRolloverIOResponse" />
+    </operation>
+    <operation name="QuerySimulationVamiIO">
+      <input message="tns:QuerySimulationVamiIO" />
+      <output message="tns:QuerySimulationVamiIOResponse" />
+    </operation>
+    <operation name="QueryVamiIO">
+      <input message="tns:QueryVamiIO" />
+      <output message="tns:QueryVamiIOResponse" />
+    </operation>
+    <operation name="ReopenAccountTrfrFS">
+      <input message="tns:ReopenAccountTrfrFS" />
+      <output message="tns:ReopenAccountTrfrFSResponse" />
+    </operation>
+    <operation name="ReopenAccountTrfrIO">
+      <input message="tns:ReopenAccountTrfrIO" />
+      <output message="tns:ReopenAccountTrfrIOResponse" />
+    </operation>
+    <operation name="ReopenProdTrfrFS">
+      <input message="tns:ReopenProdTrfrFS" />
+      <output message="tns:ReopenProdTrfrFSResponse" />
+    </operation>
+    <operation name="ReopenProdTrfrIO">
+      <input message="tns:ReopenProdTrfrIO" />
+      <output message="tns:ReopenProdTrfrIOResponse" />
+    </operation>
+    <operation name="RevCLAdhocIO">
+      <input message="tns:RevCLAdhocIO" />
+      <output message="tns:RevCLAdhocIOResponse" />
+    </operation>
+    <operation name="ReverseCLUDEventIO">
+      <input message="tns:ReverseCLUDEventIO" />
+      <output message="tns:ReverseCLUDEventIOResponse" />
+    </operation>
+    <operation name="ReverseDisbursementFS">
+      <input message="tns:ReverseDisbursementFS" />
+      <output message="tns:ReverseDisbursementFSResponse" />
+    </operation>
+    <operation name="ReverseDisbursementIO">
+      <input message="tns:ReverseDisbursementIO" />
+      <output message="tns:ReverseDisbursementIOResponse" />
+    </operation>
+    <operation name="ReverseInstStatChgIO">
+      <input message="tns:ReverseInstStatChgIO" />
+      <output message="tns:ReverseInstStatChgIOResponse" />
+    </operation>
+    <operation name="ReversePaymentFS">
+      <input message="tns:ReversePaymentFS" />
+      <output message="tns:ReversePaymentFSResponse" />
+    </operation>
+    <operation name="ReversePaymentIO">
+      <input message="tns:ReversePaymentIO" />
+      <output message="tns:ReversePaymentIOResponse" />
+    </operation>
+    <operation name="ReverseRenogIO">
+      <input message="tns:ReverseRenogIO" />
+      <output message="tns:ReverseRenogIOResponse" />
+    </operation>
+    <operation name="ReverseRollFS">
+      <input message="tns:ReverseRollFS" />
+      <output message="tns:ReverseRollFSResponse" />
+    </operation>
+    <operation name="ReverseRollIO">
+      <input message="tns:ReverseRollIO" />
+      <output message="tns:ReverseRollIOResponse" />
+    </operation>
+    <operation name="ReverseRolloverIO">
+      <input message="tns:ReverseRolloverIO" />
+      <output message="tns:ReverseRolloverIOResponse" />
+    </operation>
+    <operation name="SaveALiqdSuspFS">
+      <input message="tns:SaveALiqdSuspFS" />
+      <output message="tns:SaveALiqdSuspFSResponse" />
+    </operation>
+    <operation name="SaveALiqdSuspIO">
+      <input message="tns:SaveALiqdSuspIO" />
+      <output message="tns:SaveALiqdSuspIOResponse" />
+    </operation>
+    <operation name="SaveAccSimFS">
+      <input message="tns:SaveAccSimFS" />
+      <output message="tns:SaveAccSimFSResponse" />
+    </operation>
+    <operation name="SaveAccSimIO">
+      <input message="tns:SaveAccSimIO" />
+      <output message="tns:SaveAccSimIOResponse" />
+    </operation>
+    <operation name="SaveAccountActivateIO">
+      <input message="tns:SaveAccountActivateIO" />
+      <output message="tns:SaveAccountActivateIOResponse" />
+    </operation>
+    <operation name="SaveCLAdhocFS">
+      <input message="tns:SaveCLAdhocFS" />
+      <output message="tns:SaveCLAdhocFSResponse" />
+    </operation>
+    <operation name="SaveCLAdhocIO">
+      <input message="tns:SaveCLAdhocIO" />
+      <output message="tns:SaveCLAdhocIOResponse" />
+    </operation>
+    <operation name="SaveInactiveFS">
+      <input message="tns:SaveInactiveFS" />
+      <output message="tns:SaveInactiveFSResponse" />
+    </operation>
+    <operation name="SaveInactiveIO">
+      <input message="tns:SaveInactiveIO" />
+      <output message="tns:SaveInactiveIOResponse" />
+    </operation>
+    <operation name="SaveInstStatChgFS">
+      <input message="tns:SaveInstStatChgFS" />
+      <output message="tns:SaveInstStatChgFSResponse" />
+    </operation>
+    <operation name="SaveInstStatChgIO">
+      <input message="tns:SaveInstStatChgIO" />
+      <output message="tns:SaveInstStatChgIOResponse" />
+    </operation>
+    <operation name="SaveReassignFS">
+      <input message="tns:SaveReassignFS" />
+      <output message="tns:SaveReassignFSResponse" />
+    </operation>
+    <operation name="SaveReassignIO">
+      <input message="tns:SaveReassignIO" />
+      <output message="tns:SaveReassignIOResponse" />
+    </operation>
+    <operation name="SaveRenogFS">
+      <input message="tns:SaveRenogFS" />
+      <output message="tns:SaveRenogFSResponse" />
+    </operation>
+    <operation name="SaveRenogIO">
+      <input message="tns:SaveRenogIO" />
+      <output message="tns:SaveRenogIOResponse" />
+    </operation>
+    <operation name="SaveReversalFS">
+      <input message="tns:SaveReversalFS" />
+      <output message="tns:SaveReversalFSResponse" />
+    </operation>
+    <operation name="SaveRolloverFS">
+      <input message="tns:SaveRolloverFS" />
+      <output message="tns:SaveRolloverFSResponse" />
+    </operation>
+    <operation name="SaveRolloverIO">
+      <input message="tns:SaveRolloverIO" />
+      <output message="tns:SaveRolloverIOResponse" />
+    </operation>
+    <operation name="SaveStatusChangeFS">
+      <input message="tns:SaveStatusChangeFS" />
+      <output message="tns:SaveStatusChangeFSResponse" />
+    </operation>
+    <operation name="SaveStatusChangeIO">
+      <input message="tns:SaveStatusChangeIO" />
+      <output message="tns:SaveStatusChangeIOResponse" />
+    </operation>
+    <operation name="SimPaymentFS">
+      <input message="tns:SimPaymentFS" />
+      <output message="tns:SimPaymentFSResponse" />
+    </operation>
+    <operation name="SimPaymentIO">
+      <input message="tns:SimPaymentIO" />
+      <output message="tns:SimPaymentIOResponse" />
+    </operation>
+    <operation name="CreateAccountFS">
+      <input message="tns:CreateAccountFS" />
+      <output message="tns:CreateAccountFSResponse" />
+    </operation>
+    <operation name="AuthorizeManualStatusChangeFS">
+      <input message="tns:AuthorizeManualStatusChangeFS" />
+      <output message="tns:AuthorizeManualStatusChangeFSResponse" />
+    </operation>
+    <operation name="AuthCLUDEventIO">
+      <input message="tns:AuthCLUDEventIO" />
+      <output message="tns:AuthCLUDEventIOResponse" />
+    </operation>
+    <operation name="AuthorizeAccountFS">
+      <input message="tns:AuthorizeAccountFS" />
+      <output message="tns:AuthorizeAccountFSResponse" />
+    </operation>
+    <operation name="DeleteAccountFS">
+      <input message="tns:DeleteAccountFS" />
+      <output message="tns:DeleteAccountFSResponse" />
+    </operation>
+    <operation name="CreateAccountIO">
+      <input message="tns:CreateAccountIO" />
+      <output message="tns:CreateAccountIOResponse" />
+    </operation>
+    <operation name="DeleteAccountIO">
+      <input message="tns:DeleteAccountIO" />
+      <output message="tns:DeleteAccountIOResponse" />
+    </operation>
+    <operation name="AuthorizeAccountIO">
+      <input message="tns:AuthorizeAccountIO" />
+      <output message="tns:AuthorizeAccountIOResponse" />
+    </operation>
+    <operation name="QueryAccountIO">
+      <input message="tns:QueryAccountIO" />
+      <output message="tns:QueryAccountIOResponse" />
+    </operation>
+    <operation name="AuthInstStatChgIO">
+      <input message="tns:AuthInstStatChgIO" />
+      <output message="tns:AuthInstStatChgIOResponse" />
+    </operation>
+    <operation name="AuthStatusChangeIO">
+      <input message="tns:AuthStatusChangeIO" />
+      <output message="tns:AuthStatusChangeIOResponse" />
+    </operation>
+    <operation name="AuthVamiFS">
+      <input message="tns:AuthVamiFS" />
+      <output message="tns:AuthVamiFSResponse" />
+    </operation>
+    <operation name="AuthVamiIO">
+      <input message="tns:AuthVamiIO" />
+      <output message="tns:AuthVamiIOResponse" />
+    </operation>
+    <operation name="AuthorizeAccountInactiveFS">
+      <input message="tns:AuthorizeAccountInactiveFS" />
+      <output message="tns:AuthorizeAccountInactiveFSResponse" />
+    </operation>
+    <operation name="AuthorizeAccountInactiveIO">
+      <input message="tns:AuthorizeAccountInactiveIO" />
+      <output message="tns:AuthorizeAccountInactiveIOResponse" />
+    </operation>
+    <operation name="AuthorizeAccountTrfrFS">
+      <input message="tns:AuthorizeAccountTrfrFS" />
+      <output message="tns:AuthorizeAccountTrfrFSResponse" />
+    </operation>
+    <operation name="AuthorizeAccountTrfrIO">
+      <input message="tns:AuthorizeAccountTrfrIO" />
+      <output message="tns:AuthorizeAccountTrfrIOResponse" />
+    </operation>
+    <operation name="AuthorizeCommitAccountFS">
+      <input message="tns:AuthorizeCommitAccountFS" />
+      <output message="tns:AuthorizeCommitAccountFSResponse" />
+    </operation>
+    <operation name="AuthorizeCommitAccountIO">
+      <input message="tns:AuthorizeCommitAccountIO" />
+      <output message="tns:AuthorizeCommitAccountIOResponse" />
+    </operation>
+    <operation name="AuthorizeCommitVamiFS">
+      <input message="tns:AuthorizeCommitVamiFS" />
+      <output message="tns:AuthorizeCommitVamiFSResponse" />
+    </operation>
+    <operation name="AuthorizeCommitVamiIO">
+      <input message="tns:AuthorizeCommitVamiIO" />
+      <output message="tns:AuthorizeCommitVamiIOResponse" />
+    </operation>
+    <operation name="AuthorizeDisbursementFS">
+      <input message="tns:AuthorizeDisbursementFS" />
+      <output message="tns:AuthorizeDisbursementFSResponse" />
+    </operation>
+    <operation name="AuthorizeDisbursementIO">
+      <input message="tns:AuthorizeDisbursementIO" />
+      <output message="tns:AuthorizeDisbursementIOResponse" />
+    </operation>
+    <operation name="ActiveRolloverIO">
+      <input message="tns:ActiveRolloverIO" />
+      <output message="tns:ActiveRolloverIOResponse" />
+    </operation>
+    <operation name="AuthCLAdhocIO">
+      <input message="tns:AuthCLAdhocIO" />
+      <output message="tns:AuthCLAdhocIOResponse" />
+    </operation>
+    <operation name="AuthReassignIO">
+      <input message="tns:AuthReassignIO" />
+      <output message="tns:AuthReassignIOResponse" />
+    </operation>
+    <operation name="AuthRenogIO">
+      <input message="tns:AuthRenogIO" />
+      <output message="tns:AuthRenogIOResponse" />
+    </operation>
+    <operation name="AuthRolloverIO">
+      <input message="tns:AuthRolloverIO" />
+      <output message="tns:AuthRolloverIOResponse" />
+    </operation>
+  </portType>
+  <binding name="FCUBSCLServiceSEIBinding" type="tns:FCUBSCLServiceSEI">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="AuthorizeManualStatusChangeIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="AuthorizeMortgageFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="AuthorizeMortgageIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="AuthorizeNotaryConfirmFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="AuthorizeNotaryConfirmIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="AuthorizePaymentFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="AuthorizePaymentIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="AuthorizeProdTrfrFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="AuthorizeProdTrfrIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="AuthorizeProductFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="AuthorizeProductIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="AuthorizeRollFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="AuthorizeRollIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="AuthorizeVamiFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="AuthorizeVamiIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CloseAccountTrfrFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CloseAccountTrfrIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CloseProdTrfrFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CloseProdTrfrIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CreateAccountInactiveFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CreateAccountInactiveIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CreateAccountSimulationFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CreateAccountSimulationIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CreateAccountTrfrFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CreateAccountTrfrIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CreateCLUDEventIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CreateCommitAccountFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CreateCommitAccountIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CreateCommitVamiFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CreateCommitVamiIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CreateDisbursementFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CreateDisbursementIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CreateManualStatusChangeFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CreateManualStatusChangeIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CreateNotaryConfirmFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CreateNotaryConfirmIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CreatePaymentFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CreatePaymentIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CreateProdTrfrFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CreateProdTrfrIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CreateProductFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CreateProductIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CreateRollFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CreateRollIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CreateSimulationVamiFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CreateSimulationVamiIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CreateVamiFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CreateVamiIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="DeleteAccountInactiveFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="DeleteAccountInactiveIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="DeleteAccountTrfrFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="DeleteAccountTrfrIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="DeleteCLAdhocIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="DeleteCLUDEventIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="DeleteCommitAccountFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="DeleteCommitAccountIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="DeleteCommitVamiFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="DeleteCommitVamiIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="DeleteDisbursementFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="DeleteDisbursementIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="DeleteInstStatChgIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="DeleteManualStatusChangeFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="DeleteManualStatusChangeIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="DeleteNotaryConfirmFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="DeleteNotaryConfirmIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="DeletePaymentFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="DeletePaymentIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="DeleteProdTrfrFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="DeleteProdTrfrIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="DeleteProductFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="DeleteProductIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="DeleteRenogIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="DeleteRollFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="DeleteRollIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="DeleteRolloverIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="DeleteSimulationVamiFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="DeleteSimulationVamiIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="DeleteStatusChangeIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="DeleteVamiFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="DeleteVamiIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="ModifyAccountInactiveFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="ModifyAccountInactiveIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="ModifyAccountTrfrFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="ModifyAccountTrfrIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="ModifyManualStatusChangeFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="ModifyManualStatusChangeIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="ModifyProdTrfrFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="ModifyProdTrfrIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="ModifyProductFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="ModifyProductIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="QueryAccountInactiveIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="QueryAccountStatsIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="QueryAccountTrfrIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="QueryAutosuspInfoIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="QueryCLEventsIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="QueryCLUDEventIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="QueryClInfoIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="QueryCommitAccountIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="QueryCommitVamiIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="QueryCustSumIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="QueryDisbursementIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="QueryManualStatusChangeIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="QueryNotaryConfirmIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="QueryPaymentIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="QueryPmntSchIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="QueryProdTrfrIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="QueryProductIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="QueryRenogIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="QueryRollIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="QueryRolloverIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="QuerySimulationVamiIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="QueryVamiIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="ReopenAccountTrfrFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="ReopenAccountTrfrIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="ReopenProdTrfrFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="ReopenProdTrfrIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="RevCLAdhocIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="ReverseCLUDEventIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="ReverseDisbursementFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="ReverseDisbursementIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="ReverseInstStatChgIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="ReversePaymentFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="ReversePaymentIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="ReverseRenogIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="ReverseRollFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="ReverseRollIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="ReverseRolloverIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="SaveALiqdSuspFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="SaveALiqdSuspIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="SaveAccSimFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="SaveAccSimIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="SaveAccountActivateIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="SaveCLAdhocFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="SaveCLAdhocIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="SaveInactiveFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="SaveInactiveIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="SaveInstStatChgFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="SaveInstStatChgIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="SaveReassignFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="SaveReassignIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="SaveRenogFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="SaveRenogIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="SaveReversalFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="SaveRolloverFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="SaveRolloverIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="SaveStatusChangeFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="SaveStatusChangeIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="SimPaymentFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="SimPaymentIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CreateAccountFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="AuthorizeManualStatusChangeFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="AuthCLUDEventIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="AuthorizeAccountFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="DeleteAccountFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CreateAccountIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="DeleteAccountIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="AuthorizeAccountIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="QueryAccountIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="AuthInstStatChgIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="AuthStatusChangeIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="AuthVamiFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="AuthVamiIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="AuthorizeAccountInactiveFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="AuthorizeAccountInactiveIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="AuthorizeAccountTrfrFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="AuthorizeAccountTrfrIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="AuthorizeCommitAccountFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="AuthorizeCommitAccountIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="AuthorizeCommitVamiFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="AuthorizeCommitVamiIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="AuthorizeDisbursementFS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="AuthorizeDisbursementIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="ActiveRolloverIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="AuthCLAdhocIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="AuthReassignIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="AuthRenogIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="AuthRolloverIO">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+  <service name="FCUBSCLService">
+    <port name="FCUBSCLServiceSEI" binding="tns:FCUBSCLServiceSEIBinding">
+      <soap:address location="http://10.239.45.21:7001/FCUBSCLService/FCUBSCLService" />
+    </port>
+  </service>
+</definitions>

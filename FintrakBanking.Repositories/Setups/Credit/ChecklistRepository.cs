@@ -1,0 +1,4404 @@
+﻿using FintrakBanking.Entities.Models;
+using FintrakBanking.Interfaces.Admin;
+using FintrakBanking.Interfaces.Setups.General;
+using FintrakBanking.ViewModels.Setups.Credit;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Linq;
+using FintrakBanking.Interfaces.Setups;
+using FintrakBanking.ViewModels;
+using FintrakBanking.Common.Enum;
+using System.ComponentModel.Composition;
+using FintrakBanking.ViewModels.Credit;
+using FintrakBanking.ViewModels.WorkFlow;
+using FintrakBanking.Interfaces.WorkFlow;
+using FintrakBanking.Interfaces.Setups.Approval;
+using FintrakBanking.Common.CustomException;
+using FintrakBanking.Common;
+using System.ServiceModel;
+using System.Data.Entity;
+using FintrakBanking.ViewModels.Setups.General;
+using System.Configuration;
+using System.Threading.Tasks;
+
+namespace FintrakBanking.Repositories.Credit
+{
+    public class ChecklistRepository : IChecklistRepository
+    {
+        private FinTrakBankingContext context;
+        private IGeneralSetupRepository _genSetup;
+        private IAuditTrailRepository auditTrail;
+        private IWorkflow workflow;
+        private IApprovalLevelStaffRepository level;
+        List<string> receiverEmailList = new List<string>();
+        AlertsViewModel alert = new AlertsViewModel();
+        public ChecklistRepository(FinTrakBankingContext _context, IApprovalLevelStaffRepository _level,
+                                                    IGeneralSetupRepository genSetup,
+                                                    IAuditTrailRepository _auditTrail, IWorkflow _workFlow)
+        {
+            this.context = _context;
+            this._genSetup = genSetup;
+            this.auditTrail = _auditTrail;
+            this.workflow = _workFlow;
+            this.level = _level;
+        }
+
+        #region Loan Checklist Definition
+
+        public IEnumerable<ChecklistDefinitionViewModel> GetAllChecklistDefinition()
+        {
+            var data = (from a in context.TBL_CHECKLIST_DEFINITION
+                        where a.DELETED == false
+                        select new ChecklistDefinitionViewModel
+                        {
+                            checkListDefinitionId = a.CHECKLISTDEFINITIONID,
+                            approvalLevelId = a.APPROVALLEVELID,
+                            approvalLevelName = a.TBL_APPROVAL_LEVEL.LEVELNAME,
+                            isActive = a.ISACTIVE,
+                            isRequired = a.ISREQUIRED,
+                            productId = a.PRODUCTID,
+                            checkListTypeId = a.TBL_CHECKLIST_TYPE.CHECKLIST_TYPEID,
+                            productName = a.TBL_PRODUCT.PRODUCTNAME,
+                            checkListItemId = a.CHECKLISTITEMID,
+                            checkListItemName = a.TBL_CHECKLIST_ITEM.CHECKLISTITEMNAME,
+                            itemDescription = a.ITEMDESCRIPTION,
+                            companyId = a.COMPANYID,
+                            companyName = a.TBL_COMPANY.NAME,
+                            dateTimeCreated = a.DATETIMECREATED,
+                            createdBy = a.CREATEDBY
+                        }).ToList();
+            return data;
+        }
+
+        [OperationBehavior(TransactionScopeRequired = true)]
+        public async Task<bool> PopulateLoanApplicationChecklist(int loanApplicationId, int staffId, int companyId, int productClassProcessId)
+        {
+            int operationId = (int) OperationsEnum.LoanApplication;
+
+          var application = await (from a in context.TBL_LOAN_APPLICATION where a.LOANAPPLICATIONID == loanApplicationId select a).FirstOrDefaultAsync();
+
+            if (application.ISCHECKLISTLOADED == true)
+                return true;
+
+
+            List<CheckListTargetTypeViewModel> checkListTypes = GetChecklistTypeByApprovalLevel(staffId, companyId, operationId, productClassProcessId).ToList();
+
+            var loanDetails = await  (from a in context.TBL_LOAN_APPLICATION_DETAIL
+                               where a.LOANAPPLICATIONID == loanApplicationId
+                             select  new
+                        {
+                              loanApplicationDetailId = a.LOANAPPLICATIONDETAILID, 
+                              productId = a.APPROVEDPRODUCTID,
+                              customerId = a.CUSTOMERID                            
+                        }).ToListAsync();
+
+            var customers = (from a in loanDetails select a.customerId).Distinct().ToList();
+
+
+            foreach (var type in checkListTypes)
+            {
+                if (type.targetTypeId == (short)CheckListTypeEnum.ESGMChecklist)
+                    continue;
+
+                List<ChecklistDefinitionAndDetailViewModel> checklistDefination;
+
+                if (type.isproductbased == true)
+                {
+                    foreach (var detail in loanDetails)
+                    {
+                        checklistDefination = GetChecklistDefinitionByApprovalLevelCheckListType(staffId, detail.productId, loanApplicationId, operationId, type.targetTypeId, detail.customerId).ToList();
+
+                        foreach (var checklist in checklistDefination)
+                        {
+                            var data = new TBL_CHECKLIST_DETAIL
+                            {
+                                CHECKLISTDEFINITIONID = checklist.checkListDefinitionId,
+                                TARGETTYPEID = (short)CheckListTargetTypeEnum.LoanApplicationProductChecklist,
+                                TARGETID = detail.loanApplicationDetailId,
+                                TARGETID2 = null,
+                                CHECKLISTSTATUSID = null,
+                                CHECKEDBY = (int)staffId,
+                                //DEFEREDDATE = model.deferedDate,
+                                REMARK = "",
+                                DATETIMECREATED = DateTime.Now,
+                                CREATEDBY = staffId
+                            };
+
+                            context.TBL_CHECKLIST_DETAIL.Add(data);
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (var customerId in customers)
+                    {
+                        checklistDefination = GetChecklistDefinitionByApprovalLevelCheckListType(staffId, null, loanApplicationId, operationId, type.targetTypeId, customerId).ToList();
+
+                        foreach (var checklist in checklistDefination)
+                        {
+                            short? checklistStatus = null;
+
+                            if (type.targetTypeId == (short)CheckListTypeEnum.RegulatoryChecklist)
+                            {
+                                checklistStatus = (short) CheckListStatusEnum.Yes;
+                            }
+
+                                var data = new TBL_CHECKLIST_DETAIL
+                            {
+                                CHECKLISTDEFINITIONID = checklist.checkListDefinitionId,
+                                TARGETTYPEID = (short) CheckListTargetTypeEnum.LoanApplicationCustomerChecklist,
+                                TARGETID = loanApplicationId,
+                                TARGETID2 = customerId,
+                                CHECKLISTSTATUSID = checklistStatus,
+                                CHECKEDBY = (int)staffId,
+                                //DEFEREDDATE = model.deferedDate,
+                                REMARK = "",
+                                DATETIMECREATED = DateTime.Now,
+                                CREATEDBY = staffId
+                            };
+
+                            context.TBL_CHECKLIST_DETAIL.Add(data);
+                        }
+                    }
+                }
+            }
+
+            application.ISCHECKLISTLOADED = true;
+
+           await context.SaveChangesAsync();
+
+            return true;
+            
+        }
+
+        public IEnumerable<ChecklistDefinitionAndDetailViewModel> GetChecklistDefinitionByApprovalLevelCheckListType(int staffId, int? productId, int loanTargetId, int operationId, int checkListTypeId,int? customerId=null)
+        {
+            var ids = _genSetup.GetStaffApprovalLevelIds(staffId, (int)OperationsEnum.ChecklistOperation).ToList();
+
+            var checkListItems = new List<ChecklistDefinitionAndDetailViewModel>();
+
+            const int BUSINESS_UNIT_GROUP = 1; //Todo: Business unit approval group
+
+            if (operationId == (int)OperationsEnum.LoanApplication)
+            {
+                var businessIds =(from a in  context.TBL_APPROVAL_LEVEL where a.GROUPID == BUSINESS_UNIT_GROUP select a.APPROVALLEVELID).ToList();
+                if (businessIds.Count > 0)
+                {
+                    ids.AddRange(businessIds);
+                } 
+            }
+
+
+            
+          
+            List<CheckListStatusViewModel> responseTypes = new List<CheckListStatusViewModel>();
+
+            if (checkListTypeId == (int)CheckListTypeEnum.CAPChecklist || checkListTypeId == (int)CheckListTypeEnum.AvailmentCheckList)
+            {
+                 checkListItems = (from s in context.TBL_CHECKLIST_DETAIL
+                                      join k in context.TBL_CHECKLIST_DEFINITION
+                                      on s.CHECKLISTDEFINITIONID equals k.CHECKLISTDEFINITIONID
+                                      join l in context.TBL_CHECKLIST_TYPE on k.CHECKLIST_TYPEID equals l.CHECKLIST_TYPEID
+                                      where s.TARGETID == loanTargetId && k.CHECKLIST_TYPEID == checkListTypeId
+                                       // && s.TARGETID2 == (l.ISPRODUCT_BASED == true ? null : customerId)
+                                      select new ChecklistDefinitionAndDetailViewModel
+                                      {
+                                          checkListDetailId = s.CHECKLISTID,
+                                          checkListDefinitionId = s.CHECKLISTDEFINITIONID,
+                                          responseTypeId = k.TBL_CHECKLIST_ITEM.RESPONSE_TYPEID,
+                                          requireUpload = k.TBL_CHECKLIST_ITEM.REQUIREUPLOAD,
+                                          checkListTypeId = k.CHECKLIST_TYPEID,
+                                          checkListTypeName = k.TBL_CHECKLIST_TYPE.CHECKLIST_TYPE_NAME,
+                                          checkListItemId = k.CHECKLISTITEMID,
+                                          checkListItemName = k.TBL_CHECKLIST_ITEM.CHECKLISTITEMNAME,
+                                          itemDescription = k.ITEMDESCRIPTION,
+                                          checklistStatusId = s.CHECKLISTSTATUSID,
+                                          approvalLevelId = k.APPROVALLEVELID,
+                                          checklistDate = s.DATETIMECREATED,
+                                          customerId = customerId,
+
+                                          responseTypes = context.TBL_CHECKLIST_STATUS.Where(x => x.RESPONSE_TYPEID == k.TBL_CHECKLIST_ITEM.RESPONSE_TYPEID).OrderBy(a => a.CHECKLISTSTATUSID).
+                                    Select(x => new CheckListStatusViewModel()
+                                    {
+                                        checklistStatusId = x.CHECKLISTSTATUSID,
+                                        checklistStatusName = x.CHECKLISTSTATUSNAME,
+                                    }).ToList()
+                                      }).ToList();
+            }
+            else{
+                checkListItems = (from s in context.TBL_CHECKLIST_DETAIL
+                                  join k in context.TBL_CHECKLIST_DEFINITION
+                                  on s.CHECKLISTDEFINITIONID equals k.CHECKLISTDEFINITIONID
+                                  join l in context.TBL_CHECKLIST_TYPE on k.CHECKLIST_TYPEID equals l.CHECKLIST_TYPEID
+                                  where s.TARGETID == loanTargetId && k.CHECKLIST_TYPEID == checkListTypeId
+                                    && s.TARGETID2 == (l.ISPRODUCT_BASED == true ? null : customerId)
+                                  select new ChecklistDefinitionAndDetailViewModel
+                                  {
+                                      checkListDetailId = s.CHECKLISTID,
+                                      checkListDefinitionId = s.CHECKLISTDEFINITIONID,
+                                      responseTypeId = k.TBL_CHECKLIST_ITEM.RESPONSE_TYPEID,
+                                      requireUpload = k.TBL_CHECKLIST_ITEM.REQUIREUPLOAD,
+                                      checkListTypeId = k.CHECKLIST_TYPEID,
+                                      checkListTypeName = k.TBL_CHECKLIST_TYPE.CHECKLIST_TYPE_NAME,
+                                      checkListItemId = k.CHECKLISTITEMID,
+                                      checkListItemName = k.TBL_CHECKLIST_ITEM.CHECKLISTITEMNAME,
+                                      itemDescription = k.ITEMDESCRIPTION,
+                                      checklistStatusId = s.CHECKLISTSTATUSID,
+                                      approvalLevelId = k.APPROVALLEVELID,
+                                      checklistDate = s.DATETIMECREATED,
+                                      customerId = customerId,
+
+                                      responseTypes = context.TBL_CHECKLIST_STATUS.Where(x => x.RESPONSE_TYPEID == k.TBL_CHECKLIST_ITEM.RESPONSE_TYPEID).OrderBy(a => a.CHECKLISTSTATUSID).
+                                Select(x => new CheckListStatusViewModel()
+                                {
+                                    checklistStatusId = x.CHECKLISTSTATUSID,
+                                    checklistStatusName = x.CHECKLISTSTATUSNAME,
+                                }).ToList()
+                                  }).ToList();
+
+            }
+            var proposedProductId = (from id in context.TBL_LOAN_APPLICATION_DETAIL where id.LOANAPPLICATIONID == loanTargetId select (short?)id.PROPOSEDPRODUCTID).ToList();
+            var isproductBased = context.TBL_CHECKLIST_TYPE.FirstOrDefault(x => x.CHECKLIST_TYPEID == checkListTypeId).ISPRODUCT_BASED;
+
+
+            var checkListDefinition = (from a in context.TBL_CHECKLIST_DEFINITION
+                        join d in context.TBL_CHECKLIST_ITEM on a.CHECKLISTITEMID equals d.CHECKLISTITEMID
+                        where ids.Contains((int)a.APPROVALLEVELID) && a.CHECKLIST_TYPEID == checkListTypeId
+                        && a.OPERATIONID == operationId && a.DELETED == false
+                        select new ChecklistDefinitionAndDetailViewModel
+                        {
+                            checkListDetailId = 0,
+                            checkListDefinitionId = a.CHECKLISTDEFINITIONID,
+                            responseTypeId = d.RESPONSE_TYPEID,
+                            requireUpload = d.REQUIREUPLOAD,
+                            checkListTypeId = a.CHECKLIST_TYPEID,
+                            checkListTypeName = a.TBL_CHECKLIST_TYPE.CHECKLIST_TYPE_NAME,
+                            checkListItemId = a.CHECKLISTITEMID,
+                            checkListItemName = a.TBL_CHECKLIST_ITEM.CHECKLISTITEMNAME,
+                            itemDescription = a.ITEMDESCRIPTION,
+                            productId = a.PRODUCTID,
+                            approvalLevelId = a.APPROVALLEVELID,
+                            checklistDate = d.DATETIMECREATED,
+                            customerId = customerId,
+                            responseTypes = context.TBL_CHECKLIST_STATUS.Where(x => x.RESPONSE_TYPEID == d.RESPONSE_TYPEID).OrderBy(a => a.CHECKLISTSTATUSID).
+                            Select(x => new CheckListStatusViewModel()
+                            {
+                                checklistStatusId = x.CHECKLISTSTATUSID,
+                                checklistStatusName = x.CHECKLISTSTATUSNAME,
+                                
+                            }).ToList()
+
+                        });
+
+            if (isproductBased)
+            {
+                if (productId > 0)
+                {
+                    checkListDefinition = checkListDefinition.Where(x => x.productId == productId);
+                }
+                else if (proposedProductId.Any())
+                {
+                    checkListDefinition = checkListDefinition.Where(x => proposedProductId.Contains(x.productId));
+                }
+            }
+            var definitionList = checkListDefinition.ToList();
+            var detailList = checkListItems.ToList();
+            var detailId = checkListItems.Select(a => a.checkListDefinitionId).ToList();
+            if (checkListItems.Any())
+            {
+                var checklist = detailList.Concat(definitionList.Where(x => !detailId.Contains(x.checkListDefinitionId)));
+                return checklist.ToList();
+            }
+
+            if (checkListTypeId== (int)CheckListTypeEnum.RegulatoryChecklist)
+            {
+
+            }
+
+
+            return checkListDefinition.ToList();
+
+        }
+
+
+        public async Task<IEnumerable<ChecklistDefinitionAndDetailViewModel>> GetChecklistItemSimulationDetails(int productId)
+        {
+           var checklistTypes = await context.TBL_CHECKLIST_TYPE.ToListAsync();
+            int operationId = 0;
+            List<ChecklistDefinitionAndDetailViewModel> checkItems = new List<ChecklistDefinitionAndDetailViewModel>();
+
+            foreach (var item in checklistTypes)
+            {
+                if(item.ISPRODUCT_BASED == true)
+                {
+                    if (item.CHECKLIST_TYPEID == (int)CheckListTypeEnum.AvailmentCheckList)
+                    {
+                        operationId = (int)OperationsEnum.LoanAvailment;
+                    }
+                    else if (item.CHECKLIST_TYPEID == (int)CheckListTypeEnum.EligibilityChecklist)
+                    {
+                        operationId = (int)OperationsEnum.LoanApplication;
+                    } else if (item.CHECKLIST_TYPEID == (int)CheckListTypeEnum.CAPChecklist)
+                    {
+                        operationId = (int)OperationsEnum.CreditAppraisal;
+                    }
+                } else
+                {
+                    operationId = (int)OperationsEnum.LoanApplication;
+                }
+                var data = (from a in context.TBL_CHECKLIST_DEFINITION
+                            join d in context.TBL_CHECKLIST_ITEM on a.CHECKLISTITEMID equals d.CHECKLISTITEMID
+                            where a.CHECKLIST_TYPEID == item.CHECKLIST_TYPEID //&& a.APPROVALLEVELID == approvalLevelId
+                            && a.OPERATIONID == operationId && a.DELETED == false
+                            select new ChecklistDefinitionAndDetailViewModel
+                            {
+                                checkListDetailId = 0,
+                                checkListDefinitionId = a.CHECKLISTDEFINITIONID,
+                                responseTypeId = d.RESPONSE_TYPEID,
+                                requireUpload = d.REQUIREUPLOAD,
+                                checkListTypeId = a.CHECKLIST_TYPEID,
+                                checkListTypeName = a.TBL_CHECKLIST_TYPE.CHECKLIST_TYPE_NAME,
+                                checkListItemId = a.CHECKLISTITEMID,
+                                checkListItemName = a.TBL_CHECKLIST_ITEM.CHECKLISTITEMNAME,
+                                productId = a.PRODUCTID,
+                                approvalLevelId = a.APPROVALLEVELID,
+                                itemDescription = a.TBL_APPROVAL_LEVEL.LEVELNAME
+                            });
+
+                if (item.ISPRODUCT_BASED)
+                {
+                    if (productId > 0)
+                    {
+                        data = data.Where(x => x.productId == productId);
+                    }
+                }
+              var typeItems =  data.ToList();
+
+                checkItems.AddRange(typeItems);
+            }
+           
+            return checkItems;
+        }
+        //    public IEnumerable<ChecklistDefinitionViewModel> GetChecklistDefinitionByApprovalLevelCheckListType(int staffId, int? productId, int loanTargetId, int operationId, int checkListTypeId)
+        //{
+        //    var detailItem = (from s in context.TBL_CHECKLIST_DETAIL
+        //                      join k in context.TBL_CHECKLIST_DEFINITION
+        //                      on s.CHECKLISTDEFINITIONID equals k.CHECKLISTDEFINITIONID
+        //                      where s.TARGETID == loanTargetId && k.CHECKLIST_TYPEID == checkListTypeId
+        //                      select s.CHECKLISTDEFINITIONID).ToList();
+        //    var proposedProductId = (from id in context.TBL_LOAN_APPLICATION_DETAIL where id.LOANAPPLICATIONID == loanTargetId select (short?)id.PROPOSEDPRODUCTID).ToList();
+        //    var isproductBased = context.TBL_CHECKLIST_TYPE.FirstOrDefault(x => x.CHECKLIST_TYPEID == checkListTypeId).ISPRODUCT_BASED;
+        //    if (isproductBased)
+        //    {
+        //        var data = (from a in context.TBL_CHECKLIST_DEFINITION
+        //                    join d in context.TBL_CHECKLIST_ITEM on a.CHECKLISTITEMID equals d.CHECKLISTITEMID
+        //                    join b in context.TBL_APPROVAL_LEVEL_STAFF on
+        //                    a.APPROVALLEVELID equals b.APPROVALLEVELID
+        //                    where b.STAFFID == staffId && a.CHECKLIST_TYPEID == checkListTypeId
+        //                    where a.CHECKLIST_TYPEID == checkListTypeId
+        //                    && a.OPERATIONID == operationId && a.DELETED == false // && (productId == a.PRODUCTID || productId == null)
+        //                    select new ChecklistDefinitionViewModel
+        //                    {
+        //                        checkListDefinitionId = a.CHECKLISTDEFINITIONID,
+        //                        approvalLevelId = a.APPROVALLEVELID,
+        //                        approvalLevelName = a.TBL_APPROVAL_LEVEL.LEVELNAME,
+        //                        isActive = a.ISACTIVE,
+        //                        isRequired = a.ISREQUIRED,
+        //                        productId = a.PRODUCTID,
+        //                        responseTypeId = d.RESPONSE_TYPEID,
+        //                        requireUpload = d.REQUIREUPLOAD,
+        //                        checkListTypeId = a.CHECKLIST_TYPEID,
+        //                        checkListTypeName = a.TBL_CHECKLIST_TYPE.CHECKLIST_TYPE_NAME,
+        //                        productName = a.TBL_PRODUCT.PRODUCTNAME,
+        //                        checkListItemId = a.CHECKLISTITEMID,
+        //                        checkListItemName = a.TBL_CHECKLIST_ITEM.CHECKLISTITEMNAME,
+        //                        itemDescription = a.ITEMDESCRIPTION,
+        //                        companyId = a.COMPANYID,
+        //                        companyName = a.TBL_COMPANY.NAME,
+        //                        dateTimeCreated = a.DATETIMECREATED,
+        //                        createdBy = a.CREATEDBY
+        //                    });
+        //        if (detailItem.Any())
+        //        {
+        //            data = data.Where(x => !detailItem.Contains(x.checkListDefinitionId));
+        //        }
+        //        if (productId > 0)
+        //        {
+        //            data = data.Where(x => x.productId == productId);
+        //        }
+        //        else if (proposedProductId.Any())
+        //        {
+        //            data = data.Where(x => proposedProductId.Contains(x.productId));
+        //        }
+
+        //        return data;
+        //    }
+        //    else
+        //    {
+        //        var data = (from a in context.TBL_CHECKLIST_DEFINITION
+        //                    join d in context.TBL_CHECKLIST_ITEM on a.CHECKLISTITEMID equals d.CHECKLISTITEMID
+        //                    join b in context.TBL_APPROVAL_LEVEL_STAFF on
+        //                    a.APPROVALLEVELID equals b.APPROVALLEVELID
+        //                    where b.STAFFID == staffId && a.CHECKLIST_TYPEID == checkListTypeId
+        //                    where a.CHECKLIST_TYPEID == checkListTypeId
+        //                && a.OPERATIONID == operationId && a.DELETED == false
+        //                    select new ChecklistDefinitionViewModel
+        //                    {
+        //                        checkListDefinitionId = a.CHECKLISTDEFINITIONID,
+        //                        approvalLevelId = a.APPROVALLEVELID,
+        //                        approvalLevelName = a.TBL_APPROVAL_LEVEL.LEVELNAME,
+        //                        isActive = a.ISACTIVE,
+        //                        isRequired = a.ISREQUIRED,
+        //                        productId = a.PRODUCTID,
+        //                        checkListTypeId = a.CHECKLIST_TYPEID,
+        //                        checkListTypeName = a.TBL_CHECKLIST_TYPE.CHECKLIST_TYPE_NAME,
+        //                        productName = a.TBL_PRODUCT.PRODUCTNAME,
+        //                        checkListItemId = a.CHECKLISTITEMID,
+        //                        requireUpload = d.REQUIREUPLOAD,
+        //                        responseTypeId = d.RESPONSE_TYPEID,
+        //                        checkListItemName = a.TBL_CHECKLIST_ITEM.CHECKLISTITEMNAME,
+        //                        itemDescription = a.ITEMDESCRIPTION,
+        //                        companyId = a.COMPANYID,
+        //                        companyName = a.TBL_COMPANY.NAME,
+        //                        dateTimeCreated = a.DATETIMECREATED,
+        //                        createdBy = a.CREATEDBY
+        //                    });
+        //        if (detailItem.Any())
+        //        {
+        //            data = data.Where(x => !detailItem.Contains(x.checkListDefinitionId));
+        //        }
+        //        return data;
+        //    }
+        //}
+
+        public async Task<IEnumerable<CheckListTargetTypeViewModel>> GetAllChecklistType()
+        {
+
+            var checkListTypeList =  await  (from a in context.TBL_CHECKLIST_TYPE
+                                     select new CheckListTargetTypeViewModel
+                                     {
+                                         targetTypeId = a.CHECKLIST_TYPEID,
+                                         targetTypeName = a.CHECKLIST_TYPE_NAME,
+                                     }).ToListAsync();
+            return checkListTypeList;
+        }
+
+        public IEnumerable<CheckListTargetTypeViewModel> GetChecklistTypeByApprovalLevel(int staffId, int companyId, int operationId, int productClassProcessId = 0)
+        {
+            var roleId = context.TBL_STAFF.Where(s => s.STAFFID == staffId).FirstOrDefault().STAFFROLEID;
+            var ids = context.TBL_APPROVAL_LEVEL.Where(l => l.STAFFROLEID == roleId).Select(l => l.APPROVALLEVELID).ToList();
+            var checkType = (from a in context.TBL_CHECKLIST_TYPE
+                             join b in context.TBL_CHECKLIST_TYPE_APROV_LEVL on a.CHECKLIST_TYPEID equals b.CHECKLIST_TYPEID
+                             where ids.Contains(b.APPROVALLEVELID)
+                             select new CheckListTargetTypeViewModel
+                             {
+                                 targetTypeId = a.CHECKLIST_TYPEID,
+                                 targetTypeName = a.CHECKLIST_TYPE_NAME,
+                                 isproductbased = a.ISPRODUCT_BASED,
+                                 canValidateChecklist = b.CANVALIDATE
+                             });
+            var debug = checkType.ToList();
+
+            //if (productClassProcessId != 0 && productClassProcessId == (int)ProductClassProcessEnum.CAMBased)
+            //{
+            //    return checkType.Where(x => x.isproductbased != true).GroupBy(x => x.targetTypeId).Select(y => y.FirstOrDefault()).ToList();
+            //}
+
+            return checkType.GroupBy(x => x.targetTypeId).Select(y => y.FirstOrDefault()).ToList();
+        }
+
+        //public IEnumerable<CheckListTargetTypeViewModel> GetChecklistTypeByApprovalLevel(int staffId, int companyId, int operationId, int productClassProcessId)
+        //{
+        //    var ids = _genSetup.GetStaffApprovalLevelIds(staffId, (int)OperationsEnum.ChecklistOperation).ToList();
+        //    var checkType = (from a in context.TBL_CHECKLIST_TYPE
+        //                     join b in context.TBL_CHECKLIST_TYPE_APROV_LEVL on a.CHECKLIST_TYPEID equals b.CHECKLIST_TYPEID
+        //                     where ids.Contains((int)b.APPROVALLEVELID)
+        //                     select new CheckListTargetTypeViewModel
+        //                     {
+        //                         targetTypeId = a.CHECKLIST_TYPEID,
+        //                         targetTypeName = a.CHECKLIST_TYPE_NAME,
+        //                         isproductbased = a.ISPRODUCT_BASED,
+        //                         canValidateChecklist = b.CANVALIDATE
+        //                     });
+        //    var debug = checkType.ToList();
+
+        //    //if (productClassProcessId != 0 && productClassProcessId == (int)ProductClassProcessEnum.CAMBased)
+        //    //{
+        //    //    return checkType.Where(x => x.isproductbased != true).GroupBy(x => x.targetTypeId).Select(y => y.FirstOrDefault()).ToList();
+        //    //}
+
+        //    return checkType.GroupBy(x => x.targetTypeId).Select(y => y.FirstOrDefault()).ToList();
+        //}
+
+        public async Task<IEnumerable<ChecklistDefinitionViewModel>> GetAllMappedChecklistDefinitionByProductId(int productId)
+        {
+            var data = await (from a in context.TBL_CHECKLIST_DEFINITION
+                        where a.DELETED == false && a.PRODUCTID == productId
+                        select new ChecklistDefinitionViewModel
+                        {
+                            checkListDefinitionId = a.CHECKLISTDEFINITIONID,
+                            approvalLevelId = a.APPROVALLEVELID,
+                            approvalLevelName = a.TBL_APPROVAL_LEVEL.LEVELNAME,
+                            isActive = a.ISACTIVE,
+                            isRequired = a.ISREQUIRED,
+                            productId = a.PRODUCTID,
+                            operationId = a.OPERATIONID,
+                            productName = a.TBL_PRODUCT.PRODUCTNAME,
+                            checkListItemId = a.CHECKLISTITEMID,
+                            checkListItemName = a.TBL_CHECKLIST_ITEM.CHECKLISTITEMNAME,
+                            itemDescription = a.ITEMDESCRIPTION,
+                            companyId = a.COMPANYID,
+                            companyName = a.TBL_COMPANY.NAME,
+                            dateTimeCreated = a.DATETIMECREATED,
+                            createdBy = a.CREATEDBY
+                        }).ToListAsync();
+            return data;
+
+        }
+
+        public async Task<IEnumerable<ChecklistItemViewModel>> GetAllUnmappedChecklistItemsToApprovalLevelAndProduct(int approvalLevelId, int productId)
+        {
+            var dataList = await (from data in context.TBL_CHECKLIST_DEFINITION
+                            where data.PRODUCTID == productId && data.APPROVALLEVELID == approvalLevelId && data.DELETED == false //orderby account.AccountCode ascending, account.AccountName ascending
+                            select data.CHECKLISTITEMID).ToListAsync();
+
+            var unmappedChecklistItems = (from data in context.TBL_CHECKLIST_ITEM
+                                          where data.DELETED == false
+                                          select new ChecklistItemViewModel
+                                          {
+                                              checkListItemId = data.CHECKLISTITEMID,
+                                              checkListItemName = data.CHECKLISTITEMNAME,
+                                              dateTimeCreated = data.DATETIMECREATED,
+                                              createdBy = (int)data.CREATEDBY
+                                          });
+
+            if (dataList.Any())
+            {
+                unmappedChecklistItems = unmappedChecklistItems.Where(x => !dataList.Contains(x.checkListItemId));
+            }
+
+            return unmappedChecklistItems;
+        }
+
+        public async Task<List<ChecklistDefinitionViewModel>> GetAllChecklistDefinitionById(int CheckListDefinitionId)
+        {
+            var data =  await (from a in context.TBL_CHECKLIST_DEFINITION
+                        where a.DELETED == false && CheckListDefinitionId == a.CHECKLISTDEFINITIONID
+                        select new ChecklistDefinitionViewModel
+                        {
+                            checkListDefinitionId = a.CHECKLISTDEFINITIONID,
+                            approvalLevelId = a.APPROVALLEVELID,
+                            isActive = a.ISACTIVE,
+                            isRequired = a.ISREQUIRED,
+                            productId = a.PRODUCTID,
+                            operationId = a.OPERATIONID,
+                            productName = a.TBL_PRODUCT.PRODUCTNAME,
+                            checkListItemId = a.CHECKLISTITEMID,
+                            checkListItemName = a.TBL_CHECKLIST_ITEM.CHECKLISTITEMNAME,
+                            itemDescription = a.ITEMDESCRIPTION,
+                            companyId = a.COMPANYID,
+                            companyName = a.TBL_COMPANY.NAME,
+                            dateTimeCreated = a.DATETIMECREATED,
+                            createdBy = a.CREATEDBY
+                        }).ToListAsync();
+            return data;
+        }
+
+        public async Task<IEnumerable<ChecklistDefinitionViewModel>> GetAllMappedChecklistDefinitionByApprovalLevelAndProduct(int approvalLevelId, int productId)
+         {
+            var data = GetAllChecklistDefinition().Where(x => x.approvalLevelId == approvalLevelId && x.productId == productId).ToList();
+
+            if (productId == 0)
+            {
+              data = GetAllChecklistDefinition().Where(x => x.approvalLevelId == approvalLevelId && x.productId == null).ToList();
+            }
+
+            return data;
+        }
+
+        public async Task<IEnumerable<ChecklistDefinitionViewModel>> GetUnmappedChecklistDefintionToApprovalLevel(int approvalLevelId)
+        {
+            var dataList = await (from data in context.TBL_CHECKLIST_DEFINITION
+                            where data.APPROVALLEVELID == approvalLevelId && data.DELETED == false //orderby account.AccountCode ascending, account.AccountName ascending
+                            select data.CHECKLISTDEFINITIONID).ToListAsync();
+
+            var unmappedChecklistItems = (from data in context.TBL_CHECKLIST_DEFINITION
+                                          where data.DELETED == false
+                                          select new ChecklistDefinitionViewModel
+                                          {
+                                              checkListDefinitionId = data.CHECKLISTDEFINITIONID,
+                                              approvalLevelId = data.APPROVALLEVELID,
+                                              isActive = data.ISACTIVE,
+                                              isRequired = data.ISREQUIRED,
+                                              productId = data.PRODUCTID,
+                                              operationId = data.OPERATIONID,
+                                              productName = data.TBL_PRODUCT.PRODUCTNAME,
+                                              checkListItemId = data.CHECKLISTITEMID,
+                                              checkListItemName = data.TBL_CHECKLIST_ITEM.CHECKLISTITEMNAME,
+                                              itemDescription = data.ITEMDESCRIPTION,
+                                              companyId = data.COMPANYID,
+                                              companyName = data.TBL_COMPANY.NAME,
+                                              dateTimeCreated = data.DATETIMECREATED,
+                                              createdBy = data.CREATEDBY
+                                          });
+
+            if (dataList.Any())
+            {
+                unmappedChecklistItems = unmappedChecklistItems.Where(x => !dataList.Contains(x.checkListDefinitionId));
+            }
+
+            return unmappedChecklistItems;
+        }
+
+        public async Task<bool> AddChecklistDefinition(ChecklistDefinitionViewModel model)
+        {
+            var data = new TBL_CHECKLIST_DEFINITION
+            {
+                OPERATIONID = model.operationId,
+                APPROVALLEVELID = (int)model.approvalLevelId,
+                CHECKLISTITEMID = model.checkListItemId,
+                CHECKLIST_TYPEID = (short)model.checkListTypeId,
+                ITEMDESCRIPTION = model.itemDescription,
+                ISREQUIRED = model.isRequired,
+                COMPANYID = model.companyId,
+                ISACTIVE = model.isActive,
+                PRODUCTID = model.productId,
+                DATETIMECREATED = _genSetup.GetApplicationDate(),
+                CREATEDBY = (int)model.createdBy
+            };
+
+            //Audit Section ---------------------------
+
+            var audit_product = (context.TBL_PRODUCT.FirstOrDefault(x => x.PRODUCTID == data.PRODUCTID))?.PRODUCTNAME;
+            var audit_checklist = (context.TBL_CHECKLIST_ITEM.FirstOrDefault(x => x.CHECKLISTITEMID == data.CHECKLISTITEMID))?.CHECKLISTITEMNAME;
+
+            var audit = new TBL_AUDIT
+            {
+                AUDITTYPEID = (short)AuditTypeEnum.LoanChecklistAdded,
+                STAFFID = model.createdBy,
+                BRANCHID = (short)model.userBranchId,
+                DETAIL = $"{TranslateHelper.get("Added Checklist Definition")} {audit_checklist} {TranslateHelper.get("to tbl_Product")} '{audit_product}' ",
+                IPADDRESS = CommonHelpers.GetLocalIpAddress(),
+                URL = model.applicationUrl,
+                APPLICATIONDATE = _genSetup.GetApplicationDate(),
+                SYSTEMDATETIME = DateTime.Now,
+                DEVICENAME = CommonHelpers.GetDeviceName(),
+                OSNAME = CommonHelpers.FriendlyName()
+            };
+
+            context.TBL_CHECKLIST_DEFINITION.Add(data);
+            this.auditTrail.AddAuditTrail(audit);
+            //end of Audit section -------------------------------
+
+            return await context.SaveChangesAsync() != 0;
+        }
+
+
+        public async Task<bool> AddMultipleChecklistDefinition(List<ChecklistDefinitionViewModel> models)
+        {
+            if (models.Count <= 0)
+                return false;
+
+            foreach (ChecklistDefinitionViewModel model in models)
+            {
+              await  AddChecklistDefinition(model);
+            }
+            return true;
+        }
+
+        public async Task<bool> AddMultipleChecklistDefinitionWithMultipleItems(ChecklistDefinitionViewModel model)
+        {
+            if (model.checklistItems.Count <= 0)
+                return false;
+
+            foreach (var item in model.checklistItems)
+            {
+                var data = new TBL_CHECKLIST_DEFINITION
+                {
+                    OPERATIONID = model.operationId,
+                    APPROVALLEVELID = (int)model.approvalLevelId,
+                    PRODUCTID = (short)model.productId,
+                    COMPANYID = model.companyId,
+                    CHECKLIST_TYPEID = (short)model.checkListTypeId,
+                    CHECKLISTITEMID = item.checkListItemId,
+                    ITEMDESCRIPTION = item.itemDescription,
+                    ISREQUIRED = item.isRequired,
+                    ISACTIVE = item.isActive,
+                    DATETIMECREATED = _genSetup.GetApplicationDate(),
+                    CREATEDBY = (int)model.createdBy
+                };
+
+                //Audit Section ---------------------------
+
+                var audit_product = (context.TBL_PRODUCT.FirstOrDefault(x => x.PRODUCTID == data.PRODUCTID)).PRODUCTNAME;
+                var audit_checklist = (context.TBL_CHECKLIST_ITEM.FirstOrDefault(x => x.CHECKLISTITEMID == data.CHECKLISTITEMID)).CHECKLISTITEMNAME;
+
+                var audit = new TBL_AUDIT
+                {
+                    AUDITTYPEID = (short)AuditTypeEnum.LoanChecklistAdded,
+                    STAFFID = model.createdBy,
+                    BRANCHID = (short)model.userBranchId,
+                    DETAIL = $"{TranslateHelper.get("Added Checklist Definition")} {audit_checklist} {TranslateHelper.get("to tbl_Product")} '{audit_product}' ",
+                    IPADDRESS = CommonHelpers.GetLocalIpAddress(),
+                    URL = model.applicationUrl,
+                    APPLICATIONDATE = _genSetup.GetApplicationDate(),
+                    SYSTEMDATETIME = DateTime.Now,
+                    DEVICENAME = CommonHelpers.GetDeviceName(),
+                    OSNAME = CommonHelpers.FriendlyName()
+                };
+
+                context.TBL_CHECKLIST_DEFINITION.Add(data);
+                this.auditTrail.AddAuditTrail(audit);
+                //end of Audit section -------------------------------
+
+            }
+
+            return await context.SaveChangesAsync() != 0;
+        }
+
+        public async Task<bool> UpdateChecklistDefinition(int CheckListDefinitionId, ChecklistDefinitionViewModel model)
+        {
+            if (model.productId == null)
+            {
+                model.productId = 0;
+            }
+            var data = await this.context.TBL_CHECKLIST_DEFINITION.FindAsync(CheckListDefinitionId);
+            if (data == null) return false;
+            data.APPROVALLEVELID = (int)model.approvalLevelId;
+            data.ITEMDESCRIPTION = model.itemDescription;
+            data.COMPANYID = model.companyId;
+            data.CHECKLISTITEMID = model.checkListItemId;
+            data.CHECKLIST_TYPEID = (short)model.checkListTypeId;
+            data.ISACTIVE = model.isActive;
+            data.ISREQUIRED = model.isRequired;
+            data.PRODUCTID = model.productId;
+            data.DATETIMEUPDATED = _genSetup.GetApplicationDate();
+            data.LASTUPDATEDBY = (int)model.createdBy;
+            data.OPERATIONID = model.operationId;
+            //Audit Section ---------------------------
+            var audit_product = (context.TBL_PRODUCT.FirstOrDefault(x => x.PRODUCTID == data.PRODUCTID))?.PRODUCTNAME;
+            var audit_checklist = (context.TBL_CHECKLIST_ITEM.FirstOrDefault(x => x.CHECKLISTITEMID == data.CHECKLISTITEMID)).CHECKLISTITEMNAME;
+            if (audit_product == null)
+            {
+                audit_product = "";
+            }
+            var audit = new TBL_AUDIT
+            {
+                AUDITTYPEID = (short)AuditTypeEnum.LoanChecklistUpdated,
+                STAFFID = model.createdBy,
+                BRANCHID = (short)model.userBranchId,
+                DETAIL = $"{TranslateHelper.get("Updated Checklist Definition")} {audit_checklist} {TranslateHelper.get("to tbl_Product")} '{audit_product}' ",
+                IPADDRESS = CommonHelpers.GetLocalIpAddress(),
+                URL = model.applicationUrl,
+                APPLICATIONDATE = _genSetup.GetApplicationDate(),
+                SYSTEMDATETIME = DateTime.Now,
+                DEVICENAME = CommonHelpers.GetDeviceName(),
+                OSNAME = CommonHelpers.FriendlyName()
+            };
+            this.auditTrail.AddAuditTrail(audit);
+            // end of Audit section -------------------------------
+
+            return context.SaveChanges() != 0;
+
+        }
+
+        public async Task<bool> DeleteChecklistDefinition(int CheckListDefinitionId, UserInfo user)
+        {
+            var data = await this.context.TBL_CHECKLIST_DEFINITION.FindAsync(CheckListDefinitionId);
+            data.DELETED = true;
+            data.DELETEDBY = (int)user.staffId;
+            data.DATETIMEDELETED = _genSetup.GetApplicationDate();
+
+            // Audit Section ---------------------------
+
+            var audit_product = (context.TBL_PRODUCT.FirstOrDefault(x => x.PRODUCTID == data.PRODUCTID)).PRODUCTNAME;
+            var audit_checklist = (context.TBL_CHECKLIST_ITEM.FirstOrDefault(x => x.CHECKLISTITEMID == data.CHECKLISTITEMID)).CHECKLISTITEMNAME;
+
+            var audit = new TBL_AUDIT
+            {
+                AUDITTYPEID = (short)AuditTypeEnum.LoanChecklistDeleted,
+                STAFFID = user.staffId,
+                BRANCHID = (short)user.BranchId,
+                DETAIL = $"{TranslateHelper.get("Deleted Checklist Definition")} {audit_checklist} {TranslateHelper.get("to tbl_Product")} '{audit_product}' ",
+                IPADDRESS = CommonHelpers.GetLocalIpAddress(),
+                URL = user.applicationUrl,
+                APPLICATIONDATE = _genSetup.GetApplicationDate(),
+                SYSTEMDATETIME = DateTime.Now,
+                DEVICENAME = CommonHelpers.GetDeviceName(),
+                OSNAME = CommonHelpers.FriendlyName()
+            };
+            this.auditTrail.AddAuditTrail(audit);
+            //end of Audit section -------------------------------
+
+            return context.SaveChanges() != 0;
+        }
+        #endregion
+
+        #region Checklist Details
+        public async Task<IEnumerable<ChecklistDetailViewModel>> GetAllChecklistDetail()
+        {
+            var data = await (from a in context.TBL_CHECKLIST_DETAIL
+                        where a.DELETED == false
+                        select new ChecklistDetailViewModel
+                        {
+                            checklistId = a.CHECKLISTID,
+                            checkListDefinitionId = a.CHECKLISTDEFINITIONID,
+                            checkListDefinitionItemName = a.TBL_CHECKLIST_DEFINITION.TBL_CHECKLIST_ITEM.CHECKLISTITEMNAME,
+                            targetTypeId = a.TARGETTYPEID,
+                            targetTypeName = a.TBL_CHECKLIST_TARGETTYPE.TARGETTYPENAME,
+                            targetId = a.TARGETID,
+                            checkListStatusId = a.CHECKLISTSTATUSID,
+                            checkListStatusName = a.TBL_CHECKLIST_STATUS.CHECKLISTSTATUSNAME,
+                            checkedBy = a.CHECKEDBY,
+                            deferedDate = a.DEFEREDDATE,
+                            remark = a.REMARK,
+                            dateTimeCreated = a.DATETIMECREATED,
+                            createdBy = (int)a.CREATEDBY
+                        }).ToListAsync();
+            return data;
+        }
+
+        public async Task<List<ChecklistDetailViewModel>> GetAllChecklistDetailById(int ChecklistId)
+        {
+            var data = await (from a in context.TBL_CHECKLIST_DETAIL
+                        where a.DELETED == false && ChecklistId == a.CHECKLISTID
+                        select new ChecklistDetailViewModel
+                        {
+                            checklistId = a.CHECKLISTID,
+                            checkListDefinitionId = a.CHECKLISTDEFINITIONID,
+                            checkListDefinitionItemName = a.TBL_CHECKLIST_DEFINITION.TBL_CHECKLIST_ITEM.CHECKLISTITEMNAME,
+                            targetTypeId = a.TARGETTYPEID,
+                            targetTypeName = a.TBL_CHECKLIST_TARGETTYPE.TARGETTYPENAME,
+                            targetId = a.TARGETID,
+                            checkListStatusId = a.CHECKLISTSTATUSID,
+                            checkedBy = a.CHECKEDBY,
+                            deferedDate = a.DEFEREDDATE,
+                            remark = a.REMARK,
+                            dateTimeCreated = a.DATETIMECREATED,
+                            createdBy = (int)a.CREATEDBY
+                        }).ToListAsync();
+            return data;
+        }
+
+        public async Task<List<ChecklistDetailViewModel>> GetAllChecklistDetailByProductAndTargetId(int targetTypeId, int productId)
+        {
+            var data =  await (from a in context.TBL_CHECKLIST_DETAIL
+                        where a.DELETED == false && a.TARGETTYPEID == targetTypeId && a.TARGETID == productId
+                        select new ChecklistDetailViewModel
+                        {
+                            checklistId = a.CHECKLISTID,
+                            checkListDefinitionId = a.CHECKLISTDEFINITIONID,
+                            checkListDefinitionItemName = a.TBL_CHECKLIST_DEFINITION.TBL_CHECKLIST_ITEM.CHECKLISTITEMNAME,
+                            targetTypeId = a.TARGETTYPEID,
+                            targetTypeName = a.TBL_CHECKLIST_TARGETTYPE.TARGETTYPENAME,
+                            targetId = a.TARGETID,
+                            checkListStatusId = a.CHECKLISTSTATUSID,
+                            checkedBy = a.CHECKEDBY,
+                            deferedDate = a.DEFEREDDATE,
+                            remark = a.REMARK,
+                            dateTimeCreated = a.DATETIMECREATED,
+                            createdBy = (int)a.CREATEDBY
+                        }).ToListAsync();
+            return data;
+        }
+
+        public async Task<List<ChecklistDetailViewModel>> GetAllChecklistDetailByProductId(int productId)
+        {
+            var data = await (from a in context.TBL_CHECKLIST_DETAIL
+                        where a.DELETED == false && a.TARGETID == productId
+                        select new ChecklistDetailViewModel
+                        {
+                            checklistId = a.CHECKLISTID,
+                            checkListDefinitionId = a.CHECKLISTDEFINITIONID,
+                            checkListDefinitionItemName = a.TBL_CHECKLIST_DEFINITION.TBL_CHECKLIST_ITEM.CHECKLISTITEMNAME,
+                            targetTypeId = a.TARGETTYPEID,
+                            targetTypeName = a.TBL_CHECKLIST_TARGETTYPE.TARGETTYPENAME,
+                            targetId = a.TARGETID,
+                            checkListStatusId = a.CHECKLISTSTATUSID,
+                            checkedBy = a.CHECKEDBY,
+                            deferedDate = a.DEFEREDDATE,
+                            remark = a.REMARK,
+                            dateTimeCreated = a.DATETIMECREATED,
+                            createdBy = (int)a.CREATEDBY
+                        }).ToListAsync();
+            return data;
+        }
+
+        public async Task<List<ChecklistDetailViewModel>> GetAllChecklistDetailByChecklistDefinitionId(int checklistDefinitionId)
+        {
+            var data =  await (from a in context.TBL_CHECKLIST_DETAIL
+                        where a.DELETED == false && a.CHECKLISTDEFINITIONID == checklistDefinitionId
+                        select new ChecklistDetailViewModel
+                        {
+                            checklistId = a.CHECKLISTID,
+                            checkListDefinitionId = a.CHECKLISTDEFINITIONID,
+                            checkListDefinitionItemName = a.TBL_CHECKLIST_DEFINITION.TBL_CHECKLIST_ITEM.CHECKLISTITEMNAME,
+                            targetTypeId = a.TARGETTYPEID,
+                            targetTypeName = a.TBL_CHECKLIST_TARGETTYPE.TARGETTYPENAME,
+                            targetId = a.TARGETID,
+                            checkListStatusId = a.CHECKLISTSTATUSID,
+                            checkedBy = a.CHECKEDBY,
+                            deferedDate = a.DEFEREDDATE,
+                            remark = a.REMARK,
+                            dateTimeCreated = a.DATETIMECREATED,
+                            createdBy = (int)a.CREATEDBY
+                        }).ToListAsync();
+            return data;
+        }
+        public async Task<IEnumerable<ChecklistDetailViewModel>> GetChecklistByTargetId(int targetId)
+        {
+            var checkList = await (from cl in context.TBL_CHECKLIST_DETAIL
+                             where cl.TARGETID == targetId && cl.TARGETTYPEID == (int)CheckListTargetTypeEnum.LoanApplicationProductChecklist
+                             && cl.DELETED == false
+                             select new ChecklistDetailViewModel()
+                             {
+                                 checklistId = cl.CHECKLISTID,
+                                 checkListDefinitionId = cl.CHECKLISTDEFINITIONID,
+                                 remark = cl.REMARK,
+                                 checkedBy = cl.CHECKEDBY,
+                                 targetTypeId = cl.TARGETTYPEID,
+                                 targetId = cl.TARGETID,
+                                 checkListStatusId = cl.CHECKLISTSTATUSID,
+                                 deferedDate = cl.DEFEREDDATE
+
+                             }).ToListAsync();
+            return checkList;
+        }
+        public async Task<IEnumerable<ChecklistDetailViewModel>> GetChecklistByCheckListTypeAndTargetId(int targetId, int checkListtypeId, bool isCamChecklist,int? customerId=null)
+        {
+            var isproductBased = await context.TBL_CHECKLIST_TYPE.Where(x => x.CHECKLIST_TYPEID == checkListtypeId).Select(k => k.ISPRODUCT_BASED).FirstOrDefaultAsync();
+            if (isproductBased)
+            {
+                var detailId = await (from id in context.TBL_LOAN_APPLICATION_DETAIL where id.LOANAPPLICATIONID == targetId select id.LOANAPPLICATIONDETAILID).ToListAsync();
+                var checkList = await (from cl in context.TBL_CHECKLIST_DETAIL
+                                 join def in context.TBL_CHECKLIST_DEFINITION
+                                  on cl.CHECKLISTDEFINITIONID equals def.CHECKLISTDEFINITIONID
+                                 where def.CHECKLIST_TYPEID == checkListtypeId
+                                 && cl.DELETED == false
+                                 select new ChecklistDetailViewModel()
+                                 {
+                                     checklistId = cl.CHECKLISTID,
+                                     checkListDefinitionId = cl.CHECKLISTDEFINITIONID,
+                                     remark = cl.REMARK,
+                                     checkedBy = cl.CHECKEDBY,
+                                     targetTypeId = cl.TARGETTYPEID,
+                                     targetId = cl.TARGETID,
+                                     checkListStatusId = cl.CHECKLISTSTATUSID,
+                                     deferedDate = cl.DEFEREDDATE,
+                                     checkListValidationStatus1 = cl.CHECKLISTSTATUSID2,
+                                     checkListValidationStatus2 = cl.CHECKLISTSTATUSID3,
+                                     checkListStatusName = cl.TBL_CHECKLIST_STATUS.CHECKLISTSTATUSNAME,
+                                     checkListTypeId = def.CHECKLIST_TYPEID,
+                                     checkListItemId = def.CHECKLISTITEMID,
+                                     customerId = customerId,
+                                     checklistDate = cl.DATETIMECREATED,
+                                     checkListDefinitionItemName = cl.TBL_CHECKLIST_DEFINITION.TBL_CHECKLIST_ITEM.CHECKLISTITEMNAME
+                                 }).ToListAsync();
+                if (isCamChecklist)
+                {
+                    checkList = checkList.Where(x => x.targetId == targetId).ToList();
+                }
+                else
+                {
+                    checkList = checkList.Where(x => detailId.Contains(x.targetId)).ToList();
+                }
+                return checkList;
+            }
+            else
+            {
+                var checkList = await (from cl in context.TBL_CHECKLIST_DETAIL
+                                 join def in context.TBL_CHECKLIST_DEFINITION
+                                  on cl.CHECKLISTDEFINITIONID equals def.CHECKLISTDEFINITIONID
+                                 where cl.TARGETID == targetId && def.CHECKLIST_TYPEID == checkListtypeId
+                                 && cl.DELETED == false
+                                 select new ChecklistDetailViewModel()
+                                 {
+                                     checklistId = cl.CHECKLISTID,
+                                     checkListDefinitionId = cl.CHECKLISTDEFINITIONID,
+                                     remark = cl.REMARK,
+                                     checkedBy = cl.CHECKEDBY,
+                                     targetTypeId = cl.TARGETTYPEID,
+                                     targetId = cl.TARGETID,
+                                     checkListStatusId = cl.CHECKLISTSTATUSID,
+                                     deferedDate = cl.DEFEREDDATE,
+                                     checkListValidationStatus1 = cl.CHECKLISTSTATUSID2,
+                                     checkListValidationStatus2 = cl.CHECKLISTSTATUSID3,
+                                     checkListStatusName = cl.TBL_CHECKLIST_STATUS.CHECKLISTSTATUSNAME,
+                                     checkListTypeId = def.CHECKLIST_TYPEID,
+                                     checkListItemId = def.CHECKLISTITEMID,
+                                     customerId = customerId,
+                                     checklistDate = cl.DATETIMECREATED,
+                                     checkListDefinitionItemName = cl.TBL_CHECKLIST_DEFINITION.TBL_CHECKLIST_ITEM.CHECKLISTITEMNAME
+
+                                 }).ToListAsync();
+                return checkList;
+            }
+            return null;
+        }
+        public async Task<bool> AddMultipleChecklistDetails(List<ChecklistDetailViewModel> models, int staffId, short BranchId)
+        {
+            if (models.Count <= 0)
+                return false;
+
+            int loanApplicationDetailId = models.FirstOrDefault().targetId;
+            int loanApplicationId = (int)models.FirstOrDefault().checklistId;
+            foreach (ChecklistDetailViewModel model in models)
+            {
+                model.createdBy = staffId;
+                model.checkedBy = staffId;
+                model.targetTypeId = (int)CheckListTargetTypeEnum.LoanApplicationProductChecklist;
+                model.userBranchId = BranchId;
+                model.remark = "Remark";
+                AddChecklistDetail(model);
+
+            }
+            var loanDetailsData = await context.TBL_LOAN_APPLICATION_DETAIL.FindAsync(loanApplicationDetailId);
+            if (loanDetailsData != null)
+            {
+                loanDetailsData.HASDONECHECKLIST = true;
+            }
+            var loanData = (from l in context.TBL_LOAN_APPLICATION_DETAIL where l.LOANAPPLICATIONID == loanApplicationId select l).ToList();
+            if (loanData != null)
+            {
+                var custNo = loanData.Count();
+                var checkedNo = 0;
+                foreach (var item in loanData)
+                {
+                    if (item.HASDONECHECKLIST == true)
+                    {
+                        ++checkedNo;
+                    }
+                }
+                if (custNo == checkedNo)
+                {
+                    var loanApplication = context.TBL_LOAN_APPLICATION.Find(loanApplicationId);
+                    if (loanApplication != null)
+                    {
+                        loanApplication.APPLICATIONSTATUSID = (int)LoanApplicationStatusEnum.ChecklistCompleted;
+                    }
+                }
+
+            }
+            return context.SaveChanges() > 0;
+        }
+        public async Task<bool> AddChecklistDetail(ChecklistDetailViewModel model)
+        {
+            if (model != null)
+            {
+                try
+                {
+                    var isProductBased = await (from a in context.TBL_CHECKLIST_DEFINITION
+                                          join b in context.TBL_CHECKLIST_TYPE on
+                                          a.CHECKLIST_TYPEID equals b.CHECKLIST_TYPEID
+                                          where a.CHECKLISTDEFINITIONID == model.checkListDefinitionId
+                                          select b.ISPRODUCT_BASED).FirstOrDefaultAsync();
+                    if (isProductBased)
+                    {
+                        model.targetTypeId = (int)CheckListTargetTypeEnum.LoanApplicationProductChecklist;
+                    }
+                    else
+                    {
+                        model.targetTypeId = (int)CheckListTargetTypeEnum.LoanApplicationCustomerChecklist;
+                    }
+                    TBL_CHECKLIST_DETAIL data;
+                    if (model.checklistId != 0 || model.checklistId > 0)
+                    {
+                        data = context.TBL_CHECKLIST_DETAIL.Find(model.checklistId);
+                        if (data != null)
+                        {
+                            data.CHECKLISTSTATUSID = model.checkListStatusId;
+                            data.DATETIMEUPDATED = DateTime.Now;
+                        }
+                    }
+                    else
+                    {
+                        data = new TBL_CHECKLIST_DETAIL
+                        {
+                            CHECKLISTDEFINITIONID = model.checkListDefinitionId,
+                            TARGETTYPEID = model.targetTypeId,
+                            TARGETID = model.targetId,
+                            TARGETID2 = model.targetId2,
+                            CHECKLISTSTATUSID = model.checkListStatusId,
+                            CHECKEDBY = (int)model.createdBy,
+                            DEFEREDDATE = model.deferedDate,
+                            REMARK = model.remark,
+                            DATETIMECREATED = _genSetup.GetApplicationDate(),
+                            CREATEDBY = (int)model.createdBy
+                        };
+                        context.TBL_CHECKLIST_DETAIL.Add(data);
+                    }
+                    // Audit Section ---------------------------
+                    var audit_checklist = (context.TBL_CHECKLIST_DEFINITION.FirstOrDefault(x => x.CHECKLISTDEFINITIONID == data.CHECKLISTDEFINITIONID));
+
+                    var audit = new TBL_AUDIT
+                    {
+                        AUDITTYPEID = (short)AuditTypeEnum.LoanChecklistAdded,
+                        STAFFID = model.createdBy,
+                        BRANCHID = (short)model.userBranchId,
+                        DETAIL = $"{TranslateHelper.get("Added Loan Checklist")} {audit_checklist.TBL_CHECKLIST_ITEM.CHECKLISTITEMNAME}", // on Loan '{data.LoanId}' ",
+                        IPADDRESS = CommonHelpers.GetLocalIpAddress(),
+                        URL = model.applicationUrl,
+                        APPLICATIONDATE = _genSetup.GetApplicationDate(),
+                        SYSTEMDATETIME = DateTime.Now,
+                        DEVICENAME = CommonHelpers.GetDeviceName(),
+                        OSNAME = CommonHelpers.FriendlyName()
+                    };
+                    this.auditTrail.AddAuditTrail(audit);
+
+                    //end of Audit section -------------------------------
+                    return context.SaveChanges() > 0;
+                }
+                catch (Exception ex)
+                {
+                    throw new SecureException(ex.Message);
+                }
+            }
+            return false;
+        }
+
+        public async Task<bool> UpdateChecklistDetail(int ChecklistId, ChecklistDetailViewModel model)
+        {
+            var data = await  this.context.TBL_CHECKLIST_DETAIL.FindAsync(ChecklistId);
+            if (data == null) return false;
+
+            data.CHECKLISTDEFINITIONID = model.checkListDefinitionId;
+            data.TARGETTYPEID = model.targetTypeId;
+            data.TARGETID = model.targetId;
+            data.CHECKLISTSTATUSID = model.checkListStatusId;
+            data.CHECKEDBY = (int)model.createdBy;
+            data.DEFEREDDATE = model.deferedDate;
+            data.REMARK = model.remark;
+            data.DATETIMEUPDATED = _genSetup.GetApplicationDate();
+            data.LASTUPDATEDBY = (int)model.createdBy;
+
+            // Audit Section ---------------------------
+            var audit_checklist = (context.TBL_CHECKLIST_DEFINITION.FirstOrDefault(x => x.CHECKLISTDEFINITIONID == data.CHECKLISTDEFINITIONID));
+
+            var audit = new TBL_AUDIT
+            {
+                AUDITTYPEID = (short)AuditTypeEnum.LoanChecklistAdded,
+                STAFFID = model.createdBy,
+                BRANCHID = (short)model.userBranchId,
+                DETAIL = $"{TranslateHelper.get("Added Loan Checklist")} {audit_checklist.TBL_CHECKLIST_ITEM.CHECKLISTITEMNAME}",
+                IPADDRESS = CommonHelpers.GetLocalIpAddress(),
+                URL = model.applicationUrl,
+                APPLICATIONDATE = _genSetup.GetApplicationDate(),
+                SYSTEMDATETIME = DateTime.Now,
+                DEVICENAME = CommonHelpers.GetDeviceName(),
+                OSNAME = CommonHelpers.FriendlyName()
+            };
+
+            this.auditTrail.AddAuditTrail(audit);
+
+            //end of Audit section -------------------------------
+
+            return context.SaveChanges() != 0;
+        }
+
+        public async Task<bool> DeleteChecklistDetail(int ChecklistId, UserInfo user)
+
+
+        {
+            var data = await context.TBL_CHECKLIST_DETAIL.FindAsync(ChecklistId);
+            if (data != null)
+            {
+                this.context.TBL_CHECKLIST_DETAIL.Remove(data);
+            }
+
+            var audit = new TBL_AUDIT
+            {
+                AUDITTYPEID = (short)AuditTypeEnum.LoanChecklistAdded,
+                STAFFID = user.staffId,
+                BRANCHID = (short)user.BranchId,
+                DETAIL = $"{TranslateHelper.get("Added Loan Checklist with Id:")} {ChecklistId}",
+                IPADDRESS = CommonHelpers.GetLocalIpAddress(),
+                URL = user.applicationUrl,
+                APPLICATIONDATE = _genSetup.GetApplicationDate(),
+                SYSTEMDATETIME = DateTime.Now,
+                DEVICENAME = CommonHelpers.GetDeviceName(),
+                OSNAME = CommonHelpers.FriendlyName()
+            };
+            this.auditTrail.AddAuditTrail(audit);
+            //end of Audit section -------------------------------
+
+            return context.SaveChanges() != 0;
+        }
+        public async Task<bool> ValidateChecklistDetail(List<ValidateChecklistDetailViewModel> entity)
+        {
+            if (entity == null) return false;
+            List<TBL_CHECKLIST_DETAIL> checklistDetails = new List<TBL_CHECKLIST_DETAIL>();
+            foreach (var item in entity)
+            {
+                var data = await this.context.TBL_CHECKLIST_DETAIL.FindAsync(item.checklistId);
+                if (data != null)
+                {
+                    if (item.isCAMchecklist == true)
+                    {
+                        data.CHECKLISTSTATUSID2 = item.checkListStatusId2;
+                    }
+                    if (item.isAvailmentChecklist == true)
+                    {
+                        data.CHECKLISTSTATUSID3 = item.checkListStatusId3;
+                    }
+                }
+                checklistDetails.Add(data);
+            }
+
+
+
+            return context.SaveChanges() > 0;
+        }
+
+        #endregion
+
+        #region Checklist Item
+        public async Task<IEnumerable<ChecklistItemViewModel>> GetAllChecklistItem()
+        {
+            var data = await (from a in context.TBL_CHECKLIST_ITEM
+                        where a.DELETED == false
+                        select new ChecklistItemViewModel
+                        {
+                            checkListItemId = a.CHECKLISTITEMID,
+                            checkListItemName = a.CHECKLISTITEMNAME,
+                            responseTypeName = a.TBL_CHECKLIST_RESPONSE_TYPE.RESPONSE_TYPE_NAME,
+                            responseTypeId = a.RESPONSE_TYPEID,
+                            requireUpload = a.REQUIREUPLOAD,
+                            checkListTypeId = a.CHECKLIST_TYPEID,
+                            dateTimeCreated = a.DATETIMECREATED,
+                            createdBy = (int)a.CREATEDBY,
+                            productId = a.PRODUCTID,
+                            operationId = a.OPERATIONID,
+                            operationTypeId = a.OPERATIONTYPEID,
+                            //productId = (short)a.TBL_CHECKLIST_DEFINITION.FirstOrDefault(x => x.CHECKLISTITEMID == a.CHECKLISTITEMID).PRODUCTID,
+                            //operationId = (int?)a.TBL_CHECKLIST_DEFINITION.FirstOrDefault(x => x.CHECKLISTITEMID == a.CHECKLISTITEMID).OPERATIONID,
+                            //operationTypeId = (int?)a.TBL_CHECKLIST_DEFINITION.FirstOrDefault(x => x.CHECKLISTITEMID == a.CHECKLISTITEMID).TBL_OPERATIONS
+
+                        }).ToListAsync();
+            return data;
+        }
+
+        public async Task<List<ChecklistItemViewModel>> GetAllChecklistItemById(int CheckListItemId)
+        {
+            var data = await (from a in context.TBL_CHECKLIST_ITEM
+                        where a.DELETED == false && CheckListItemId == a.CHECKLISTITEMID
+                        select new ChecklistItemViewModel
+                        {
+                            checkListItemId = a.CHECKLISTITEMID,
+                            checkListItemName = a.CHECKLISTITEMNAME,
+                            requireUpload = a.REQUIREUPLOAD,
+                            responseTypeName = a.TBL_CHECKLIST_RESPONSE_TYPE.RESPONSE_TYPE_NAME,
+                            dateTimeCreated = a.DATETIMECREATED,
+                            createdBy = (int)a.CREATEDBY
+                        }).ToListAsync();
+            return data;
+        }
+        public async Task<bool> AddChecklistItem(ChecklistItemViewModel model)
+        {
+            var data = new TBL_CHECKLIST_ITEM
+            {
+                CHECKLISTITEMNAME = model.checkListItemName,
+                RESPONSE_TYPEID = model.responseTypeId,
+                REQUIREUPLOAD = model.requireUpload,
+                DATETIMECREATED = _genSetup.GetApplicationDate(),
+                CHECKLIST_TYPEID = model.checkListTypeId,
+                CREATEDBY = (int)model.createdBy,
+                PRODUCTID = model.productId,
+                OPERATIONID = model.operationId,
+                OPERATIONTYPEID = model.operationTypeId,
+                DELETED = false
+            };
+            // Audit Section ---------------------------
+            var audit = new TBL_AUDIT
+            {
+                AUDITTYPEID = (short)AuditTypeEnum.ChecklistItemAdded,
+                STAFFID = model.createdBy,
+                BRANCHID = (short)model.userBranchId,
+                DETAIL = $"{TranslateHelper.get("Added Checklist Item")} '{model.checkListItemName}'",
+                IPADDRESS = CommonHelpers.GetLocalIpAddress(),
+                URL = model.applicationUrl,
+                APPLICATIONDATE = _genSetup.GetApplicationDate(),
+                SYSTEMDATETIME = DateTime.Now,
+                DEVICENAME = CommonHelpers.GetDeviceName(),
+                OSNAME = CommonHelpers.FriendlyName()
+            };
+
+            context.TBL_CHECKLIST_ITEM.Add(data);
+            this.auditTrail.AddAuditTrail(audit);
+
+            //end of Audit section -------------------------------
+
+            return  await context.SaveChangesAsync() != 0;
+        }
+
+        public async Task<bool> AddMultipleChecklistItem(List<ChecklistItemViewModel> models)
+        {
+            if (models.Count <= 0)
+                return false;
+
+            foreach (ChecklistItemViewModel model in models)
+            {
+              await  AddChecklistItem(model);
+            }
+
+            return true;
+        }
+
+        public async Task<bool> UpdateChecklistItem(int CheckListItemId, ChecklistItemViewModel model)
+        {
+            var data = await this.context.TBL_CHECKLIST_ITEM.FindAsync(CheckListItemId);
+            if (data == null) return false;
+
+            data.REQUIREUPLOAD = model.requireUpload;
+            data.RESPONSE_TYPEID = model.responseTypeId;
+            data.CHECKLISTITEMNAME = model.checkListItemName;
+            data.CHECKLIST_TYPEID = model.checkListTypeId;
+            data.DATETIMEUPDATED = _genSetup.GetApplicationDate();
+            data.LASTUPDATEDBY = (int)model.createdBy;
+            data.PRODUCTID = model.productId;
+            data.OPERATIONID = model.operationId;
+            data.OPERATIONTYPEID = model.operationTypeId;
+
+            // Audit Section ---------------------------
+            var audit = new TBL_AUDIT
+            {
+                AUDITTYPEID = (short)AuditTypeEnum.ChecklistItemUpdated,
+                STAFFID = model.createdBy,
+                BRANCHID = (short)model.userBranchId,
+                DETAIL = $"{TranslateHelper.get("Updated Checklist Item")} '{model.checkListItemName}'",
+                IPADDRESS = CommonHelpers.GetLocalIpAddress(),
+                URL = model.applicationUrl,
+                APPLICATIONDATE = _genSetup.GetApplicationDate(),
+                SYSTEMDATETIME = DateTime.Now,
+                DEVICENAME = CommonHelpers.GetDeviceName(),
+                OSNAME = CommonHelpers.FriendlyName()
+            };
+
+            this.auditTrail.AddAuditTrail(audit);
+            //end of Audit section -------------------------------
+
+            return context.SaveChanges() != 0;
+        }
+
+        public async Task<bool> DeleteChecklistItem(int CheckListItemId, UserInfo user)
+        {
+            var data = await context.TBL_CHECKLIST_ITEM.FindAsync(CheckListItemId);
+            data.DELETED = true;
+            data.DELETEDBY = (int)user.staffId;
+            data.DATETIMEDELETED = _genSetup.GetApplicationDate();
+
+            // Audit Section ---------------------------
+            var audit = new TBL_AUDIT
+            {
+                AUDITTYPEID = (short)AuditTypeEnum.ChecklistItemDeleted,
+                STAFFID = user.staffId,
+                BRANCHID = (short)user.BranchId,
+                DETAIL = $"{TranslateHelper.get("Deleted Checklist Item")} '{data.CHECKLISTITEMNAME}'",
+                IPADDRESS = CommonHelpers.GetLocalIpAddress(),
+                URL = user.applicationUrl,
+                APPLICATIONDATE = _genSetup.GetApplicationDate(),
+                SYSTEMDATETIME = DateTime.Now,
+                DEVICENAME = CommonHelpers.GetDeviceName(),
+                OSNAME = CommonHelpers.FriendlyName()
+            };
+            this.auditTrail.AddAuditTrail(audit);
+            //end of Audit section -------------------------------
+
+            return await context.SaveChangesAsync() != 0;
+        }
+
+        #endregion
+
+        #region CheckList Select List
+        public async Task<IEnumerable<CheckListStatusViewModel>> GetAllChecklistStatus()
+        {
+            var data = await (from a in context.TBL_CHECKLIST_STATUS
+                        where a.DELETED == false
+                        select new CheckListStatusViewModel
+                        {
+                            checklistStatusId = a.CHECKLISTSTATUSID,
+                            checklistStatusName = a.CHECKLISTSTATUSNAME,
+                            responseTypeId = a.RESPONSE_TYPEID
+                        }).ToListAsync();
+            return data;
+        }
+
+
+
+        public async Task<IEnumerable<CheckListTargetTypeViewModel>> GetAllChecklistTargetType()
+        {
+            var data = await (from a in context.TBL_CHECKLIST_TARGETTYPE
+                        where a.DELETED == false
+                        select new CheckListTargetTypeViewModel
+                        {
+                            targetTypeId = a.TARGETTYPEID,
+                            targetTypeName = a.TARGETTYPENAME
+                        }).ToListAsync();
+            return data;
+        }
+        public async Task<IEnumerable<CheckListResponseTypeViewModel>> GetAllChecklistResponseType()
+        {
+            var data = await (from a in context.TBL_CHECKLIST_RESPONSE_TYPE
+                        select new CheckListResponseTypeViewModel
+                        {
+                            responseId = a.RESPONSE_TYPEID,
+                            responseName = a.RESPONSE_TYPE_NAME
+                        }).ToListAsync();
+            return data;
+        }
+        #endregion
+
+
+        #region Checklist entry validation
+        public async Task<bool> ValidateChecklistDetailEntry(int checklistDefinitionId, int targetId)
+        {
+            var data = await (from c in context.TBL_CHECKLIST_DETAIL
+                        where c.CHECKLISTDEFINITIONID == checklistDefinitionId
+                        && c.TARGETID == targetId
+                        select c).ToListAsync();
+            if (data.Any())
+            {
+                return true;
+            }
+            return false;
+        }
+        public async Task<bool> ValidateChecklistForDefferalOrWaival(ConditionPrecedentViewModel entity)
+        {
+            //var data = context.TBL_LOAN_CONDITION_PRECEDENT.Find(entity.conditionId);
+            if (entity == null) return false;
+            if (entity.isLMSChecklist == true)
+            {
+                var data = await this.context.TBL_LMSR_CONDITION_PRECEDENT.FindAsync(entity.conditionId);
+                if (data == null){ return false; }
+                if (data.APPROVALSTATUSID != (int)ApprovalStatusEnum.Approved &&
+              (data.CHECKLISTSTATUSID == (int)CheckListStatusEnum.Deferred || data.CHECKLISTSTATUSID == (int)CheckListStatusEnum.Waived))
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                var data = await this.context.TBL_LOAN_CONDITION_PRECEDENT.FindAsync(entity.conditionId);
+                if (data == null) { return false; }
+                if (data.APPROVALSTATUSID != (int)ApprovalStatusEnum.Approved &&
+              (data.CHECKLISTSTATUSID == (int)CheckListStatusEnum.Deferred || data.CHECKLISTSTATUSID == (int)CheckListStatusEnum.Waived))
+                {
+                    return true;
+                }
+            }
+          
+            return false;
+        }
+        #endregion
+
+
+        #region Condition Precedence Checklist
+        public async Task<IEnumerable<ConditionPrecedentViewModel>> GetConditionPrecedenceChecklist(int loanApplicationId, bool isAvailment)
+        {
+            if (isAvailment)
+            {
+                var condition = await (from c in context.TBL_LOAN_CONDITION_PRECEDENT
+                                 where c.TBL_LOAN_APPLICATION_DETAIL.LOANAPPLICATIONID == loanApplicationId && c.ISSUBSEQUENT == false
+                                 select new ConditionPrecedentViewModel()
+                                 {
+                                     condition = c.CONDITION,
+                                     conditionId = c.LOANCONDITIONID,
+                                     loanApplicationId = c.TBL_LOAN_APPLICATION_DETAIL.LOANAPPLICATIONID,
+                                     loanApplicationDetailId = c.LOANAPPLICATIONDETAILID,
+                                     isExternal = c.ISEXTERNAL,
+                                     responseTypeId = c.RESPONSE_TYPEID,
+                                     checkListStatusId = c.CHECKLISTSTATUSID,
+                                     validationStatus = c.CHECKLISTVALIDATED,
+                                     approvalStatusId = c.APPROVALSTATUSID,
+                                     deferedDate = c.DEFEREDDATE,
+                                     approvalStatus = "New",
+                                     operationId = c.TBL_LOAN_APPLICATION_DETAIL.TBL_LOAN_APPLICATION.OPERATIONID,
+                                     customerId = c.TBL_LOAN_APPLICATION_DETAIL.CUSTOMERID,
+                                     loanApplicationReferenceNumber = c.TBL_LOAN_APPLICATION_DETAIL.TBL_LOAN_APPLICATION.APPLICATIONREFERENCENUMBER
+                                 }).ToListAsync();
+                return condition;
+            }
+            else
+            {
+                var condition = await (from c in context.TBL_LOAN_CONDITION_PRECEDENT
+                                 where c.TBL_LOAN_APPLICATION_DETAIL.LOANAPPLICATIONID == loanApplicationId
+                                //&& c.ISEXTERNAL == true 
+                                 && c.ISSUBSEQUENT == false &&
+                                  c.CHECKLISTSTATUSID == null
+                                  && c.APPROVALSTATUSID == (int)ApprovalStatusEnum.Pending
+                                 select new ConditionPrecedentViewModel()
+                                 {
+                                     condition = c.CONDITION,
+                                     conditionId = c.LOANCONDITIONID,
+                                     loanApplicationId = c.TBL_LOAN_APPLICATION_DETAIL.LOANAPPLICATIONID,
+                                     loanApplicationDetailId = c.LOANAPPLICATIONDETAILID,
+                                     isExternal = c.ISEXTERNAL,
+                                     responseTypeId = c.RESPONSE_TYPEID,
+                                     checkListStatusId = c.CHECKLISTSTATUSID,
+                                     checkListValidated = c.CHECKLISTVALIDATED,
+                                     approvalStatusId = c.APPROVALSTATUSID,
+                                     approvalStatus = "New",
+                                     deferedDate =c.DEFEREDDATE
+
+                                 }).ToListAsync();
+                return condition;
+            }
+        }
+        public async Task<IEnumerable<ConditionPrecedentViewModel>> GetConditionPrecedenceChecklistStatus(int loanApplicationId, bool isAvailment, int staffId)
+        {
+            if (isAvailment)
+            {
+                var status = await (from c in context.TBL_LOAN_CONDITION_PRECEDENT
+                              join a in context.TBL_LOAN_APPLICATION_DETAIL on c.LOANAPPLICATIONDETAILID equals a.LOANAPPLICATIONDETAILID
+                              join d in context.TBL_LOAN_CONDITION_DEFERRAL on c.LOANCONDITIONID equals d.LOANCONDITIONID
+                              where a.LOANAPPLICATIONID == loanApplicationId &&
+                                c.ISSUBSEQUENT == false && a.STATUSID == (int)ApprovalStatusEnum.Approved
+                                && d.APPROVALSTATUSID == (int)ApprovalStatusEnum.Pending
+                              orderby c.ISEXTERNAL descending
+                              select new ConditionPrecedentViewModel()
+                              {
+                                  condition = c.CONDITION,
+                                  conditionId = c.LOANCONDITIONID,
+                                  status = c.TBL_CHECKLIST_STATUS.CHECKLISTSTATUSNAME,
+                                  checkListStatusId = c.TBL_CHECKLIST_STATUS.CHECKLISTSTATUSID,
+                                  approvalStatus = c.TBL_APPROVAL_STATUS.APPROVALSTATUSNAME,
+                                  loanApplicationId = c.TBL_LOAN_APPLICATION_DETAIL.LOANAPPLICATIONID,
+                                  validationStatus = c.CHECKLISTVALIDATED,
+                                  approvalStatusId = c.APPROVALSTATUSID,
+                                 // checklistDifinitionId = context.TBL_CHECKLIST_DETAIL.Where(o=>o.TARGETID== a.LOANAPPLICATIONDETAILID).Select(o=>o.CHECKLISTDEFINITIONID).FirstOrDefault(),
+                                  isExternal = c.ISEXTERNAL,
+                                  deferedDate = c.DEFEREDDATE,
+                                  comment = d.DEFERRALREASON
+                              }).ToListAsync();
+
+
+                return status;
+
+            }
+            else
+            {
+                var status1NotStarted = await (from c in context.TBL_LOAN_CONDITION_PRECEDENT
+                                            join d in context.TBL_LOAN_CONDITION_DEFERRAL on c.LOANCONDITIONID equals d.LOANCONDITIONID
+                                            where c.TBL_LOAN_APPLICATION_DETAIL.LOANAPPLICATIONID == loanApplicationId &&
+                                            c.CHECKLISTSTATUSID != null
+                                            && (c.APPROVALSTATUSID == (int)ApprovalStatusEnum.Pending)
+                                            && d.APPROVALSTATUSID == (int)ApprovalStatusEnum.Pending
+                                         orderby c.ISEXTERNAL descending
+                                          select new ConditionPrecedentViewModel()
+                                          {
+                                              condition = c.CONDITION,
+                                              conditionId = c.LOANCONDITIONID,
+                                              status = c.TBL_CHECKLIST_STATUS.CHECKLISTSTATUSNAME,
+                                              checkListStatusId = c.TBL_CHECKLIST_STATUS.CHECKLISTSTATUSID,
+                                              approvalStatus = c.TBL_APPROVAL_STATUS.APPROVALSTATUSNAME,
+                                              loanApplicationId = c.TBL_LOAN_APPLICATION_DETAIL.LOANAPPLICATIONID,
+                                              validationStatus = c.CHECKLISTVALIDATED,
+                                              isExternal = c.ISEXTERNAL,
+                                              approvalStatusId = c.APPROVALSTATUSID,
+                                              comment = d.DEFERRALREASON
+                                          }).ToListAsync();
+
+                var status2InProgress = await (from c in context.TBL_LOAN_CONDITION_PRECEDENT
+                                         join t in context.TBL_APPROVAL_TRAIL on c.LOANCONDITIONID equals t.TARGETID
+                                         where c.TBL_LOAN_APPLICATION_DETAIL.LOANAPPLICATIONID == loanApplicationId
+                                           && (c.APPROVALSTATUSID == (int)ApprovalStatusEnum.Processing || c.APPROVALSTATUSID == (int)ApprovalStatusEnum.Disapproved)
+                                         && c.CHECKLISTSTATUSID != null
+                                         //&& t.LOOPEDSTAFFID == staffId
+                                         && (t.OPERATIONID == (int)OperationsEnum.DefferedChecklistApproval || t.OPERATIONID == (int)OperationsEnum.WaivedChecklistApproval)
+                                         select new ConditionPrecedentViewModel()
+                                         {
+                                             condition = c.CONDITION,
+                                             loopedStaffId = (int)t.LOOPEDSTAFFID,
+                                             conditionId = c.LOANCONDITIONID,
+                                             status = c.TBL_CHECKLIST_STATUS.CHECKLISTSTATUSNAME,
+                                             checkListStatusId = c.TBL_CHECKLIST_STATUS.CHECKLISTSTATUSID,
+                                             approvalStatus = t.TBL_APPROVAL_STATUS.APPROVALSTATUSNAME,
+                                             loanApplicationId = c.TBL_LOAN_APPLICATION_DETAIL.LOANAPPLICATIONID,
+                                             validationStatus = c.CHECKLISTVALIDATED,
+                                             isExternal = c.ISEXTERNAL,
+                                             approvalStatusId = t.APPROVALSTATUSID,
+                                             approvalTrailId = t.APPROVALTRAILID,
+                                             comment = t.COMMENT
+                                         }).GroupBy(c => c.conditionId).Select(c => c.OrderByDescending(l => l.approvalTrailId).FirstOrDefault())
+                                           .Where(l => (l.approvalStatusId == (int)ApprovalStatusEnum.Disapproved)
+                                            || (l.approvalStatusId == (int)ApprovalStatusEnum.Referred
+                                            && l.loopedStaffId == staffId)).ToListAsync();
+
+                if (status1NotStarted == null)
+                {
+                    return status2InProgress;
+                }
+
+                if (status2InProgress == null)
+                {
+                    return status1NotStarted;
+                }
+                var status = status1NotStarted.Union(status2InProgress);
+                return status;
+            }
+        }
+        public async Task<bool> ValidatePrecedenceChecklistCompleted(int loanApplicationId)
+        {
+
+            var condition = await (from c in context.TBL_LOAN_CONDITION_PRECEDENT
+                             where c.TBL_LOAN_APPLICATION_DETAIL.LOANAPPLICATIONID == loanApplicationId
+                             && c.ISSUBSEQUENT == false //&& c.ISEXTERNAL == true 
+                             select c).ToListAsync();
+
+            var status = await (from c in context.TBL_LOAN_CONDITION_PRECEDENT
+                          where c.TBL_LOAN_APPLICATION_DETAIL.LOANAPPLICATIONID == loanApplicationId
+                          && c.ISSUBSEQUENT == false && c.CHECKLISTSTATUSID != null //&& c.ISEXTERNAL == true
+                          select c).ToListAsync();
+            var output = condition.Count == status.Count;
+            if (output == false)
+            {
+                var loan = await context.TBL_LOAN_APPLICATION.FindAsync(loanApplicationId);
+                var staffEmail = await context.TBL_STAFF.FindAsync(loan.CREATEDBY);
+                var alertDetail = context.TBL_ALERT_TITLE.Where(x => x.BINDINGMETHOD == "GetCreditFileChecklistReminder").FirstOrDefault();
+                var emailList = GetBusinessUsersEmailsToGroupHead(staffEmail.MISCODE) + ";" + alertDetail.DEFAULTEMAIL + ";" + GetAllCreditPortfolioStaffEmails();
+                alert.receiverEmailList.Add(emailList);
+                var alertTemplate = alertDetail.TEMPLATE;
+                var accountOfficer = staffEmail.FIRSTNAME + " " + staffEmail.LASTNAME + " " + staffEmail.MIDDLENAME;
+                alertTemplate = alertTemplate.Replace("@{{accountOfficer}}", accountOfficer);
+                alertTemplate = alertTemplate.Replace("@{{referenceNumber}}", loan.APPLICATIONREFERENCENUMBER);
+                LogEmailAlert(alertDetail.TEMPLATE, alertDetail.TITLE, alert.receiverEmailList, "20023", 20023, "GetCreditFileChecklistReminder");
+
+            }
+            return output;
+        }
+        public async Task<bool> LMSValidatePrecedenceChecklistCompleted(int applicationId)
+        {
+
+            var condition = await (from c in context.TBL_LMSR_CONDITION_PRECEDENT
+                             where c.TBL_LMSR_APPLICATION_DETAIL.LOANAPPLICATIONID == applicationId
+                             && c.ISSUBSEQUENT == false //&& c.ISEXTERNAL == true 
+                             select c).ToListAsync();
+            var status = await (from c in context.TBL_LMSR_CONDITION_PRECEDENT
+                          where c.TBL_LMSR_APPLICATION_DETAIL.LOANAPPLICATIONID == applicationId
+                          && c.ISSUBSEQUENT == false && c.CHECKLISTSTATUSID != null //&& c.ISEXTERNAL == true 
+                          select c).ToListAsync();
+            var output = condition.Count == status.Count;
+
+            if (output == false)
+            {
+                var loan = await context.TBL_LMSR_APPLICATION.FindAsync(applicationId);
+                var staffEmail = await context.TBL_STAFF.FindAsync(loan.CREATEDBY);
+                var alertDetail = context.TBL_ALERT_TITLE.Where(x => x.BINDINGMETHOD == "GetCreditFileChecklistReminder").FirstOrDefault();
+                var emailList = GetBusinessUsersEmailsToGroupHead(staffEmail.MISCODE) + ";" + alertDetail.DEFAULTEMAIL + GetAllCreditPortfolioStaffEmails();
+                alert.receiverEmailList.Add(emailList);
+                var alertTemplate = alertDetail.TEMPLATE;
+                var accountOfficer = staffEmail.FIRSTNAME + " " + staffEmail.LASTNAME + " " + staffEmail.MIDDLENAME;
+                alertTemplate = alertTemplate.Replace("@{{accountOfficer}}", accountOfficer);
+                alertTemplate = alertTemplate.Replace("@{{referenceNumber}}", loan.APPLICATIONREFERENCENUMBER);
+                LogEmailAlert(alertDetail.TEMPLATE, alertDetail.TITLE, alert.receiverEmailList, "20023", 20023, "GetCreditFileChecklistReminder");
+
+            }
+            return output;
+        }
+
+        public void LogEmailAlert(string messageBody, string alertSubject, List<string> recipients, string referenceCode, int targetId, string operationMehtod)
+        {
+            try
+            {
+                var title = alertSubject.Trim();
+                if (title.Contains("&"))
+                {
+                    title = title.Replace("&", "AND");
+                }
+                if (title.Contains("."))
+                {
+                    title = title.Replace(".", "");
+                }
+
+                string recipient = string.Join("", recipients.ToArray());
+                string messageSubject = title;
+                string messageContent = messageBody;
+                MessageLogViewModel messageModel = new MessageLogViewModel
+                {
+                    MessageSubject = messageSubject,
+                    MessageBody = messageContent,
+                    MessageStatusId = 1,
+                    MessageTypeId = 1,
+                    FromAddress = ConfigurationManager.AppSettings["SupportEmailAddr"],
+                    ToAddress = $"{recipient}",
+                    DateTimeReceived = DateTime.Now,
+                    SendOnDateTime = DateTime.Now,
+                    ReferenceCode = referenceCode,
+                    targetId = targetId,
+                    operationMethod = operationMehtod,
+                };
+                SaveMessageDetails(messageModel);
+            }
+            catch (Exception ex)
+            {
+                new SecureException(ex.ToString());
+            }
+        }
+
+        private void SaveMessageDetails(MessageLogViewModel model)
+        {
+            var message = new TBL_MESSAGE_LOG()
+            {
+                //MessageId = model.MessageId,
+                MESSAGESUBJECT = model.MessageSubject,
+                MESSAGEBODY = model.MessageBody,
+                MESSAGESTATUSID = model.MessageStatusId,
+                MESSAGETYPEID = model.MessageTypeId,
+                FROMADDRESS = model.FromAddress,
+                TOADDRESS = model.ToAddress,
+                DATETIMERECEIVED = model.DateTimeReceived,
+                SENDONDATETIME = model.SendOnDateTime,
+                ATTACHMENTCODE = model.ReferenceCode,
+                ATTACHMENTTYPEID = (short)AttachementTypeEnum.JobRequest,
+                TARGETID = (int)model.targetId,
+                OPERATIONMETHOD = model.operationMethod
+            };
+
+            context.TBL_MESSAGE_LOG.Add(message);
+            context.SaveChanges();
+
+        }
+        private string GetBusinessUsersEmailsToGroupHead(string accountOfficerMIsCode)
+        {
+            string emailList = "";
+
+            var accountOfficer = context.TBL_STAFF.Where(x => x.MISCODE.ToLower() == accountOfficerMIsCode.ToLower()).FirstOrDefault();
+            if (accountOfficer != null)
+            {
+                emailList = accountOfficer.EMAIL;
+                if (accountOfficer.SUPERVISOR_STAFFID != null)
+                {
+                    var relationshipManager = context.TBL_STAFF.Where(x => x.STAFFID == accountOfficer.SUPERVISOR_STAFFID).FirstOrDefault();
+                    if (relationshipManager != null)
+                    {
+                        emailList = emailList + ";" + relationshipManager.EMAIL;
+                        if (relationshipManager.SUPERVISOR_STAFFID != null)
+                        {
+                            var zonalHead = context.TBL_STAFF.Where(x => x.STAFFID == relationshipManager.SUPERVISOR_STAFFID).FirstOrDefault();
+                            if (zonalHead != null)
+                            {
+                                emailList = emailList + ";" + zonalHead.EMAIL;
+
+                                var groupHead = context.TBL_STAFF.Where(x => x.STAFFID == zonalHead.SUPERVISOR_STAFFID).FirstOrDefault();
+
+                                if (groupHead != null)
+                                {
+                                    emailList = emailList + ";" + groupHead.EMAIL;
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
+
+            return emailList;
+        }
+        public string GetAllCreditPortfolioStaffEmails()
+        {
+            var list = "";
+            var role = context.TBL_STAFF_ROLE.Where(r => r.STAFFROLECODE == "CP").FirstOrDefault();
+            var roleEmail = context.TBL_STAFF.Where(s => s.STAFFROLEID == role.STAFFROLEID).ToList();
+
+            foreach (var t in roleEmail)
+            {
+                list = list + ";" + t.EMAIL;
+            }
+            return list;
+        }
+        public async Task<bool> DeleteLoanConditionPrecedenceStatus(int conditionId, bool isLMSChecklist, UserInfo user)
+        {
+            if (isLMSChecklist == true)
+            {
+                var data = await this.context.TBL_LMSR_CONDITION_PRECEDENT.FindAsync(conditionId);
+                if (data == null) return false;
+
+
+                if (data.CHECKLISTSTATUSID == (int)CheckListStatusEnum.Deferred || data.CHECKLISTSTATUSID == (int)CheckListStatusEnum.Waived)
+                {
+                    var deferral = context.TBL_LOAN_CONDITION_DEFERRAL.Where(x => x.LOANCONDITIONID == data.LOANCONDITIONID && x.ISLMS == true).FirstOrDefault();
+                    if (deferral != null)
+                    {
+                        context.TBL_LOAN_CONDITION_DEFERRAL.Remove(deferral);
+                    }
+                }
+                data.CHECKLISTSTATUSID = null;
+                data.APPROVALSTATUSID = (short)ApprovalStatusEnum.Pending;
+            }
+            else
+            {
+                var data = await this.context.TBL_LOAN_CONDITION_PRECEDENT.FindAsync(conditionId);
+                if (data == null) return false;
+
+
+                if (data.CHECKLISTSTATUSID == (int)CheckListStatusEnum.Deferred || data.CHECKLISTSTATUSID == (int)CheckListStatusEnum.Waived)
+                {
+                    var deferral = context.TBL_LOAN_CONDITION_DEFERRAL.Where(x => x.LOANCONDITIONID == data.LOANCONDITIONID && x.ISLMS == false).FirstOrDefault();
+                    if (deferral != null)
+                    {
+                        context.TBL_LOAN_CONDITION_DEFERRAL.Remove(deferral);
+                    }
+                }
+                data.CHECKLISTSTATUSID = null;
+                data.APPROVALSTATUSID = (short)ApprovalStatusEnum.Pending;
+            }
+            var audit = new TBL_AUDIT
+            {
+                AUDITTYPEID = (short)AuditTypeEnum.LoanChecklistDeleted,
+                STAFFID = user.staffId,
+                BRANCHID = (short)user.BranchId,
+                DETAIL = $"{TranslateHelper.get("Deleted Loan Condition Precedent with Id:")} {conditionId}",
+                IPADDRESS = CommonHelpers.GetLocalIpAddress(),
+                URL = user.applicationUrl,
+                APPLICATIONDATE = _genSetup.GetApplicationDate(),
+                SYSTEMDATETIME = DateTime.Now,
+                DEVICENAME = CommonHelpers.GetDeviceName(),
+                OSNAME = CommonHelpers.FriendlyName()
+            };
+            this.auditTrail.AddAuditTrail(audit);
+            //end of Audit section -------------------------------
+            return context.SaveChanges() > 0;
+        }
+        //public bool UpdateLoanConditionPrecedenceStatus(ConditionPrecedentViewModel model)
+        //{
+        //    var data = this.context.TBL_LOAN_CONDITION_PRECEDENT.Find(model.conditionId);
+        //    if (data == null) return false;
+
+        //    data.CHECKLISTSTATUSID = model.checkListStatusId;
+        //    data.APPROVALSTATUSID = (short)ApprovalStatusEnum.Approved;
+        //    if (model.checkListStatusId == (int)CheckListStatusEnum.Deferred || model.checkListStatusId == (int)CheckListStatusEnum.Waived)
+        //    {
+        //        data.APPROVALSTATUSID = (short)ApprovalStatusEnum.Pending;
+        //        data.DEFEREDDATE = model.deferedDate;
+        //    }
+
+        //    data.DATETIMEUPDATED = _genSetup.GetApplicationDate();
+        //    data.LASTUPDATEDBY = (int)model.createdBy;
+        //    if (model.checkListStatusId == (int)CheckListStatusEnum.Deferred || model.checkListStatusId == (int)CheckListStatusEnum.Waived)
+        //    {
+        //        var deferral = new TBL_LOAN_CONDITION_DEFERRAL();
+        //        deferral.LOANCONDITIONID = data.LOANCONDITIONID;
+        //        deferral.DEFERRALREASON = model.reason;
+        //        deferral.DEFERREDDATE = model.deferedDate == null ? DateTime.Now : (DateTime)model.deferedDate;
+        //        deferral.DATETIMECREATED = DateTime.Now;
+        //        deferral.APPROVALSTATUSID = (short)ApprovalStatusEnum.Pending;
+        //        deferral.CREATEDBY = model.createdBy;
+        //        context.TBL_LOAN_CONDITION_DEFERRAL.Add(deferral);
+        //    }
+
+        //    // Audit Section ---------------------------
+        //    var audit = new TBL_AUDIT
+        //    {
+        //        AUDITTYPEID = (short)AuditTypeEnum.LoanChecklistAdded,
+        //        STAFFID = model.createdBy,
+        //        BRANCHID = (short)model.userBranchId,
+        //        DETAIL = $"Added Loan Condition Precedence Checklist with Condition ID: {model.condition}",
+        //        IPADDRESS = model.userIPAddress,
+        //        URL = model.applicationUrl,
+        //        APPLICATIONDATE = _genSetup.GetApplicationDate(),
+        //        SYSTEMDATETIME = DateTime.Now
+        //    };
+
+        //    this.auditTrail.AddAuditTrail(audit);
+
+        //    //end of Audit section -------------------------------
+        //    using (var trans = context.Database.BeginTransaction())
+        //    {
+        //        try
+        //        {
+
+        //            var output = context.SaveChanges() != 0;
+
+        //            if (model.checkListStatusId == (int)CheckListStatusEnum.Deferred || model.checkListStatusId == (int)CheckListStatusEnum.Waived)
+        //            {
+
+        //                workFlow.StaffId = model.createdBy;
+        //                workFlow.CompanyId = model.companyId;
+        //                workFlow.StatusId = (int)ApprovalStatusEnum.Pending;
+        //                workFlow.TargetId = data.LOANCONDITIONID;
+        //                workFlow.Comment = "Checklist Approval";
+        //                workFlow.OperationId = (int)OperationsEnum.ChecklistApproval;
+        //                workFlow.ExternalInitialization = true;
+        //                workFlow.LogActivity();
+        //            }
+        //            trans.Commit();
+        //            return output;
+        //        }
+
+        //        catch (Exception ex)
+        //        {
+        //            trans.Rollback();
+        //            return false;
+        //            throw new SecureException(ex.Message);
+        //        }
+        //    }
+        //}
+
+        public async Task<bool> UpdateLoanConditionPrecedenceStatus(ConditionPrecedentViewModel model)
+        {
+            int loanConditionId = 0;
+            //if (model.deferedDays != null)
+            //    model.deferedDate = DateTime.Now.AddDays((int) model.deferedDays);
+
+            if (model.isLMSChecklist == true)
+            {
+                var data = await this.context.TBL_LMSR_CONDITION_PRECEDENT.FindAsync(model.conditionId);
+                if (data == null) return false;
+                loanConditionId = data.LOANCONDITIONID;
+                data.CHECKLISTSTATUSID = model.checkListStatusId;
+                //data.APPROVALSTATUSID = (short)ApprovalStatusEnum.Approved;
+                if (model.checkListStatusId == (int)CheckListStatusEnum.Deferred || model.checkListStatusId == (int)CheckListStatusEnum.Waived)
+                {
+                    //data.APPROVALSTATUSID = (short)ApprovalStatusEnum.Pending;
+                    if (model.deferedDate != null)
+                    {
+                        data.DEFEREDDAYS = (model.deferedDate - DateTime.Now).Value.Days;
+                    }
+                    data.DEFEREDDATE = model.deferedDate;
+                }
+
+                data.DATETIMEUPDATED = DateTime.Now;
+                data.LASTUPDATEDBY = (int)model.createdBy;
+            }
+            else
+            {
+                var data = await this.context.TBL_LOAN_CONDITION_PRECEDENT.FindAsync(model.conditionId);
+                if (data == null) return false;
+                loanConditionId = data.LOANCONDITIONID;
+                data.CHECKLISTSTATUSID = model.checkListStatusId;
+                //data.APPROVALSTATUSID = (short)ApprovalStatusEnum.Approved;
+                if (model.checkListStatusId == (int)CheckListStatusEnum.Deferred || model.checkListStatusId == (int)CheckListStatusEnum.Waived)
+                {
+                    //data.APPROVALSTATUSID = (short)ApprovalStatusEnum.Pending;
+                    //data.DEFEREDDAYS = model.deferedDays;
+                    if (model.deferedDate != null)
+                    {
+                        data.DEFEREDDAYS = (model.deferedDate - DateTime.Now).Value.Days;
+                    }
+                    data.DEFEREDDATE = model.deferedDate;
+                }
+
+                data.DATETIMEUPDATED = DateTime.Now;
+                data.LASTUPDATEDBY = (int)model.createdBy;
+            }
+
+            if (model.checkListStatusId == (int)CheckListStatusEnum.Deferred || model.checkListStatusId == (int)CheckListStatusEnum.Waived)
+            {
+                var deferral = new TBL_LOAN_CONDITION_DEFERRAL();
+                deferral.LOANCONDITIONID = loanConditionId;
+                deferral.DEFERRALREASON = model.reason;
+                deferral.DEFEREDDAYS = model.deferedDate != null ? (model.deferedDate - DateTime.Now).Value.Days : model.deferedDays;
+                deferral.DEFERREDDATE = model.deferedDate;
+                deferral.ISLMS = model.isLMSChecklist;
+                deferral.DATETIMECREATED = DateTime.Now;
+                deferral.APPROVALSTATUSID = (short)ApprovalStatusEnum.Pending;
+                deferral.CREATEDBY = model.createdBy;
+                context.TBL_LOAN_CONDITION_DEFERRAL.Add(deferral);
+            }
+
+            // Audit Section ---------------------------
+            var audit = new TBL_AUDIT
+            {
+                AUDITTYPEID = (short)AuditTypeEnum.LoanChecklistAdded,
+                STAFFID = model.createdBy,
+                BRANCHID = (short)model.userBranchId,
+                DETAIL = $"{TranslateHelper.get("Added Loan Review Condition Precedence Checklist with Condition ID:")} {model.condition}",
+                IPADDRESS = CommonHelpers.GetLocalIpAddress(),
+                URL = model.applicationUrl,
+                APPLICATIONDATE = _genSetup.GetApplicationDate(),
+                SYSTEMDATETIME = DateTime.Now,
+                DEVICENAME = CommonHelpers.GetDeviceName(),
+                OSNAME = CommonHelpers.FriendlyName()
+            };
+
+            this.auditTrail.AddAuditTrail(audit);
+            var output = context.SaveChanges() != 0;
+            //end of Audit section -------------------------------
+            //using (var trans = context.Database.BeginTransaction())
+            //{
+            //    var output = context.SaveChanges() != 0;
+
+            //    if (model.checkListStatusId == (int)CheckListStatusEnum.Deferred || model.checkListStatusId == (int)CheckListStatusEnum.Waived)
+            //    {
+
+            //        workflow.StaffId = model.createdBy;
+            //        workflow.CompanyId = model.companyId;
+            //        workflow.StatusId = (int)ApprovalStatusEnum.Pending;
+            //        workflow.TargetId = loanConditionId;
+            //        workflow.Comment = "LMS Checklist Approval";
+            //        workflow.OperationId = model.checkListStatusId == (int)CheckListStatusEnum.Deferred ? (int)OperationsEnum.DefferedChecklistApproval : (int)OperationsEnum.WaivedChecklistApproval;
+            //        workflow.ExternalInitialization = true;
+            //        workflow.LogActivity();
+            //    }
+            //    trans.Commit();
+            //    return output;
+            //}
+            return output;
+        }
+
+        public async Task<bool> ForwardChecklistForApproval(List<ConditionPrecedentViewModel> models)
+        {
+            bool output = false;
+            using (var trans = context.Database.BeginTransaction())
+            {
+                foreach (var model in models)
+                {
+                    var data = await this.context.TBL_LOAN_CONDITION_PRECEDENT.FindAsync(model.conditionId);
+                    var loanConditionId = data.LOANCONDITIONID;
+                
+                    if (model.checkListStatusId == (int)CheckListStatusEnum.Deferred || model.checkListStatusId == (int)CheckListStatusEnum.Waived)
+                    {
+
+                        workflow.StaffId = model.createdBy;
+                        workflow.CompanyId = model.companyId;
+                        workflow.StatusId = (int)ApprovalStatusEnum.Pending;
+                        workflow.TargetId = loanConditionId;
+                        workflow.NextLevelId = null;
+                        workflow.Comment = TranslateHelper.get("Checklist Approval");
+                        workflow.OperationId = model.checkListStatusId == (int)CheckListStatusEnum.Deferred ? (int)OperationsEnum.DefferedChecklistApproval : (int)OperationsEnum.WaivedChecklistApproval;
+                        workflow.ExternalInitialization = true;
+                        workflow.LogActivity();
+                    }
+                        data.APPROVALSTATUSID = (int)ApprovalStatusEnum.Processing;
+                    if (workflow.NewState == (int)ApprovalState.Ended)
+                    {
+                        if (workflow.StatusId == (int)ApprovalStatusEnum.Approved)
+                        {
+                            data.APPROVALSTATUSID = (int)ApprovalStatusEnum.Approved;
+                        }
+                        if (workflow.StatusId == (int)ApprovalStatusEnum.Disapproved)
+                        {
+                            data.APPROVALSTATUSID = (int)ApprovalStatusEnum.Disapproved;
+                        }
+                    }
+                }
+
+                output = await context.SaveChangesAsync() > 0;
+                trans.Commit();
+            }
+           
+            return output;
+        }
+
+        public async Task<IEnumerable<ChecklistApprovalViewModel>> GetDeferralDocumentsAwaitingApproval(int staffId, int companyId)
+        {
+            var ids = _genSetup.GetStaffApprovalLevelIds(staffId, (int)OperationsEnum.ProvisionOfDeferredDocument).ToList();
+            var staff = from s in context.TBL_STAFF select s;
+
+            var dataLOS = await (from a in context.TBL_LOAN_APPLICATION_DETAIL
+                           join b in context.TBL_LOAN_CONDITION_PRECEDENT on a.LOANAPPLICATIONDETAILID equals b.LOANAPPLICATIONDETAILID
+                           join c in context.TBL_LOAN_CONDITION_DEFERRAL on b.LOANCONDITIONID equals c.LOANCONDITIONID
+                           join atrail in context.TBL_APPROVAL_TRAIL on c.LOANCONDITIONID equals atrail.TARGETID
+                           where c.ISLMS == false
+                           && ((atrail.OPERATIONID == (int)OperationsEnum.ProvisionOfDeferredDocument))
+                               && ids.Contains((int)atrail.TOAPPROVALLEVELID)
+                               && atrail.RESPONSESTAFFID == null
+                               && atrail.LOOPEDSTAFFID == null
+                           orderby a.DATETIMECREATED descending
+                           select new ChecklistApprovalViewModel()
+                           {
+                               customerName = a.TBL_LOAN_APPLICATION.LOANAPPLICATIONTYPEID == (short)LoanTypeEnum.CustomerGroup ? a.TBL_LOAN_APPLICATION.TBL_CUSTOMER_GROUP.GROUPNAME : a.TBL_CUSTOMER.FIRSTNAME + " " + a.TBL_CUSTOMER.MIDDLENAME + " " + a.TBL_CUSTOMER.LASTNAME,
+                               customerId = a.TBL_LOAN_APPLICATION.LOANAPPLICATIONTYPEID == (short)LoanTypeEnum.CustomerGroup ? a.TBL_LOAN_APPLICATION.TBL_CUSTOMER_GROUP.CUSTOMERGROUPID : a.TBL_CUSTOMER.CUSTOMERID,
+                               proposedAmount = a.APPROVEDAMOUNT,
+                               loanConditionId = c.LOANCONDITIONID,
+                               approvalTrailId = atrail.APPROVALTRAILID,
+                               //approvalStatus = b.TBL_APPROVAL_STATUS.APPROVALSTATUSNAME,
+                               approvalStatus = atrail.TBL_APPROVAL_STATUS.APPROVALSTATUSNAME,
+                               deferredDate = b.DEFEREDDATE,
+                               
+                               condition = b.CONDITION,
+                               loanApplicationDetailId = a.LOANAPPLICATIONDETAILID,
+                               conditionId = b.LOANCONDITIONID,
+                               loanApplicationId = b.TBL_LOAN_APPLICATION_DETAIL.LOANAPPLICATIONID,
+                               applicationReferenceNumber = a.TBL_LOAN_APPLICATION.APPLICATIONREFERENCENUMBER,
+                               checklistStatus = b.TBL_CHECKLIST_STATUS.CHECKLISTSTATUSNAME,
+                               //dateCreated = b.DATETIMECREATED,
+                               dateCreated = atrail.SYSTEMARRIVALDATETIME,
+                               comment = atrail.COMMENT,
+                               operationId = atrail.OPERATIONID,
+                               deferralId = c.CHECKLISTDEFERRALID,
+                               //Loan Information
+                               relationshipOfficerName = a.TBL_LOAN_APPLICATION.TBL_STAFF.FIRSTNAME + " " + a.TBL_LOAN_APPLICATION.TBL_STAFF.FIRSTNAME,
+                               relationshipManagerName = a.TBL_LOAN_APPLICATION.TBL_STAFF1.FIRSTNAME + " " + a.TBL_LOAN_APPLICATION.TBL_STAFF1.FIRSTNAME,
+                               applicationAmount = a.TBL_LOAN_APPLICATION.APPLICATIONAMOUNT,
+                               applicationTenor = a.PROPOSEDTENOR,
+                               applicationDate = a.TBL_LOAN_APPLICATION.APPLICATIONDATE,
+                               isInvestmentGrade = a.TBL_LOAN_APPLICATION.ISINVESTMENTGRADE,
+                               isPoliticallyExposed = a.TBL_LOAN_APPLICATION.ISPOLITICALLYEXPOSED,
+                               isRelatedParty = a.TBL_LOAN_APPLICATION.ISRELATEDPARTY,
+                               approvalStatusId = b.APPROVALSTATUSID,
+                               applicationStatusId = a.TBL_LOAN_APPLICATION.APPLICATIONSTATUSID,
+                               submittedForAppraisal = a.TBL_LOAN_APPLICATION.SUBMITTEDFORAPPRAISAL,
+                               loanInformation = a.LOANPURPOSE,
+                               isLms = c.ISLMS == true,
+                               reason = c.DEFERRALREASON,
+                               excludeLegal = (c.EXCLUDELEGAL == null) ? "No" : c.EXCLUDELEGAL == true ? "Yes" : "No",
+                               toApprovalLevelName = atrail.TOAPPROVALLEVELID == null ? "N/A" : context.TBL_APPROVAL_LEVEL.Where(a => a.APPROVALLEVELID == atrail.TOAPPROVALLEVELID).Select(a => a.LEVELNAME).FirstOrDefault(),
+                               fromApprovalLevelName = atrail.FROMAPPROVALLEVELID == null ? staff.FirstOrDefault(r => r.STAFFID == atrail.REQUESTSTAFFID).TBL_STAFF_ROLE.STAFFROLENAME : context.TBL_APPROVAL_LEVEL.Where(a => a.APPROVALLEVELID == atrail.FROMAPPROVALLEVELID).Select(a => a.LEVELNAME).FirstOrDefault(),
+                               deferredDateOnFinalApproval = c.DEFEREDDATEONFINALAPPROVAL,
+                               dateApproved = c.DATEAPPROVED == null ? c.DATETIMECREATED : c.DATEAPPROVED,
+                           }).ToListAsync();
+
+            foreach (var x in dataLOS)
+            {
+                x.deferralDuration = x.deferredDateOnFinalApproval != null ? (x.deferredDateOnFinalApproval - x.dateApproved).Value.Days : 0;
+
+            }
+
+            var result = dataLOS.GroupBy(r => r.loanConditionId)
+                               .Select(p => p.OrderByDescending(r => r.approvalTrailId).FirstOrDefault()).ToList();
+            return result;
+        }
+
+        public async Task<IEnumerable<ChecklistApprovalViewModel>> GetDeferralExtensionsAwaitingApproval(int staffId, int companyId)
+        {
+            var ids = _genSetup.GetStaffApprovalLevelIds(staffId, (int)OperationsEnum.DeferralExtension).ToList();
+            var staff = from s in context.TBL_STAFF select s;
+
+            var dataLOS = (from a in context.TBL_LOAN_APPLICATION_DETAIL
+                           join b in context.TBL_LOAN_CONDITION_PRECEDENT on a.LOANAPPLICATIONDETAILID equals b.LOANAPPLICATIONDETAILID
+                           join c in context.TBL_LOAN_CONDITION_DEFERRAL on b.LOANCONDITIONID equals c.LOANCONDITIONID
+                           join atrail in context.TBL_APPROVAL_TRAIL on c.LOANCONDITIONID equals atrail.TARGETID
+                           where c.ISLMS == false
+                           && ((atrail.OPERATIONID == (int)OperationsEnum.DeferralExtension))
+                               && ids.Contains((int)atrail.TOAPPROVALLEVELID)
+                               && atrail.RESPONSESTAFFID == null
+                               && atrail.LOOPEDSTAFFID == null
+                           orderby a.DATETIMECREATED descending
+                           select new ChecklistApprovalViewModel()
+                           {
+                               customerName = a.TBL_LOAN_APPLICATION.LOANAPPLICATIONTYPEID == (short)LoanTypeEnum.CustomerGroup ? a.TBL_LOAN_APPLICATION.TBL_CUSTOMER_GROUP.GROUPNAME : a.TBL_CUSTOMER.FIRSTNAME + " " + a.TBL_CUSTOMER.MIDDLENAME + " " + a.TBL_CUSTOMER.LASTNAME,
+                               customerId = a.TBL_LOAN_APPLICATION.LOANAPPLICATIONTYPEID == (short)LoanTypeEnum.CustomerGroup ? a.TBL_LOAN_APPLICATION.TBL_CUSTOMER_GROUP.CUSTOMERGROUPID : a.TBL_CUSTOMER.CUSTOMERID,
+                               proposedAmount = a.APPROVEDAMOUNT,
+                               approvalStatus = b.TBL_APPROVAL_STATUS.APPROVALSTATUSNAME,
+                               //approvalStatus = atrail.TBL_APPROVAL_STATUS.APPROVALSTATUSNAME,
+                               deferredDate = b.DEFEREDDATE,
+                               
+                               condition = b.CONDITION,
+                               loanApplicationDetailId = a.LOANAPPLICATIONDETAILID,
+                               conditionId = b.LOANCONDITIONID,
+                               loanApplicationId = b.TBL_LOAN_APPLICATION_DETAIL.LOANAPPLICATIONID,
+                               applicationReferenceNumber = a.TBL_LOAN_APPLICATION.APPLICATIONREFERENCENUMBER,
+                               checklistStatus = b.TBL_CHECKLIST_STATUS.CHECKLISTSTATUSNAME,
+                               //dateCreated = b.DATETIMECREATED,
+                               dateCreated = atrail.SYSTEMARRIVALDATETIME,
+                               comment = atrail.COMMENT,
+                               operationId = atrail.OPERATIONID,
+                               deferralId = c.CHECKLISTDEFERRALID,
+                               //Loan Information
+                               relationshipOfficerName = a.TBL_LOAN_APPLICATION.TBL_STAFF.FIRSTNAME + " " + a.TBL_LOAN_APPLICATION.TBL_STAFF.FIRSTNAME,
+                               relationshipManagerName = a.TBL_LOAN_APPLICATION.TBL_STAFF1.FIRSTNAME + " " + a.TBL_LOAN_APPLICATION.TBL_STAFF1.FIRSTNAME,
+                               applicationAmount = a.TBL_LOAN_APPLICATION.APPLICATIONAMOUNT,
+                               applicationTenor = a.PROPOSEDTENOR,
+                               applicationDate = a.TBL_LOAN_APPLICATION.APPLICATIONDATE,
+                               isInvestmentGrade = a.TBL_LOAN_APPLICATION.ISINVESTMENTGRADE,
+                               isPoliticallyExposed = a.TBL_LOAN_APPLICATION.ISPOLITICALLYEXPOSED,
+                               isRelatedParty = a.TBL_LOAN_APPLICATION.ISRELATEDPARTY,
+                               approvalStatusId = b.APPROVALSTATUSID,
+                               applicationStatusId = a.TBL_LOAN_APPLICATION.APPLICATIONSTATUSID,
+                               submittedForAppraisal = a.TBL_LOAN_APPLICATION.SUBMITTEDFORAPPRAISAL,
+                               loanInformation = a.LOANPURPOSE,
+                               isLms = c.ISLMS == true,
+                               reason = c.DEFERRALREASON,
+                               toApprovalLevelName = atrail.TOAPPROVALLEVELID == null ? "N/A" : context.TBL_APPROVAL_LEVEL.Where(a => a.APPROVALLEVELID == atrail.TOAPPROVALLEVELID).Select(a => a.LEVELNAME).FirstOrDefault(),
+                               fromApprovalLevelName = atrail.FROMAPPROVALLEVELID == null ? staff.FirstOrDefault(r => r.STAFFID == atrail.REQUESTSTAFFID).TBL_STAFF_ROLE.STAFFROLENAME : context.TBL_APPROVAL_LEVEL.Where(a => a.APPROVALLEVELID == atrail.FROMAPPROVALLEVELID).Select(a => a.LEVELNAME).FirstOrDefault(),
+                               deferredDateOnFinalApproval = c.DEFEREDDATEONFINALAPPROVAL,
+                               dateApproved = c.DATEAPPROVED == null ? c.DATETIMECREATED : c.DATEAPPROVED,
+                           }).ToList().GroupBy(O => new { O.applicationReferenceNumber, O.conditionId, O.dateCreated, O.customerId }).Select(O => O.FirstOrDefault());
+
+            foreach (var x in dataLOS)
+            {
+                x.deferralDuration = x.deferredDateOnFinalApproval != null ? (x.deferredDateOnFinalApproval - x.dateApproved).Value.Days : 0;
+
+            }
+            return dataLOS;
+        }
+
+        public String ResponseMessage(WorkflowResponse response, string itemHeading)
+        {
+            if (response.stateId != (int)ApprovalState.Ended)
+            {
+                if (response.statusId == (int)ApprovalStatusEnum.Referred)
+                {
+                    if (response.nextPersonId > 0)
+                    {
+                        return $"{TranslateHelper.get("The")} {itemHeading} {TranslateHelper.get("request has been REFERRED to")} {response.nextPersonName}";
+                    }
+                    else
+                    {
+                        return $"{TranslateHelper.get("The")} {itemHeading} {TranslateHelper.get("request has been REFERRED to")} {response.nextLevelName}";
+                    }
+                }
+                else
+                {
+                    if (response.nextPersonId > 0)
+                    {
+                        return $"{TranslateHelper.get("The")} {TranslateHelper.get("request has been SENT to")} {response.nextPersonName}";
+                    }
+                    else
+                    {
+                        return $"{TranslateHelper.get("The")} {TranslateHelper.get("request has been SENT to")} {response.nextLevelName}";
+                    }
+                }
+            }
+            else
+            {
+                if (response.statusId == (int)ApprovalStatusEnum.Approved)
+                {
+                    return $"{TranslateHelper.get("The")} {itemHeading} {TranslateHelper.get("request has been APPROVED successfully")}";
+                }
+                else
+                {
+                    return $"{TranslateHelper.get("The")} {itemHeading} {TranslateHelper.get("request has been DISAPPROVED successfully")}";
+                }
+            }
+
+        }
+
+        public WorkflowResponse SubmitDeferralDocumentForApproval(ConditionPrecedentViewModel model)
+        {
+            //bool response = false;
+            using (var transaction = context.Database.BeginTransaction())
+            {
+                workflow.StaffId = model.createdBy;
+                workflow.CompanyId = model.companyId;
+                workflow.StatusId = model.approvalStatusId == 3 ? (int)ApprovalStatusEnum.Disapproved : (int)ApprovalStatusEnum.Processing;
+                workflow.TargetId = model.conditionId;
+                workflow.NextLevelId = null;
+                workflow.Comment = model.comment;
+                workflow.OperationId = (int)OperationsEnum.ProvisionOfDeferredDocument;
+                workflow.ExternalInitialization = true;
+
+                var deferral = (from a in this.context.TBL_LOAN_CONDITION_DEFERRAL where a.LOANCONDITIONID == model.conditionId select a).FirstOrDefault();
+
+                if(deferral != null && deferral.EXCLUDELEGAL != null) {
+                    workflow.LevelBusinessRule = new LevelBusinessRule { excludeLevel = deferral.EXCLUDELEGAL.Value };
+                }
+
+                workflow.LogActivity();
+
+                try
+                {
+                    if (workflow.NewState == (int)ApprovalState.Ended)
+                    {
+                        var precedent = this.context.TBL_LOAN_CONDITION_PRECEDENT.Find(model.conditionId);
+
+                        if (workflow.StatusId == (int)ApprovalStatusEnum.Approved)
+                        {
+                            if (precedent != null)
+                                precedent.APPROVALSTATUSID = (int)ApprovalStatusEnum.Approved;
+
+                            if (precedent.CHECKLISTSTATUSID != null)
+                                precedent.CHECKLISTSTATUSID = (int)CheckListStatusEnum.Provided;
+
+                            if (deferral != null)
+                                deferral.APPROVALSTATUSID = (int)ApprovalStatusEnum.Approved;
+                        }
+
+                        if (workflow.StatusId == (int)ApprovalStatusEnum.Disapproved)
+                        {
+                            if (precedent != null)
+                                precedent.APPROVALSTATUSID = (int)ApprovalStatusEnum.Disapproved;
+                        }
+                    }
+
+                    context.SaveChanges();
+                    transaction.Commit();
+                    return workflow.Response;
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw ex;
+                }
+            }
+        }
+
+        public async Task<bool> SubmitDeferralExtensionForApproval(ConditionPrecedentViewModel model)
+        {
+            bool response = false;
+
+            using (var transaction = context.Database.BeginTransaction())
+            {
+                workflow.StaffId = model.createdBy;
+                workflow.CompanyId = model.companyId;
+                workflow.StatusId = model.approvalStatusId == 3 ? (int)ApprovalStatusEnum.Disapproved : (int)ApprovalStatusEnum.Processing;
+                workflow.TargetId = model.conditionId;
+                workflow.NextLevelId = null;
+                workflow.Comment = model.comment;
+                workflow.OperationId = (int)OperationsEnum.DeferralExtension;
+                workflow.ExternalInitialization = true;
+                workflow.LogActivity();
+
+                try
+                {
+                    if (workflow.NewState == (int)ApprovalState.Ended)
+                    {
+                        var precedent = this.context.TBL_LOAN_CONDITION_PRECEDENT.Find(model.conditionId);
+                        var deferral = (from a in this.context.TBL_LOAN_CONDITION_DEFERRAL where a.LOANCONDITIONID == model.conditionId select a).FirstOrDefault();
+
+                        if (workflow.StatusId == (int)ApprovalStatusEnum.Approved)
+                        {
+                            if (precedent != null)
+                                precedent.APPROVALSTATUSID = (int)ApprovalStatusEnum.Approved;
+
+                            if (precedent.CHECKLISTSTATUSID != null)
+                                precedent.CHECKLISTSTATUSID = (int)CheckListStatusEnum.Provided;
+
+                            if (deferral != null)
+                                deferral.APPROVALSTATUSID = (int)ApprovalStatusEnum.Approved;
+                        }
+
+                        if (workflow.StatusId == (int)ApprovalStatusEnum.Disapproved)
+                        {
+                            if (precedent != null)
+                                precedent.APPROVALSTATUSID = (int)ApprovalStatusEnum.Disapproved;
+                        }
+                    }
+
+                    response = await  context.SaveChangesAsync() > 0;
+                    transaction.Commit();
+                    return response;
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw ex;
+                }
+            }
+        }
+
+        public async Task<IEnumerable<ChecklistApprovalViewModel>> GetChecklistAwaitingApproval(int staffId, int companyId)
+        {
+              var ids = _genSetup.GetStaffApprovalLevelIds(staffId, (int)OperationsEnum.ChecklistOperation).ToList();
+
+            var dataLOS = await (from a in context.TBL_LOAN_APPLICATION_DETAIL
+                        join b in context.TBL_LOAN_CONDITION_PRECEDENT on a.LOANAPPLICATIONDETAILID equals b.LOANAPPLICATIONDETAILID
+                        join c in context.TBL_LOAN_CONDITION_DEFERRAL on b.LOANCONDITIONID equals c.LOANCONDITIONID
+                        join atrail in context.TBL_APPROVAL_TRAIL on c.LOANCONDITIONID equals atrail.TARGETID
+                        where c.ISLMS == false
+                        && ((atrail.OPERATIONID == (int)OperationsEnum.DefferedChecklistApproval) || (atrail.OPERATIONID == (int)OperationsEnum.WaivedChecklistApproval))
+                            && ids.Contains((int)atrail.TOAPPROVALLEVELID)
+                            && atrail.RESPONSESTAFFID == null
+                            && atrail.LOOPEDSTAFFID == null
+                        orderby a.DATETIMECREATED descending
+                        select new ChecklistApprovalViewModel()
+                        {
+                            divisionCode = (from p in context.TBL_PROFILE_BUSINESS_UNIT join c in context.TBL_CUSTOMER on p.BUSINESSUNITID equals c.BUSINESSUNTID where c.CUSTOMERID == c.CUSTOMERID select p.BUSINESSUNITINITIALS).FirstOrDefault(),
+                            divisionShortCode = (from p in context.TBL_PROFILE_BUSINESS_UNIT join c in context.TBL_CUSTOMER on p.BUSINESSUNITID equals c.BUSINESSUNTID where c.CUSTOMERID == c.CUSTOMERID select p.BUSINESSUNITSHORTCODE).FirstOrDefault(),
+                            customerName = a.TBL_LOAN_APPLICATION.LOANAPPLICATIONTYPEID == (short)LoanTypeEnum.CustomerGroup ? a.TBL_LOAN_APPLICATION.TBL_CUSTOMER_GROUP.GROUPNAME : a.TBL_CUSTOMER.FIRSTNAME + " " + a.TBL_CUSTOMER.MIDDLENAME + " " + a.TBL_CUSTOMER.LASTNAME,
+                            customerId = a.TBL_LOAN_APPLICATION.LOANAPPLICATIONTYPEID == (short)LoanTypeEnum.CustomerGroup ? a.TBL_LOAN_APPLICATION.TBL_CUSTOMER_GROUP.CUSTOMERGROUPID : a.TBL_CUSTOMER.CUSTOMERID,
+                            proposedAmount = a.APPROVEDAMOUNT,
+                            approvalStatus = atrail.TBL_APPROVAL_STATUS.APPROVALSTATUSNAME,
+                            deferredDate = b.DEFEREDDATE,
+                            dateTimeCreated = b.DATETIMECREATED,
+                            loanConditionId = b.LOANCONDITIONID,
+                            condition = b.CONDITION,
+                            loanApplicationDetailId = a.LOANAPPLICATIONDETAILID,
+                            conditionId = b.LOANCONDITIONID,
+                            loanApplicationId = a.LOANAPPLICATIONID,
+                            applicationReferenceNumber = a.TBL_LOAN_APPLICATION.APPLICATIONREFERENCENUMBER,
+                            checklistStatus = b.TBL_CHECKLIST_STATUS.CHECKLISTSTATUSNAME,
+                            dateCreated = b.DATETIMECREATED,
+                            operationId = atrail.OPERATIONID,
+                            systemArrivalDateTime = atrail.SYSTEMARRIVALDATETIME,
+                            relationshipOfficerName = a.TBL_LOAN_APPLICATION.TBL_STAFF.FIRSTNAME + " " + a.TBL_LOAN_APPLICATION.TBL_STAFF.FIRSTNAME,
+                            relationshipManagerName = a.TBL_LOAN_APPLICATION.TBL_STAFF1.FIRSTNAME + " " + a.TBL_LOAN_APPLICATION.TBL_STAFF1.FIRSTNAME,
+                            applicationAmount = a.TBL_LOAN_APPLICATION.APPLICATIONAMOUNT,
+                            applicationTenor = a.PROPOSEDTENOR,
+                            applicationDate = a.TBL_LOAN_APPLICATION.APPLICATIONDATE,
+                            isInvestmentGrade = a.TBL_LOAN_APPLICATION.ISINVESTMENTGRADE,
+                            isPoliticallyExposed = a.TBL_LOAN_APPLICATION.ISPOLITICALLYEXPOSED,
+                            isRelatedParty = a.TBL_LOAN_APPLICATION.ISRELATEDPARTY,
+                            approvalStatusId = a.TBL_LOAN_APPLICATION.APPLICATIONSTATUSID,
+                            applicationStatusId = a.TBL_LOAN_APPLICATION.APPROVALSTATUSID,
+                            submittedForAppraisal = a.TBL_LOAN_APPLICATION.SUBMITTEDFORAPPRAISAL,
+                            loanInformation = a.LOANPURPOSE,
+                            isLms = c.ISLMS,
+                            reason = c.DEFERRALREASON,
+                            deferredDateOnFinalApproval = c.DEFEREDDATEONFINALAPPROVAL,
+                            dateApproved = c.DATEAPPROVED == null ? c.DATETIMECREATED : c.DATEAPPROVED,
+                        }).ToListAsync();
+
+            foreach (var x in dataLOS)
+            {
+                x.deferralDuration = x.deferredDateOnFinalApproval != null ? (x.deferredDateOnFinalApproval - x.dateApproved).Value.Days : 0;
+
+            }
+
+            var dataLMS = await (from a in context.TBL_LMSR_APPLICATION_DETAIL
+                        join b in context.TBL_LMSR_CONDITION_PRECEDENT on a.LOANREVIEWAPPLICATIONID equals b.LOANREVIEWAPPLICATIONID
+                           join c in context.TBL_LOAN_CONDITION_DEFERRAL on b.LOANCONDITIONID equals c.LOANCONDITIONID
+                        join atrail in context.TBL_APPROVAL_TRAIL on c.LOANCONDITIONID equals atrail.TARGETID
+                        where c.ISLMS == true
+                         && ((atrail.OPERATIONID == (int)OperationsEnum.DefferedChecklistApproval) || (atrail.OPERATIONID == (int)OperationsEnum.WaivedChecklistApproval))
+                            && ids.Contains((int)atrail.TOAPPROVALLEVELID)
+                            && atrail.RESPONSESTAFFID == null
+                            && atrail.LOOPEDSTAFFID == null
+                           orderby a.DATETIMECREATED descending
+                        select new ChecklistApprovalViewModel()
+                        {
+                            divisionCode = (from p in context.TBL_PROFILE_BUSINESS_UNIT join c in context.TBL_CUSTOMER on p.BUSINESSUNITID equals c.BUSINESSUNTID where c.CUSTOMERID == c.CUSTOMERID select p.BUSINESSUNITINITIALS).FirstOrDefault(),
+                            divisionShortCode = (from p in context.TBL_PROFILE_BUSINESS_UNIT join c in context.TBL_CUSTOMER on p.BUSINESSUNITID equals c.BUSINESSUNTID where c.CUSTOMERID == c.CUSTOMERID select p.BUSINESSUNITSHORTCODE).FirstOrDefault(),
+                            customerName =  a.TBL_CUSTOMER.FIRSTNAME + " " + a.TBL_CUSTOMER.MIDDLENAME + " " + a.TBL_CUSTOMER.LASTNAME,
+                            proposedAmount = a.APPROVEDAMOUNT,
+                            approvalStatus = context.TBL_APPROVAL_STATUS.Where(o=>o.APPROVALSTATUSID==b.APPROVALSTATUSID).Select(o=>o.APPROVALSTATUSNAME).FirstOrDefault(),
+                            deferredDate = b.DEFEREDDATE,
+                            dateTimeCreated = b.DATETIMECREATED,
+                            condition = b.CONDITION,
+                            loanConditionId = b.LOANCONDITIONID,
+                            loanApplicationDetailId = a.LOANREVIEWAPPLICATIONID,
+                            conditionId = b.LOANCONDITIONID,
+                            loanApplicationId = a.LOANAPPLICATIONID,
+                            applicationReferenceNumber = a.TBL_LMSR_APPLICATION.APPLICATIONREFERENCENUMBER,
+                            checklistStatus = context.TBL_CHECKLIST_STATUS.Where(o=>o.CHECKLISTSTATUSID==b.CHECKLISTSTATUSID).Select(o=>o.CHECKLISTSTATUSNAME).FirstOrDefault(),
+                            dateCreated = b.DATETIMECREATED,
+                            operationId = atrail.OPERATIONID,
+                            systemArrivalDateTime = atrail.SYSTEMARRIVALDATETIME,
+                            relationshipOfficerName ="",//context.TBL_STAFF.Where(o=>o.STAFFID ==a. a.TBL_LOAN_APPLICATION.TBL_STAFF.FIRSTNAME + " " + a.TBL_LOAN_APPLICATION.TBL_STAFF.FIRSTNAME,
+                            relationshipManagerName = "",//a.TBL_LOAN_APPLICATION.TBL_STAFF1.FIRSTNAME + " " + a.TBL_LOAN_APPLICATION.TBL_STAFF1.FIRSTNAME,
+                            applicationAmount = 0,//a.TBL_LOAN_APPLICATION.APPLICATIONAMOUNT,
+                            applicationTenor = 0,//a.PROPOSEDTENOR,
+                            applicationDate = a.TBL_LMSR_APPLICATION.APPLICATIONDATE,
+                            isInvestmentGrade = false,//a.TBL_LOAN_APPLICATION.ISINVESTMENTGRADE,
+                            isPoliticallyExposed = false,//a.TBL_LOAN_APPLICATION.ISPOLITICALLYEXPOSED,
+                            isRelatedParty = false,//a.TBL_LOAN_APPLICATION.ISRELATEDPARTY,
+                            approvalStatusId = 0,//a.TBL_LOAN_APPLICATION.APPLICATIONSTATUSID,
+                            applicationStatusId = 0,//a.TBL_LOAN_APPLICATION.APPROVALSTATUSID,
+                            submittedForAppraisal = true,//a.TBL_LOAN_APPLICATION.SUBMITTEDFORAPPRAISAL,
+                            loanInformation = "",//a.LOANPURPOSE
+                            isLms = c.ISLMS,
+                            deferredDateOnFinalApproval = c.DEFEREDDATEONFINALAPPROVAL,
+                            dateApproved = c.DATEAPPROVED == null ? c.DATETIMECREATED : c.DATEAPPROVED,
+                        }).ToListAsync();
+
+            foreach (var x in dataLMS)
+            {
+                x.deferralDuration = x.deferredDateOnFinalApproval != null ? (x.deferredDateOnFinalApproval - x.dateApproved).Value.Days : 0;
+
+            }
+
+            return dataLOS.Union(dataLMS);
+        }
+
+        public async Task<IEnumerable<ChecklistApprovalViewModel>> GetLMSChecklistAwaitingApproval(int staffId, int companyId)
+        {
+            var levelResult = level.GetAllApprovalLevelStaffByStaffId(staffId, companyId);
+            int staffApprovalLevelId = 0;
+            if (levelResult != null) staffApprovalLevelId = levelResult.approvalLevelId;
+
+            var data = await (from a in context.TBL_LMSR_APPLICATION_DETAIL
+                        join ln in context.TBL_LOAN_APPLICATION on a.LOANAPPLICATIONID equals ln.LOANAPPLICATIONID
+                        join b in context.TBL_LMSR_CONDITION_PRECEDENT on a.LOANREVIEWAPPLICATIONID equals b.LOANREVIEWAPPLICATIONID
+                        join c in context.TBL_LOAN_CONDITION_DEFERRAL on b.LOANCONDITIONID equals c.LOANCONDITIONID
+                        join atrail in context.TBL_APPROVAL_TRAIL on c.LOANCONDITIONID equals atrail.TARGETID
+                        where c.ISLMS == true && atrail.APPROVALSTATUSID == (int)ApprovalStatusEnum.Pending || atrail.APPROVALSTATUSID == (int)ApprovalStatusEnum.Processing || atrail.APPROVALSTATUSID == (int)ApprovalStatusEnum.Finishing
+                         && ((atrail.OPERATIONID == (int)OperationsEnum.DefferedChecklistApproval) || (atrail.OPERATIONID == (int)OperationsEnum.WaivedChecklistApproval))
+                        && atrail.TOAPPROVALLEVELID == staffApprovalLevelId
+                        && atrail.RESPONSESTAFFID == null
+                        orderby a.DATETIMECREATED descending
+                        select new ChecklistApprovalViewModel()
+                        {
+                            customerName = ln.LOANAPPLICATIONTYPEID == (short)LoanTypeEnum.CustomerGroup ? ln.TBL_CUSTOMER_GROUP.GROUPNAME : a.TBL_CUSTOMER.FIRSTNAME + " " + a.TBL_CUSTOMER.MIDDLENAME + " " + a.TBL_CUSTOMER.LASTNAME,
+                            proposedAmount = a.APPROVEDAMOUNT,
+                            //  approvalStatus = b.TBL_APPROVAL_STATUS.APPROVALSTATUSNAME,
+                            deferredDate = b.DEFEREDDATE,
+                            dateTimeCreated = b.DATETIMECREATED,
+                            condition = b.CONDITION,
+                            conditionId = b.LOANCONDITIONID,
+                            operationId = atrail.OPERATIONID,
+                            loanApplicationId = a.LOANAPPLICATIONID,
+                            applicationReferenceNumber = ln.APPLICATIONREFERENCENUMBER,
+                            // checklistStatus = b.TBL_CHECKLIST_STATUS.CHECKLISTSTATUSNAME,
+                            dateCreated = b.DATETIMECREATED,
+                            //Loan Information
+                            loanConditionId = b.LOANCONDITIONID,
+                            relationshipOfficerName = ln.TBL_STAFF.FIRSTNAME + " " + ln.TBL_STAFF.FIRSTNAME,
+                            relationshipManagerName = ln.TBL_STAFF1.FIRSTNAME + " " + ln.TBL_STAFF1.FIRSTNAME,
+                            applicationAmount = ln.APPLICATIONAMOUNT,
+                            applicationTenor = a.PROPOSEDTENOR,
+                            applicationDate = ln.APPLICATIONDATE,
+                            isInvestmentGrade = ln.ISINVESTMENTGRADE,
+                            isPoliticallyExposed = ln.ISPOLITICALLYEXPOSED,
+                            isRelatedParty = ln.ISRELATEDPARTY,
+                            approvalStatusId = ln.APPLICATIONSTATUSID,
+                            applicationStatusId = ln.APPROVALSTATUSID,
+                            submittedForAppraisal = ln.SUBMITTEDFORAPPRAISAL,
+                            deferredDateOnFinalApproval = c.DEFEREDDATEONFINALAPPROVAL,
+                            dateApproved = c.DATEAPPROVED == null ? c.DATETIMECREATED : c.DATEAPPROVED,
+                            // loanInformation = ln.LOANPURPOSE
+                        }).ToListAsync();
+
+            foreach (var x in data)
+            {
+                x.deferralDuration = x.deferredDateOnFinalApproval != null ? (x.deferredDateOnFinalApproval - x.dateApproved).Value.Days : 0;
+
+            }
+            return data;
+        }
+
+        public WorkflowResponse GoForApproval(ApprovalViewModel entity)
+        {
+            entity.externalInitialization = false;
+
+            TBL_LOAN_APPLICATION appl = null;
+            if (!entity.isLms) appl = context.TBL_LOAN_APPLICATION.Find(entity.loanApplicationId);
+
+            using (var trans = context.Database.BeginTransaction())
+            {
+                try
+                {
+                    workflow.StaffId = entity.staffId;
+                    workflow.CompanyId = entity.companyId;
+                    workflow.StatusId = ((short)entity.approvalStatusId == (short)ApprovalStatusEnum.Approved) ? (short)ApprovalStatusEnum.Processing : (short)entity.approvalStatusId;
+                    workflow.TargetId = entity.targetId;
+                    workflow.Comment = entity.comment;
+                    workflow.OperationId = entity.operationId; 
+                    // (int)OperationsEnum.DefferedChecklistApproval;
+                    if (appl != null) workflow.FinalLevel = appl.FINALAPPROVAL_LEVELID;
+
+                    workflow.LogActivity();
+
+                    if (entity.approvalStatusId == (short)ApprovalStatusEnum.Disapproved)
+                    {
+                        
+                        if (entity.isLms) {
+                            var checklistRecord = (from s in context.TBL_LMSR_CONDITION_PRECEDENT
+                                                   where s.LOANCONDITIONID == entity.targetId
+                                                   select s).FirstOrDefault();
+                            var deferredRecord = (from s in context.TBL_LOAN_CONDITION_DEFERRAL
+                                                  where s.LOANCONDITIONID == entity.targetId && s.ISLMS == true
+                                                  select s).FirstOrDefault();
+                            if (checklistRecord != null || deferredRecord != null)
+                            {
+                                deferredRecord.APPROVALSTATUSID = (short)ApprovalStatusEnum.Disapproved;
+                                checklistRecord.APPROVALSTATUSID = (short)ApprovalStatusEnum.Disapproved;
+                                context.SaveChanges();
+                                trans.Commit();
+                                return workflow.Response;
+                            }
+                        } else {
+                            var checklistRecord = (from s in context.TBL_LOAN_CONDITION_PRECEDENT
+                                                   where s.LOANCONDITIONID == entity.targetId
+                                                   select s).FirstOrDefault();
+                            var deferredRecord = (from s in context.TBL_LOAN_CONDITION_DEFERRAL
+                                                  where s.LOANCONDITIONID == entity.targetId && s.ISLMS == false
+                                                  select s).FirstOrDefault();
+                            if (checklistRecord != null || deferredRecord != null)
+                            {
+                                deferredRecord.APPROVALSTATUSID = (short)ApprovalStatusEnum.Disapproved;
+                                checklistRecord.APPROVALSTATUSID = (short)ApprovalStatusEnum.Disapproved;
+                                context.SaveChanges();
+                                trans.Commit();
+                                return workflow.Response;
+                            }
+                        }
+                    }
+
+                    if (workflow.NewState == (int)ApprovalState.Ended)
+                    {
+                        bool response = false;
+
+                        if (entity.isLms)
+                            response = ApproveChecklistDeferralLms(entity.targetId, entity);
+                        else
+                            response = ApproveChecklistDeferral(entity.targetId, entity);
+
+                        if (response)
+                        {
+                            trans.Commit();
+                        }
+                        return workflow.Response;
+                    }
+                    else
+                    {
+                        trans.Commit();
+                        return workflow.Response;
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    trans.Rollback();
+                    throw new SecureException(ex.Message);
+                }
+            }
+            // return false;
+        }
+
+        private bool ApproveChecklistDeferral(int targetId, ApprovalViewModel user)
+        {
+            bool output = false;
+            var checklistRecord = (from s in context.TBL_LOAN_CONDITION_PRECEDENT
+                                   where s.LOANCONDITIONID == targetId
+                                  && s.APPROVALSTATUSID != (int)ApprovalStatusEnum.Approved
+                                   select s).FirstOrDefault();
+
+            var deferredRecord = (from s in context.TBL_LOAN_CONDITION_DEFERRAL
+                                  where s.LOANCONDITIONID == targetId && s.ISLMS == false
+                                 && s.APPROVALSTATUSID != (int)ApprovalStatusEnum.Approved
+                                  select s).FirstOrDefault();
+
+            if (workflow.NewState != (int)ApprovalState.Ended)
+            {
+                if (checklistRecord.APPROVALSTATUSID != (int)ApprovalStatusEnum.Processing)
+                {
+                    checklistRecord.APPROVALSTATUSID = (int)ApprovalStatusEnum.Processing;
+                    deferredRecord.APPROVALSTATUSID = (int)ApprovalStatusEnum.Processing;
+                }
+            }
+            else if (workflow.NewState == (int)ApprovalState.Ended)
+            {
+                if (checklistRecord.DATETIMECREATED.Date != DateTime.Now.Date)
+                {
+                    deferredRecord.DATEAPPROVED = DateTime.Now;
+                    deferredRecord.DEFEREDDATEONFINALAPPROVAL = DateTime.Now.AddDays(deferredRecord.DEFEREDDAYS ?? 0);
+
+                    checklistRecord.APPROVALSTATUSID = (int)ApprovalStatusEnum.Approved;
+                    deferredRecord.APPROVALSTATUSID = (int)ApprovalStatusEnum.Approved;
+
+                    checklistRecord.APPROVALSTATUSID = (int)ApprovalStatusEnum.Approved;
+                    deferredRecord.APPROVALSTATUSID = (int)ApprovalStatusEnum.Approved;
+                    checklistRecord.DEFEREDDATE = DateTime.Now.AddDays(checklistRecord.DEFEREDDAYS ?? 0);
+                }
+                else
+                {
+                    checklistRecord.APPROVALSTATUSID = (int)ApprovalStatusEnum.Approved;
+                    deferredRecord.APPROVALSTATUSID = (int)ApprovalStatusEnum.Approved;
+
+                    checklistRecord.APPROVALSTATUSID = (int)ApprovalStatusEnum.Approved;
+                    deferredRecord.APPROVALSTATUSID = (int)ApprovalStatusEnum.Approved;
+                    deferredRecord.DATEAPPROVED = DateTime.Now;
+                    deferredRecord.DEFEREDDATEONFINALAPPROVAL = DateTime.Now.AddDays(deferredRecord.DEFEREDDAYS ?? 0);
+                    checklistRecord.DEFEREDDATE = DateTime.Now.AddDays(checklistRecord.DEFEREDDAYS ?? 0);
+                }
+
+                
+
+                var deferredCondition = context.TBL_LOAN_CONDITION_PRECEDENT.Find(deferredRecord.LOANCONDITIONID);
+                deferredCondition.ISSUBSEQUENT = true;
+
+                deferredCondition.DEFEREDDATE = DateTime.Now.AddDays(deferredCondition.DEFEREDDAYS ?? 0);
+                context.Entry(deferredCondition).State = System.Data.Entity.EntityState.Modified;
+
+                var lmsrApplication = context.TBL_LOAN_APPLICATION_DETAIL.Find(deferredCondition.LOANAPPLICATIONDETAILID);
+                var loan = context.TBL_LOAN_APPLICATION.Find(lmsrApplication.LOANAPPLICATIONID);
+                var staffEmail = context.TBL_STAFF.Find(loan.CREATEDBY);
+                var alertDetail = context.TBL_ALERT_TITLE.Where(x => x.BINDINGMETHOD == "GetCreditFileChecklistReminder").FirstOrDefault();
+                if (alertDetail != null && staffEmail.MISCODE != "n/a")
+                {
+                    var emailList = GetBusinessUsersEmailsToGroupHead(staffEmail.MISCODE) + ";" + alertDetail.DEFAULTEMAIL + ";" + GetAllCreditPortfolioStaffEmails();
+                    alert.receiverEmailList.Add(emailList);
+                    var alertTemplate = alertDetail.TEMPLATE;
+                    var accountOfficer = staffEmail.FIRSTNAME + " " + staffEmail.LASTNAME + " " + staffEmail.MIDDLENAME;
+                    alertTemplate = alertTemplate.Replace("@{{accountOfficer}}", accountOfficer);
+                    alertTemplate = alertTemplate.Replace("@{{referenceNumber}}", loan.APPLICATIONREFERENCENUMBER);
+                    LogEmailAlert(alertDetail.TEMPLATE, alertDetail.TITLE, alert.receiverEmailList, "20023", 20023, "GetCreditFileChecklistReminder");
+                }
+            }
+
+            // Audit Section ---------------------------
+            var audit = new TBL_AUDIT
+            {
+                AUDITTYPEID = (short)AuditTypeEnum.LoanChecklistUpdated,
+                STAFFID = user.staffId,
+                BRANCHID = (short)user.BranchId,
+                DETAIL = $"{TranslateHelper.get("Approve Loan Condition Precedence deferral with Condition ID:")} {targetId}",
+                IPADDRESS = CommonHelpers.GetLocalIpAddress(),
+                URL = user.applicationUrl,
+                APPLICATIONDATE = _genSetup.GetApplicationDate(),
+                SYSTEMDATETIME = DateTime.Now,
+                DEVICENAME = CommonHelpers.GetDeviceName(),
+                OSNAME = CommonHelpers.FriendlyName()
+            };
+
+            this.auditTrail.AddAuditTrail(audit);
+
+            output = context.SaveChanges() > 0;
+
+            return output;
+        }
+
+        private bool ApproveChecklistDeferralLms(int targetId, ApprovalViewModel user)
+        {
+            bool output = false;
+            var checklistRecord = (from s in context.TBL_LMSR_CONDITION_PRECEDENT
+                                   where s.LOANCONDITIONID == targetId
+                                  && s.APPROVALSTATUSID != (int)ApprovalStatusEnum.Approved
+                                   select s).FirstOrDefault();
+
+            var deferredRecord = (from s in context.TBL_LOAN_CONDITION_DEFERRAL
+                                  where s.LOANCONDITIONID == targetId && s.ISLMS == true
+                                 && s.APPROVALSTATUSID != (int)ApprovalStatusEnum.Approved
+                                  select s).FirstOrDefault();
+
+            if (workflow.NewState != (int)ApprovalState.Ended)
+            {
+                if (checklistRecord.APPROVALSTATUSID != (int)ApprovalStatusEnum.Processing)
+                {
+                    checklistRecord.APPROVALSTATUSID = (int)ApprovalStatusEnum.Processing;
+                    deferredRecord.APPROVALSTATUSID = (int)ApprovalStatusEnum.Processing;
+                }
+            }
+            else if (workflow.NewState == (int)ApprovalState.Ended)
+            {
+                if (checklistRecord.DATETIMECREATED.Date != DateTime.Now.Date)
+                {
+                    deferredRecord.DATEAPPROVED = DateTime.Now;
+                    deferredRecord.DEFEREDDATEONFINALAPPROVAL = DateTime.Now.AddDays(deferredRecord.DEFEREDDAYS ?? 0);
+
+                    checklistRecord.APPROVALSTATUSID = (int)ApprovalStatusEnum.Approved;
+                    deferredRecord.APPROVALSTATUSID = (int)ApprovalStatusEnum.Approved;
+
+                    checklistRecord.APPROVALSTATUSID = (int)ApprovalStatusEnum.Approved;
+                    deferredRecord.APPROVALSTATUSID = (int)ApprovalStatusEnum.Approved;
+
+                    checklistRecord.DEFEREDDATE = DateTime.Now.AddDays(checklistRecord.DEFEREDDAYS ?? 0);
+                }
+                else
+                {
+                    checklistRecord.APPROVALSTATUSID = (int)ApprovalStatusEnum.Approved;
+                    deferredRecord.APPROVALSTATUSID = (int)ApprovalStatusEnum.Approved;
+
+                    checklistRecord.APPROVALSTATUSID = (int)ApprovalStatusEnum.Approved;
+                    deferredRecord.APPROVALSTATUSID = (int)ApprovalStatusEnum.Approved;
+                    deferredRecord.DATEAPPROVED = DateTime.Now;
+                    deferredRecord.DEFEREDDATEONFINALAPPROVAL = DateTime.Now.AddDays(deferredRecord.DEFEREDDAYS ?? 0);
+                    checklistRecord.DEFEREDDATE = DateTime.Now.AddDays(checklistRecord.DEFEREDDAYS ?? 0);
+                }
+                var deferredCondition = context.TBL_LMSR_CONDITION_PRECEDENT.Find(deferredRecord.LOANCONDITIONID);
+                deferredCondition.ISSUBSEQUENT = true;
+                context.Entry(deferredCondition).State = System.Data.Entity.EntityState.Modified;
+
+                var lmsrApplication = context.TBL_LMSR_APPLICATION_DETAIL.Find(deferredCondition.LOANREVIEWAPPLICATIONID);
+                var loan = context.TBL_LMSR_APPLICATION.Find(lmsrApplication.LOANAPPLICATIONID);
+                var staffEmail = context.TBL_STAFF.Find(loan.CREATEDBY);
+                var alertDetail = context.TBL_ALERT_TITLE.Where(x => x.BINDINGMETHOD == "GetCreditFileChecklistReminder").FirstOrDefault();
+                var emailList = GetBusinessUsersEmailsToGroupHead(staffEmail.MISCODE) + ";" + alertDetail.DEFAULTEMAIL +";"+ GetAllCreditPortfolioStaffEmails();
+                alert.receiverEmailList.Add(emailList);
+                var alertTemplate = alertDetail.TEMPLATE;
+                var accountOfficer = staffEmail.FIRSTNAME + " " + staffEmail.LASTNAME + " " + staffEmail.MIDDLENAME;
+                alertTemplate = alertTemplate.Replace("@{{accountOfficer}}", accountOfficer);
+                alertTemplate = alertTemplate.Replace("@{{referenceNumber}}", loan.APPLICATIONREFERENCENUMBER);
+                LogEmailAlert(alertDetail.TEMPLATE, alertDetail.TITLE, alert.receiverEmailList, "20023", 20023, "GetCreditFileChecklistReminder");
+            }
+
+            // Audit Section ---------------------------
+            var audit = new TBL_AUDIT
+            {
+                AUDITTYPEID = (short)AuditTypeEnum.LoanChecklistUpdated,
+                STAFFID = user.staffId,
+                BRANCHID = (short)user.BranchId,
+                DETAIL = $"{TranslateHelper.get("Approve Loan Condition Precedence deferral with Condition ID:")} {targetId}",
+                IPADDRESS = CommonHelpers.GetLocalIpAddress(),
+                URL = user.applicationUrl,
+                APPLICATIONDATE = _genSetup.GetApplicationDate(),
+                SYSTEMDATETIME = DateTime.Now,
+                DEVICENAME = CommonHelpers.GetDeviceName(),
+                OSNAME = CommonHelpers.FriendlyName()
+            };
+
+            this.auditTrail.AddAuditTrail(audit);
+
+            output = context.SaveChanges() > 0;
+
+            return output;
+        }
+
+        private IQueryable<DeferredChecklistViewModel> GetDeferralChecklist()
+        {
+            var staff = context.TBL_STAFF;
+
+            var staffs = (from s in context.TBL_STAFF
+                          select new
+                          {
+                            staffId = s.STAFFID,
+                            name = s.FIRSTNAME + " " + s.MIDDLENAME + " " + s.LASTNAME
+                          }).ToList();
+
+            var data = (from a in context.TBL_LOAN_CONDITION_PRECEDENT
+                        join b in context.TBL_LOAN_CONDITION_DEFERRAL on a.LOANCONDITIONID equals b.LOANCONDITIONID
+                        join c in context.TBL_LOAN_APPLICATION on a.TBL_LOAN_APPLICATION_DETAIL.LOANAPPLICATIONID equals c.LOANAPPLICATIONID
+                        join atrail in context.TBL_APPROVAL_TRAIL on a.LOANCONDITIONID equals atrail.TARGETID
+                        where (a.CHECKLISTSTATUSID == (int)CheckListStatusEnum.Deferred || a.CHECKLISTSTATUSID == (int)CheckListStatusEnum.Waived) //|| atrail.APPROVALSTATUSID == (int)ApprovalStatusEnum.Referred)
+                        
+                        select new DeferredChecklistViewModel()
+                        {
+                            deferredDateOnFinalApproval = b.DEFEREDDATEONFINALAPPROVAL,
+                            dateApproved = b.DATEAPPROVED  == null ? b.DATETIMECREATED : b.DATEAPPROVED,
+                            loanApplicationDetailId = a.LOANAPPLICATIONDETAILID,
+                            approvalTrailId = atrail.APPROVALTRAILID,
+                            excludeLegal = (b.EXCLUDELEGAL == null) ? "No" : b.EXCLUDELEGAL == true ? "Yes" : "No",
+                            targetId = atrail.TARGETID,
+                            toApprovalLevelId = atrail.TOAPPROVALLEVELID ?? 0,
+                            responseStaffId = atrail.RESPONSESTAFFID ?? 0,
+                            approvalStateId = (short)atrail.APPROVALSTATEID,
+                            loopedStaffId = atrail.LOOPEDSTAFFID,
+                            toStaffId = atrail.TOSTAFFID,
+                            loanConditionId = a.LOANCONDITIONID,
+                            checklistDeferralId = b.CHECKLISTDEFERRALID,
+                            deferredDate = b.DEFERREDDATE,
+                            conditionId = b.LOANCONDITIONID,
+                            operationId = atrail.OPERATIONID,
+                            checklistStatus = a.TBL_CHECKLIST_STATUS.CHECKLISTSTATUSNAME,
+                            condition = a.CONDITION,
+                            approvalStatusId = b.APPROVALSTATUSID,
+                            approvalStatusName = context.TBL_APPROVAL_STATUS.Where(x=>x.APPROVALSTATUSID == atrail.APPROVALSTATUSID).Select(x=>x.APPROVALSTATUSNAME).FirstOrDefault(),
+                            deferralReason = b.DEFERRALREASON,
+                            createdBy = c.TBL_STAFF.FIRSTNAME + " " + c.TBL_STAFF.LASTNAME,
+                            dateCreated = b.DATETIMECREATED,
+                            customerName = c.LOANAPPLICATIONTYPEID == (short)LoanTypeEnum.CustomerGroup ? c.TBL_CUSTOMER_GROUP.GROUPNAME : c.TBL_CUSTOMER.FIRSTNAME + " " + c.TBL_CUSTOMER.MIDDLENAME + " " + c.TBL_CUSTOMER.LASTNAME,
+                            applicationRefNo = c.APPLICATIONREFERENCENUMBER,
+                            loanApplicationId = c.LOANAPPLICATIONID,
+                            toApprovalLevelName = atrail.LOOPEDSTAFFID > 0 ? staff.FirstOrDefault(r => r.STAFFID == atrail.LOOPEDSTAFFID).TBL_STAFF_ROLE.STAFFROLENAME : atrail.TOSTAFFID != null ? staff.FirstOrDefault(r => r.STAFFID == atrail.TOSTAFFID).TBL_STAFF_ROLE.STAFFROLENAME : context.TBL_APPROVAL_LEVEL.Where(a => a.APPROVALLEVELID == atrail.TOAPPROVALLEVELID).Select(a => a.LEVELNAME).FirstOrDefault(),
+                            fromApprovalLevelName = atrail.REQUESTSTAFFID != null ? staff.FirstOrDefault(r => r.STAFFID == atrail.REQUESTSTAFFID).TBL_STAFF_ROLE.STAFFROLENAME : context.TBL_APPROVAL_LEVEL.Where(a => a.APPROVALLEVELID == atrail.FROMAPPROVALLEVELID).Select(a => a.LEVELNAME).FirstOrDefault(),
+                        }).ToList();
+
+            foreach (var d in data)
+            {
+                d.deferralDuration = d.deferredDateOnFinalApproval != null ? (d.deferredDateOnFinalApproval - d.dateApproved).Value.Days : 0;
+                if (d.loopedStaffId > 0)
+                {
+                    d.responsiblePerson = staffs.FirstOrDefault(s => s.staffId == d.loopedStaffId).name;
+                }
+                else if (d.toStaffId > 0)
+                {
+                    d.responsiblePerson = staffs.FirstOrDefault(s => s.staffId == d.toStaffId).name;
+                }
+            }
+
+            //var records = data.GroupBy(x => x.loanConditionId).Select(y => y.FirstOrDefault()).OrderByDescending(x => x.approvalTrailId); ;
+            return data.AsQueryable();
+        }
+        public async Task<IEnumerable<DeferredChecklistViewModel>> GetAllDeferralChecklist()
+        {
+            var groupedData = GetDeferralChecklist().Where(x => x.responseStaffId == 0 && x.approvalStateId != (int)ApprovalState.Ended).OrderByDescending(x => x.approvalTrailId).ToList();//.GroupBy(r => r.loanConditionId).Select(y => y.OrderByDescending(r => r.approvalTrailId).FirstOrDefault()).ToList();
+            return groupedData.ToList();
+        }
+        public async Task<IEnumerable<DeferredChecklistViewModel>> GetDeferralChecklistByConditionId(int conditionId)
+        {
+            var condition = GetDeferralChecklist().Where(x => x.conditionId == conditionId).OrderByDescending(x => x.approvalTrailId).ToList();  //.GroupBy(r => r.loanConditionId).Select(y => y.OrderByDescending(r => r.approvalTrailId).FirstOrDefault()).ToList();
+            return condition.ToList();
+        }
+
+        private IQueryable<OperationStaffViewModel> GetAllStaffNames()
+        {
+            return this.context.TBL_STAFF.Select(s => new OperationStaffViewModel
+            {
+                id = s.STAFFID,
+                name = s.FIRSTNAME + " " + s.LASTNAME
+            });
+        }
+
+        public async Task<IEnumerable<ApprovalTrailViewModel>> GetDeferralApprovalTrail(int targetId, int operationId)
+        {
+            // var staffRoles = context.TBL_STAFF_ROLE.ToList();
+            var staff = from s in context.TBL_STAFF select s;
+            var allstaff = this.GetAllStaffNames();
+            var trail = await context.TBL_APPROVAL_TRAIL.Where(x => x.OPERATIONID == operationId && x.TARGETID == targetId).ToListAsync();
+
+            var data = trail.Select(x => new ApprovalTrailViewModel
+            {
+                approvalTrailId = x.APPROVALTRAILID,
+                comment = x.COMMENT,
+                targetId = x.TARGETID,
+                operationId = x.OPERATIONID,
+                arrivalDate = x.ARRIVALDATE,
+                systemArrivalDateTime = x.SYSTEMARRIVALDATETIME,
+                responseDate = x.RESPONSEDATE,
+                systemResponseDateTime = x.SYSTEMRESPONSEDATETIME,
+                responseStaffId = x.RESPONSESTAFFID,
+                requestStaffId = x.REQUESTSTAFFID,
+                fromApprovalLevelId = x.FROMAPPROVALLEVELID,
+                fromApprovalLevelName = x.FROMAPPROVALLEVELID == null ? staff.FirstOrDefault(r => r.STAFFID == x.REQUESTSTAFFID).TBL_STAFF_ROLE.STAFFROLENAME : context.TBL_APPROVAL_LEVEL.Where(a => a.APPROVALLEVELID == x.FROMAPPROVALLEVELID).Select(a => a.LEVELNAME).FirstOrDefault(),
+                toApprovalLevelName = x.TOAPPROVALLEVELID == null ? "N/A" : context.TBL_APPROVAL_LEVEL.Where(a => a.APPROVALLEVELID == x.TOAPPROVALLEVELID).Select(a => a.LEVELNAME).FirstOrDefault(),
+                toApprovalLevelId = x.TOAPPROVALLEVELID,
+                approvalStateId = x.APPROVALSTATEID,
+                approvalStatusId = x.APPROVALSTATUSID,
+                approvalState = x.TBL_APPROVAL_STATE.APPROVALSTATE,
+                approvalStatus = x.TBL_APPROVAL_STATUS.APPROVALSTATUSNAME,
+                toStaffName = allstaff.FirstOrDefault(s => s.id == x.RESPONSESTAFFID) == null ? "N/A" : allstaff.FirstOrDefault(s => s.id == x.RESPONSESTAFFID).name,
+                fromStaffName = allstaff.FirstOrDefault(s => s.id == x.REQUESTSTAFFID) == null ? "N/A" : allstaff.FirstOrDefault(s => s.id == x.REQUESTSTAFFID).name,
+            })?.OrderByDescending(x => x.systemArrivalDateTime).ToList();
+            return data;
+        }
+
+
+        public async Task<bool> ValidateChecklist(int applicationId)
+        {
+            var app = await context.TBL_LOAN_APPLICATION.FindAsync(applicationId);
+            var details2 = app.TBL_LOAN_APPLICATION_DETAIL.ToList();
+            var details = details2.Where(d => d.DELETED == false && d.TBL_LOAN_APPLICATION.PRODUCT_CLASS_PROCESSID == (int)ProductClassProcessEnum.CAMBased
+                                         && d.TBL_LOAN_APPLICATION.FLOWCHANGEID != (int)FlowChangeEnum.CASHCOLLATERIZED
+                                         && d.TBL_LOAN_APPLICATION.ISADHOCAPPLICATION == false
+                                         && d.TBL_CUSTOMER.CUSTOMERTYPEID != (int)CustomerTypeEnum.Individual).ToList();
+            foreach (var id in details)
+            {
+                var checklists = context.TBL_ESG_CHECKLIST_DETAIL.Where(c => c.DELETED != true && c.LOANAPPLICATIONDETAILID == id.LOANAPPLICATIONDETAILID && c.CHECKLIST_TYPEID == (int)CheckListTypeEnum.ESGMChecklist).ToList();
+                if (checklists.Count() > 0)
+                {
+                    continue;
+                } else
+                {
+                    throw new SecureException(TranslateHelper.get("ESRM Checklist items for ")+id.TBL_PRODUCT1.PRODUCTNAME+ TranslateHelper.get("product still pending"));
+                }
+            }
+
+                        
+               if (details.Count > 0)
+               {
+                   var greenChecklists = context.TBL_ESG_CHECKLIST_DETAIL.Where(c => c.DELETED != true && c.LOANAPPLICATIONDETAILID == applicationId && c.CHECKLIST_TYPEID == (int)CheckListTypeEnum.GreenRating).ToList();
+                   if (greenChecklists.Count > 0)
+                   {
+                       return true;
+                   }
+                   else
+                   {
+                        throw new SecureException(TranslateHelper.get("Green Loan Identification items for this request ") + app.APPLICATIONREFERENCENUMBER + TranslateHelper.get("still pending"));
+                   }
+               }      
+            
+            return true;
+        }
+
+        public async Task<bool> ExtendChecklistDeferralDate(ConditionPrecedentViewModel model)
+        {
+            var data = await this.context.TBL_LOAN_CONDITION_PRECEDENT.FindAsync(model.conditionId);
+            if (data == null) return false;
+
+            //data.APPROVALSTATUSID = (short)ApprovalStatusEnum.Pending;
+            data.DEFEREDDATE = model.deferedDate;
+            data.DATETIMEUPDATED = _genSetup.GetApplicationDate();
+            data.LASTUPDATEDBY = (int)model.createdBy;
+
+            var deferral = new TBL_LOAN_CONDITION_DEFERRAL();
+            deferral.LOANCONDITIONID = data.LOANCONDITIONID;
+            deferral.DEFERRALREASON = model.reason;
+            deferral.DEFERREDDATE = (DateTime)model.deferedDate;
+            deferral.DATETIMECREATED = DateTime.Now;
+            //deferral.APPROVALSTATUSID = (short)ApprovalStatusEnum.Pending;
+            deferral.CREATEDBY = model.createdBy;
+            context.TBL_LOAN_CONDITION_DEFERRAL.Add(deferral);
+
+            // Workflow Section ---------------------------
+            using (var trans = context.Database.BeginTransaction())
+            {
+                var loanConditionId = data.LOANCONDITIONID;
+
+                workflow.StaffId = model.createdBy;
+                workflow.CompanyId = model.companyId;
+                workflow.StatusId = (int)ApprovalStatusEnum.Processing;
+                workflow.TargetId = loanConditionId;
+                workflow.NextLevelId = null;
+                workflow.Comment = TranslateHelper.get("Request for Deferral Extension Approval");
+                workflow.OperationId = (int)OperationsEnum.DeferralExtension;
+                workflow.ExternalInitialization = true;
+                workflow.LogActivity();
+
+                if (deferral != null)
+                    deferral.APPROVALSTATUSID = (int)ApprovalStatusEnum.Processing;
+
+                data.APPROVALSTATUSID = (int)ApprovalStatusEnum.Processing;
+                trans.Commit();
+            }
+            // End of Workflow Section ---------------------------
+
+            // Audit Section ---------------------------
+            var audit = new TBL_AUDIT
+            {
+                AUDITTYPEID = (short)AuditTypeEnum.LoanChecklistUpdated,
+                STAFFID = model.createdBy,
+                BRANCHID = (short)model.userBranchId,
+                DETAIL = $"{TranslateHelper.get("Added Loan Condition Precedence Checklist with Condition ID:")} {model.condition}",
+                IPADDRESS = CommonHelpers.GetLocalIpAddress(),
+                URL = model.applicationUrl,
+                APPLICATIONDATE = _genSetup.GetApplicationDate(),
+                SYSTEMDATETIME = DateTime.Now,
+                DEVICENAME = CommonHelpers.GetDeviceName(),
+                OSNAME = CommonHelpers.FriendlyName()
+            };
+
+            this.auditTrail.AddAuditTrail(audit);
+
+            //end of Audit section -------------------------------
+            return context.SaveChanges() != 0;
+
+        }
+        public async Task<bool> ValidateConditionPrecedentDetail(ConditionPrecedentViewModel entity)
+        {
+            if (entity == null) return false;
+            if (entity.isLMSChecklist == true)
+            {
+                var data = await this.context.TBL_LMSR_CONDITION_PRECEDENT.FindAsync(entity.conditionId);
+                if (data == null) return false;
+                data.CHECKLISTVALIDATED = entity.validationStatus;
+            }
+            else
+            {
+                var data = await this.context.TBL_LOAN_CONDITION_PRECEDENT.FindAsync(entity.conditionId);
+                if (data == null) return false;
+                data.CHECKLISTVALIDATED = entity.validationStatus;
+            }
+
+            // Audit Section ---------------------------
+            var audit = new TBL_AUDIT
+            {
+                AUDITTYPEID = (short)AuditTypeEnum.LoanChecklistUpdated,
+                STAFFID = entity.createdBy,
+                BRANCHID = (short)entity.userBranchId,
+                DETAIL = $"{TranslateHelper.get("Validated Loan Condition Precedence Checklist with Condition ID:")} {entity.conditionId}",
+                IPADDRESS = CommonHelpers.GetLocalIpAddress(),
+                URL = entity.applicationUrl,
+                APPLICATIONDATE = _genSetup.GetApplicationDate(),
+                SYSTEMDATETIME = DateTime.Now,
+                DEVICENAME = CommonHelpers.GetDeviceName(),
+                OSNAME = CommonHelpers.FriendlyName()
+            };
+            this.auditTrail.AddAuditTrail(audit);
+            //end of Audit section -------------------------------
+            return context.SaveChanges() != 0;
+        }
+        public async Task<bool> UpdateProvidedChecklist(ConditionPrecedentViewModel model)
+        {
+            var data = await this.context.TBL_LOAN_CONDITION_PRECEDENT.FindAsync(model.conditionId);
+
+            if (data == null) return false;
+            //data.APPROVALSTATUSID =  (short)ApprovalStatusEnum.Approved; 
+
+            data.DATETIMEUPDATED = _genSetup.GetApplicationDate();
+            data.LASTUPDATEDBY = (int)model.createdBy;
+            var deferral = (from a in this.context.TBL_LOAN_CONDITION_DEFERRAL where a.LOANCONDITIONID == model.conditionId select a).FirstOrDefault();
+
+            // Workflow Section ---------------------------
+            using (var trans = context.Database.BeginTransaction())
+            {
+                var loanConditionId = data.LOANCONDITIONID;
+
+                workflow.StaffId = model.createdBy;
+                workflow.CompanyId = model.companyId;
+                workflow.StatusId = (int)ApprovalStatusEnum.Processing;
+                workflow.TargetId = loanConditionId;
+                workflow.NextLevelId = null;
+                workflow.Comment = TranslateHelper.get("Request for Deferral Document Approval");
+                workflow.OperationId = (int)OperationsEnum.ProvisionOfDeferredDocument;
+
+                workflow.LevelBusinessRule = new LevelBusinessRule { excludeLevel = model.excludeLegal.Value };
+                workflow.ExternalInitialization = true;
+                workflow.LogActivity();
+
+                if (deferral != null) {
+                    deferral.APPROVALSTATUSID = (int)ApprovalStatusEnum.Processing;
+                    deferral.EXCLUDELEGAL = model.excludeLegal;
+                }
+
+                data.APPROVALSTATUSID = (int)ApprovalStatusEnum.Processing;
+                trans.Commit();
+            }
+            // End of Workflow Section ---------------------------
+
+            // Audit Section ---------------------------
+            var audit = new TBL_AUDIT
+            {
+                AUDITTYPEID = (short)AuditTypeEnum.LoanChecklistUpdated,
+                STAFFID = model.createdBy,
+                BRANCHID = (short)model.userBranchId,
+                DETAIL = $"{TranslateHelper.get("Added Loan Condition Precedence Checklist with Condition ID:")} {model.condition}",
+                IPADDRESS = CommonHelpers.GetLocalIpAddress(),
+                URL = model.applicationUrl,
+                APPLICATIONDATE = _genSetup.GetApplicationDate(),
+                SYSTEMDATETIME = DateTime.Now,
+                DEVICENAME = CommonHelpers.GetDeviceName(),
+                OSNAME = CommonHelpers.FriendlyName()
+            };
+
+            this.auditTrail.AddAuditTrail(audit);
+
+            //end of Audit section -------------------------------
+            return context.SaveChanges() != 0;
+        }
+
+        public async Task<bool> ValidateDeferralDateExpiration(int conditionId)
+        {
+            var data = await this.context.TBL_LOAN_CONDITION_PRECEDENT.FindAsync(conditionId);
+            if (data != null)
+            {
+                if (DateTime.Now < data.DEFEREDDATE)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        #endregion
+
+
+        #region LMS Condition Precedence Checklist
+        public async Task<IEnumerable<ConditionPrecedentViewModel>> GetLMSConditionPrecedenceChecklist(int loanReviewApplicationId)
+        {
+            var condition = await (from c in context.TBL_LMSR_CONDITION_PRECEDENT
+                             join d in context.TBL_LMSR_APPLICATION_DETAIL on c.LOANREVIEWAPPLICATIONID equals d.LOANREVIEWAPPLICATIONID
+                             join e in context.TBL_LMSR_APPLICATION on d.LOANAPPLICATIONID equals e.LOANAPPLICATIONID
+                             where e.LOANAPPLICATIONID == loanReviewApplicationId 
+                             //&& c.ISEXTERNAL == true 
+                             && c.ISSUBSEQUENT == false &&
+                              c.CHECKLISTSTATUSID == null
+                             //&& (() || ())
+                             select new ConditionPrecedentViewModel()
+                             {
+                                 condition = c.CONDITION,
+                                 conditionId = c.LOANCONDITIONID,
+                                 loanApplicationId = d.LOANREVIEWAPPLICATIONID,
+                                 loanApplicationDetailId = c.LOANREVIEWAPPLICATIONID,
+                                 isExternal = c.ISEXTERNAL,
+                                 responseTypeId = c.RESPONSE_TYPEID,
+                                 checkListStatusId = c.CHECKLISTSTATUSID,
+                                 checkListValidated = c.CHECKLISTVALIDATED,
+                                 approvalStatusId = c.APPROVALSTATUSID,
+
+                             }).ToListAsync();
+            return condition;
+        }
+        public async Task<IEnumerable<ConditionPrecedentViewModel>> GetLMSConditionPrecedenceChecklistStatus(int loanReviewApplicationId)
+        {
+            var status = await (from c in context.TBL_LMSR_CONDITION_PRECEDENT
+                          join d in context.TBL_LMSR_APPLICATION_DETAIL on c.LOANREVIEWAPPLICATIONID equals d.LOANREVIEWAPPLICATIONID
+                          join g in context.TBL_LMSR_APPLICATION on d.LOANAPPLICATIONID equals g.LOANAPPLICATIONID
+                          join e in context.TBL_CHECKLIST_STATUS on c.CHECKLISTSTATUSID equals e.CHECKLISTSTATUSID
+                          join f in context.TBL_APPROVAL_STATUS on c.APPROVALSTATUSID equals f.APPROVALSTATUSID
+                          where g.LOANAPPLICATIONID == loanReviewApplicationId &&
+                           c.CHECKLISTSTATUSID != null
+                          orderby c.ISEXTERNAL descending
+                          select new ConditionPrecedentViewModel()
+                          {
+                              condition = c.CONDITION,
+                              conditionId = c.LOANCONDITIONID,
+                              status = e.CHECKLISTSTATUSNAME,
+                              checkListStatusId = e.CHECKLISTSTATUSID,
+                              approvalStatus = f.APPROVALSTATUSNAME,
+                              loanApplicationId = d.LOANREVIEWAPPLICATIONID,
+                              validationStatus = c.CHECKLISTVALIDATED,
+                              isExternal = c.ISEXTERNAL
+                          }).ToListAsync();
+            return status;
+        }
+        #endregion
+
+
+
+        #region Checklist Type Mapping
+        public async Task<IEnumerable<CheckListTypeMappingViewModel>> GetAllChecklistTypeMapping()
+        {
+            var data = await (from a in context.TBL_CHECKLIST_TYPE_APROV_LEVL
+                        orderby a.APPROVALLEVELID descending
+                        select new CheckListTypeMappingViewModel()
+                        {
+                            checklistTypeMappingId = a.CHECKLISTTYPE_APPROVALLEVEL,
+                            approvalLevelId = a.APPROVALLEVELID,
+                            checklistTypeId = a.CHECKLIST_TYPEID,
+                            checkListTypeName = a.TBL_CHECKLIST_TYPE.CHECKLIST_TYPE_NAME,
+                            approvalLevel = a.TBL_APPROVAL_LEVEL.LEVELNAME,
+                            validateChecklist = a.CANVALIDATE
+                        }).ToListAsync();
+            return data;
+        }
+
+        public async Task<bool> AddChecklistTypeMapping(CheckListTypeMappingViewModel model)
+        {
+            if (model == null) return false;
+            TBL_CHECKLIST_TYPE_APROV_LEVL typeLevel;
+            if (model.checklistTypeMappingId > 0)
+            {
+                typeLevel = context.TBL_CHECKLIST_TYPE_APROV_LEVL.Find(model.checklistTypeMappingId);
+                if (typeLevel != null)
+                {
+                    typeLevel.CHECKLIST_TYPEID = model.checklistTypeId;
+                    typeLevel.APPROVALLEVELID = model.approvalLevelId;
+                    typeLevel.CANVALIDATE = model.validateChecklist;
+                }
+
+            }
+            else
+            {
+                typeLevel = new TBL_CHECKLIST_TYPE_APROV_LEVL();
+                typeLevel.CHECKLIST_TYPEID = model.checklistTypeId;
+                typeLevel.APPROVALLEVELID = model.approvalLevelId;
+                typeLevel.CANVALIDATE = model.validateChecklist;
+                context.TBL_CHECKLIST_TYPE_APROV_LEVL.Add(typeLevel);
+            }
+            //Audit Section --------------------------
+            var audit = new TBL_AUDIT
+            {
+                AUDITTYPEID = (short)AuditTypeEnum.LoanChecklistAdded,
+                STAFFID = model.createdBy,
+                BRANCHID = (short)model.userBranchId,
+                DETAIL = TranslateHelper.get("Added Checklist Type Mapping"),
+                IPADDRESS = CommonHelpers.GetLocalIpAddress(),
+                URL = model.applicationUrl,
+                APPLICATIONDATE = _genSetup.GetApplicationDate(),
+                SYSTEMDATETIME = DateTime.Now,
+                DEVICENAME = CommonHelpers.GetDeviceName(),
+                OSNAME = CommonHelpers.FriendlyName()
+            };
+            this.auditTrail.AddAuditTrail(audit);
+            //end of Audit section -------------------------------
+            return await context.SaveChangesAsync() != 0;
+        }
+        public async Task<bool> ValidateChecklistTypeMapping(short checklistTypeId, int approvallevelId)
+        {
+            var data = await (from a in context.TBL_CHECKLIST_TYPE_APROV_LEVL
+                        where a.APPROVALLEVELID == approvallevelId && a.CHECKLIST_TYPEID == checklistTypeId
+                        select a).ToListAsync();
+            return data.Any();
+        }
+
+        public async Task<bool> DeleteChecklistTypeMapping(int checklistTypeMappingId, UserInfo user)
+        {
+            var data = await this.context.TBL_CHECKLIST_TYPE_APROV_LEVL.FindAsync(checklistTypeMappingId);
+            if (data != null)
+            {
+                context.TBL_CHECKLIST_TYPE_APROV_LEVL.Remove(data);
+            }
+
+            // Audit Section ---------------------------
+
+            var audit = new TBL_AUDIT
+            {
+                AUDITTYPEID = (short)AuditTypeEnum.LoanChecklistDeleted,
+                STAFFID = user.staffId,
+                BRANCHID = (short)user.BranchId,
+                DETAIL = $"{TranslateHelper.get("Deleted Checklist Type Mapping with Id")} ' + {checklistTypeMappingId} ",
+                IPADDRESS = CommonHelpers.GetLocalIpAddress(),
+                URL = user.applicationUrl,
+                APPLICATIONDATE = _genSetup.GetApplicationDate(),
+                SYSTEMDATETIME = DateTime.Now,
+                DEVICENAME = CommonHelpers.GetDeviceName(),
+                OSNAME = CommonHelpers.FriendlyName()
+            };
+            this.auditTrail.AddAuditTrail(audit);
+            //end of Audit section -------------------------------
+
+            return context.SaveChanges() != 0;
+        }
+        #endregion
+
+        #region EGS Checklist
+        public async Task<IEnumerable<ESGClassViewModel>> GetESGClass()
+        {
+            var data = await (from a in context.TBL_ESG_CLASS
+                        orderby a.ESGCLASSNAME
+                        select new ESGClassViewModel()
+                        {
+                            esgClassId = a.ESGCLASSID,
+                            esgClassName = a.ESGCLASSNAME
+                        }).ToListAsync();
+            return data;
+        }
+
+        public async Task<IEnumerable<ESGTypeViewModel>> GetESGType()
+        {
+            var data = await (from a in context.TBL_ESG_TYPE
+                        orderby a.ESGTYPENAME
+                        select new ESGTypeViewModel()
+                        {
+                            esgTypeId = a.ESGTYPEID,
+                            esgTypeName = a.ESGTYPENAME
+                        }).ToListAsync();
+            return data;
+        }
+
+        public async Task<IEnumerable<ESGCategoryViewModel>> GetESGCategory()
+        {
+            var data = await (from a in context.TBL_ESG_CATEGORY
+                        orderby a.ESGCATEGORYNAME
+                        select new ESGCategoryViewModel()
+                        {
+                            esgCategoryId = a.ESGCATEGORYID,
+                            esgCategoryName = a.ESGCATEGORYNAME
+                        }).ToListAsync();
+            return data;
+        }
+
+        public async Task<IEnumerable<ESGSubCategoryViewModel>> GetESGSubCategory(int categoryId)
+        {
+            var data = await (from a in context.TBL_ESG_SUB_CATEGORY
+                        where a.ESGCATEGORYID == categoryId
+                        //orderby a.ESGSUBCATEGORYNAME
+                        select new ESGSubCategoryViewModel()
+                        {
+                            esgSubCategoryId = a.ESGSUBCATEGORYID,
+                            esgCategoryId = a.ESGCATEGORYID,
+                            esgCategoryName = context.TBL_ESG_CATEGORY.Where(e => e.ESGCATEGORYID == a.ESGCATEGORYID).FirstOrDefault().ESGCATEGORYNAME,
+                            esgSubCategoryName = a.ESGSUBCATEGORYNAME
+                        }).ToListAsync();
+            return data;
+        }
+
+        private char GetScoreGrade(int score)
+        {
+            char[] grades = new char[] { '0', 'A', 'B', 'C' };
+            return grades[score];
+        }
+
+        public async Task<IEnumerable<ESGChecklistDefinitionViewModel>> GetESGChecklistDefinition()
+        {
+            var data = await (from a in context.TBL_ESG_CHECKLIST_DEFINITION
+                        join b in context.TBL_ESG_CATEGORY on a.ESGCATEGORYID equals b.ESGCATEGORYID
+                        join d in context.TBL_ESG_SUB_CATEGORY on a.ESGSUBCATEGORYID equals d.ESGSUBCATEGORYID
+                        into cg
+                        from d in cg.DefaultIfEmpty()
+                        join c in context.TBL_CHECKLIST_ITEM on a.CHECKLISTITEMID equals c.CHECKLISTITEMID
+                        join ys in context.TBL_ESG_CHECKLIST_SCORES on a.YESCHECKLISTSCORESID equals ys.CHECKLISTSCORESID into yes
+                        join ns in context.TBL_ESG_CHECKLIST_SCORES on a.NOCHECKLISTSCORESID equals ns.CHECKLISTSCORESID into no
+                        from y in yes.DefaultIfEmpty()
+                        from n in no.DefaultIfEmpty()
+                        //where y.CHECKLISTSTATUSID == (int)CheckListStatusEnum.Yes
+                        //where n.CHECKLISTSTATUSID == (int)CheckListStatusEnum.No
+                        where a.DELETED == false
+                        where a.CHECKLIST_TYPEID == (int)CheckListTypeEnum.ESGMChecklist
+                        select new ESGChecklistDefinitionViewModel()
+                        {
+                            esgChecklistDefinitionId = a.ESGCHECKLISTDEFINITIONID,
+                            checklistItemId = a.CHECKLISTITEMID,
+                            checklistItemName = c.CHECKLISTITEMNAME,
+                            esgSubCategoryId = a.ESGSUBCATEGORYID,
+                            esgSubCategoryName = d.ESGSUBCATEGORYNAME,
+                            esgCategoryId = a.ESGCATEGORYID,
+                            esgCategoryName = b.ESGCATEGORYNAME,
+                            isCompulsory = a.ISCOMPULSORY,
+                            itemDescription = a.ITEMDESCRIPTION,
+                            yesGradeScore = (int)y.SCORE,
+                            yesChecklistScoresId = y.CHECKLISTSCORESID,
+                            noChecklistScoresId = n == null ? 0 : n.CHECKLISTSCORESID,
+                            yesGrade = (y.SCORE.ToString() == null) ? "N/A": y.GRADE,
+                            noGradeScore = n == null ? 0 : (int)n.SCORE,
+                            noGrade = n == null ? "N/A" : (n.SCORE.ToString() == null) ? "N/A" : n.GRADE
+                        }).ToListAsync();
+            return data;
+        }
+
+        public async Task<bool> DeleteESGChecklistDefinition(int esgChecklistDefinitionId, int staffId)
+        {
+            var checklist = context.TBL_ESG_CHECKLIST_DEFINITION.Where(o => o.ESGCHECKLISTDEFINITIONID == esgChecklistDefinitionId).Select(o=>o).FirstOrDefault();
+            if (checklist != null)
+            {
+                checklist.DELETED = true;
+                checklist.DATETIMEUPDATED = DateTime.Now;
+                checklist.DELETEDBY = staffId;
+            }
+
+            if ( await context.SaveChangesAsync() > 0)
+                return true;
+
+            return false;
+           
+        }
+
+        public async Task<IEnumerable<ESGChecklistDetailViewModel>> GetESGChecklistDetail(int loanApplicationDetailId)
+        {
+            var data = await (from a in context.TBL_ESG_CHECKLIST_DETAIL
+                        join b in context.TBL_ESG_CHECKLIST_SUMMARY on a.LOANAPPLICATIONDETAILID equals b.LOANAPPLICATIONDETAILID
+                        into gg
+                        from b in gg.DefaultIfEmpty()
+                        join d in context.TBL_ESG_CHECKLIST_DEFINITION on a.ESGCHECKLISTDEFINITIONID equals d.ESGCHECKLISTDEFINITIONID
+                        join i in context.TBL_CHECKLIST_ITEM on d.CHECKLISTITEMID equals i.CHECKLISTITEMID
+                        join c in context.TBL_ESG_CATEGORY on d.ESGCATEGORYID equals c.ESGCATEGORYID
+                        join s in context.TBL_ESG_SUB_CATEGORY on d.ESGSUBCATEGORYID equals s.ESGSUBCATEGORYID into cg
+                        from s in cg.DefaultIfEmpty()
+                        where a.LOANAPPLICATIONDETAILID == loanApplicationDetailId
+                        select new ESGChecklistDetailViewModel()
+                        {
+                            esgChecklistDetailId = a.ESGCHECKLISTDETAILID,
+                            esgChecklistDefinitionId = a.ESGCHECKLISTDEFINITIONID,
+                            loanApplicationDetailId = a.LOANAPPLICATIONDETAILID,
+                            esgClassId = a.ESGCLASSID,
+                            esgTypeId = a.ESGTYPEID,
+                            esgCheckListItemName = i.CHECKLISTITEMNAME,
+                            checkStatusId = a.CHECKLISTSTATUSID,
+                            categoryName = c.ESGCATEGORYNAME,
+                            subCategoryName = s.ESGSUBCATEGORYNAME,
+                            comment = a.COMMENT_,
+                            description = a.DESCRIPTION,
+                            overAllRiskStatusId = (b == null) ? 0 : b.RATINGID,
+                            overSummary = b.COMMENT_
+                        }).ToListAsync();
+            return data;
+        }
+
+        public async Task<bool> AddESGCategory(ESGChecklistDefinitionViewModel model)
+        {
+            if (model == null)
+            {
+                throw new SecureException(TranslateHelper.get("No Category Selected"));
+            }
+            bool output = false;
+                var data =  new TBL_ESG_CATEGORY()
+                            {
+                               ESGCATEGORYNAME = model.esgCategoryName
+                            };
+
+                //Audit Section ---------------------------
+
+                var audit = new TBL_AUDIT
+                {
+                    AUDITTYPEID = (short)AuditTypeEnum.ESGCategoryAdded,
+                    STAFFID = model.createdBy,
+                    BRANCHID = (short)model.userBranchId,
+                    DETAIL = $"{TranslateHelper.get("Added ESGCategory")} {model.ToString()}",
+                    IPADDRESS = CommonHelpers.GetLocalIpAddress(),
+                    URL = model.applicationUrl,
+                    APPLICATIONDATE = _genSetup.GetApplicationDate(),
+                    SYSTEMDATETIME = DateTime.Now,
+                    DEVICENAME = CommonHelpers.GetDeviceName(),
+                    OSNAME = CommonHelpers.FriendlyName()
+                };
+                context.TBL_ESG_CATEGORY.Add(data);
+                this.auditTrail.AddAuditTrail(audit);
+                //end of Audit section -------------------------------
+
+                output = await context.SaveChangesAsync() != 0;
+            return output;
+        }
+
+        public async Task<bool> AddESGSubCategory(ESGChecklistDefinitionViewModel model)
+        {
+            if (model == null)
+                throw new SecureException(TranslateHelper.get("No sub-Category Selected"));
+            bool output = false;
+                var data = new TBL_ESG_SUB_CATEGORY
+                {
+                    ESGCATEGORYID = (short)model.esgCategoryId,
+                    ESGSUBCATEGORYNAME = model.esgSubCategoryName,
+                };
+
+                //Audit Section ---------------------------
+
+                var audit = new TBL_AUDIT
+                {
+                    AUDITTYPEID = (short)AuditTypeEnum.ESGSUBCategoryAdded,
+                    STAFFID = model.createdBy,
+                    BRANCHID = (short)model.userBranchId,
+                    DETAIL = $"{TranslateHelper.get("Added ESGSUBCATEGORY with detail of")} {model.ToString()}' ",
+                    IPADDRESS = CommonHelpers.GetLocalIpAddress(),
+                    URL = model.applicationUrl,
+                    APPLICATIONDATE = _genSetup.GetApplicationDate(),
+                    SYSTEMDATETIME = DateTime.Now,
+                    DEVICENAME = CommonHelpers.GetDeviceName(),
+                    OSNAME = CommonHelpers.FriendlyName()
+                };
+                context.TBL_ESG_SUB_CATEGORY.Add(data);
+                this.auditTrail.AddAuditTrail(audit);
+                //end of Audit section -------------------------------
+
+                output = await context.SaveChangesAsync() != 0;
+            return output;
+        }
+
+        public async Task<bool> UpdateESGCategory(ESGChecklistDefinitionViewModel model)
+        {
+            if (model == null)
+            {
+                throw new SecureException(TranslateHelper.get("No Category Selected"));
+            }
+            bool output = false;
+            var data = context.TBL_ESG_CATEGORY.Where(o => o.ESGCATEGORYID == model.esgCategoryId).FirstOrDefault();
+            {
+                data.ESGCATEGORYNAME = model.esgCategoryName;
+            };
+
+            //Audit Section ---------------------------
+
+            var audit = new TBL_AUDIT
+            {
+                AUDITTYPEID = (short)AuditTypeEnum.ESGCategoryUpdated,
+                STAFFID = model.createdBy,
+                BRANCHID = (short)model.userBranchId,
+                DETAIL = $"{TranslateHelper.get("Updated ESGCategory")} {model.ToString()}",
+                IPADDRESS = CommonHelpers.GetLocalIpAddress(),
+                URL = model.applicationUrl,
+                APPLICATIONDATE = _genSetup.GetApplicationDate(),
+                SYSTEMDATETIME = DateTime.Now,
+                DEVICENAME = CommonHelpers.GetDeviceName(),
+                OSNAME = CommonHelpers.FriendlyName()
+            };
+            context.Entry(data).State = EntityState.Modified;
+            this.auditTrail.AddAuditTrail(audit);
+            //end of Audit section -------------------------------
+
+            output = await context.SaveChangesAsync() != 0;
+            return output;
+        }
+
+        public async Task<bool> UpdateESGSubCategory(ESGChecklistDefinitionViewModel model)
+        {
+            if (model == null)
+            {
+                throw new SecureException(TranslateHelper.get("No sub-Category Selected"));
+            }
+            bool output = false;
+            var data = context.TBL_ESG_SUB_CATEGORY.Where(o => o.ESGCATEGORYID == model.esgCategoryId && o.ESGSUBCATEGORYID == model.esgSubCategoryId).FirstOrDefault();
+            {
+                data.ESGCATEGORYID = (short)model.esgCategoryId;
+                data.ESGSUBCATEGORYNAME = model.esgSubCategoryName;
+            };
+
+            //Audit Section ---------------------------
+
+            var audit = new TBL_AUDIT
+            {
+                AUDITTYPEID = (short)AuditTypeEnum.ESGCategoryUpdated,
+                STAFFID = model.createdBy,
+                BRANCHID = (short)model.userBranchId,
+                DETAIL = $"{TranslateHelper.get("Updated ESGSubCategory")} {model.ToString()}",
+                IPADDRESS = CommonHelpers.GetLocalIpAddress(),
+                URL = model.applicationUrl,
+                APPLICATIONDATE = _genSetup.GetApplicationDate(),
+                SYSTEMDATETIME = DateTime.Now,
+                DEVICENAME = CommonHelpers.GetDeviceName(),
+                OSNAME = CommonHelpers.FriendlyName()
+            };
+            context.Entry(data).State = EntityState.Modified;
+            this.auditTrail.AddAuditTrail(audit);
+            //end of Audit section -------------------------------
+
+            output = await context.SaveChangesAsync() != 0;
+            return output;
+        }
+
+        public async Task<bool> DeleteESGCategory(int esgCategoryId, UserInfo user)
+        {
+            var data = context.TBL_ESG_CATEGORY.Where(o => o.ESGCATEGORYID == esgCategoryId).FirstOrDefault();
+            context.TBL_ESG_CATEGORY.Remove(data);
+            var subs = context.TBL_ESG_SUB_CATEGORY.Where(o => o.ESGCATEGORYID == esgCategoryId).ToList();
+            context.TBL_ESG_SUB_CATEGORY.RemoveRange(subs);
+
+            var audit = new TBL_AUDIT
+            {
+                AUDITTYPEID = (short)AuditTypeEnum.ESGCategoryDeleted,
+                STAFFID = user.staffId,
+                BRANCHID = (short)user.BranchId,
+                DETAIL = $"{TranslateHelper.get("Deleted ESGCategory")} {data.ToString()}",
+                IPADDRESS = CommonHelpers.GetLocalIpAddress(),
+                URL = user.applicationUrl,
+                APPLICATIONDATE = _genSetup.GetApplicationDate(),
+                SYSTEMDATETIME = DateTime.Now,
+                DEVICENAME = CommonHelpers.GetDeviceName(),
+                OSNAME = CommonHelpers.FriendlyName()
+            };
+            this.auditTrail.AddAuditTrail(audit);
+            if ( await context.SaveChangesAsync() > 0)
+                return true;
+
+            return false;
+
+        }
+
+        public async Task<bool> DeleteESGSubcategory(int esgSubCategoryId, UserInfo user)
+        {
+            var data = context.TBL_ESG_SUB_CATEGORY.Where(o => o.ESGSUBCATEGORYID == esgSubCategoryId).FirstOrDefault();
+            context.TBL_ESG_SUB_CATEGORY.Remove(data);
+
+            var audit = new TBL_AUDIT
+            {
+                AUDITTYPEID = (short)AuditTypeEnum.ESGSUBCategoryDeleted,
+                STAFFID = user.staffId,
+                BRANCHID = (short)user.BranchId,
+                DETAIL = $"{TranslateHelper.get("Deleted ESGSubCategory")} {data.ToString()}",
+                IPADDRESS = CommonHelpers.GetLocalIpAddress(),
+                URL = user.applicationUrl,
+                APPLICATIONDATE = _genSetup.GetApplicationDate(),
+                SYSTEMDATETIME = DateTime.Now,
+                DEVICENAME = CommonHelpers.GetDeviceName(),
+                OSNAME = CommonHelpers.FriendlyName()
+            };
+            this.auditTrail.AddAuditTrail(audit);
+            if ( await context.SaveChangesAsync() > 0)
+                return true;
+
+            return false;
+        }
+
+        public async Task<bool> AddESGChecklistDefinition(List<ESGChecklistDefinitionViewModel> models)
+        {
+            if (models.Count <= 0)
+                return false;
+            bool output = false;
+            var scoreIds = context.TBL_ESG_CHECKLIST_SCORES.Where(e => e.CHECKLIST_TYPEID == (int)CheckListTypeEnum.ESGMChecklist).ToList();
+            foreach (ESGChecklistDefinitionViewModel model in models)
+            {
+                var data = new TBL_ESG_CHECKLIST_DEFINITION
+                {
+                    CHECKLISTITEMID = model.checklistItemId,
+                    ESGCATEGORYID = model.esgCategoryId,
+                    ESGSUBCATEGORYID = model.esgSubCategoryId,
+                    ISCOMPULSORY = model.isCompulsory,
+                    ITEMDESCRIPTION = model.itemDescription,
+                    //YESCHECKLISTSCORESID = scoreIds.FirstOrDefault(s => s.SCORE == model.yesGradeScore).CHECKLISTSCORESID,
+                    YESCHECKLISTSCORESID = model.yesChecklistScoresId,
+                    NOCHECKLISTSCORESID = model.noChecklistScoresId,
+                    CHECKLIST_TYPEID = (int)CheckListTypeEnum.ESGMChecklist,
+                    COMPANYID = model.companyId,
+                    DELETED = false,
+                    DATETIMECREATED = _genSetup.GetApplicationDate(),
+                    CREATEDBY = (int)model.createdBy
+                };
+
+                //Audit Section ---------------------------
+
+                var audit = new TBL_AUDIT
+                {
+                    AUDITTYPEID = (short)AuditTypeEnum.LoanChecklistAdded,
+                    STAFFID = model.createdBy,
+                    BRANCHID = (short)model.userBranchId,
+                    DETAIL = $"{TranslateHelper.get("Added ESG Checklist Definition  with ChecklistItemId of")} {model.checklistItemId}' ",
+                    IPADDRESS = CommonHelpers.GetLocalIpAddress(),
+                    URL = model.applicationUrl,
+                    APPLICATIONDATE = _genSetup.GetApplicationDate(),
+                    SYSTEMDATETIME = DateTime.Now,
+                    DEVICENAME = CommonHelpers.GetDeviceName(),
+                    OSNAME = CommonHelpers.FriendlyName()
+                };
+                context.TBL_ESG_CHECKLIST_DEFINITION.Add(data);
+                this.auditTrail.AddAuditTrail(audit);
+                //end of Audit section -------------------------------
+
+                output = await context.SaveChangesAsync() != 0;
+            }
+            return output;
+        }
+
+        public async Task<bool> AddESGChecklistDetail(List<ESGChecklistDetailViewModel> models)
+        {
+            if (models.Count <= 0)
+                return false;
+            bool output = false;
+            foreach (ESGChecklistDetailViewModel model in models)
+            {
+                if (model.esgChecklistDefinitionId == 341)
+                {
+
+                }
+                var existItem = await (from a in context.TBL_ESG_CHECKLIST_DETAIL
+                                 where a.ESGCHECKLISTDETAILID == model.esgChecklistDetailId && a.ESGCHECKLISTDEFINITIONID == model.esgChecklistDefinitionId
+                                 && a.LOANAPPLICATIONDETAILID == model.loanApplicationDetailId && a.DELETED == false
+                                 select a).FirstOrDefaultAsync();
+                if (existItem != null)
+                {
+                    existItem.CHECKLISTSTATUSID = model.checkStatusId;
+                    existItem.COMMENT_ = model.comment;
+                    existItem.LASTUPDATEDBY = (int)model.createdBy;
+                    existItem.DATETIMEUPDATED = DateTime.Now;
+
+                }
+                else
+                {
+                    var data = new TBL_ESG_CHECKLIST_DETAIL
+                    {
+                        ESGCHECKLISTDEFINITIONID = model.esgChecklistDefinitionId,
+                        LOANAPPLICATIONDETAILID = model.loanApplicationDetailId,
+                        ESGCLASSID = model.esgClassId,
+                        CHECKLIST_TYPEID = (int)CheckListTypeEnum.ESGMChecklist,
+                        ESGTYPEID = model.esgTypeId,
+                        CHECKLISTSTATUSID = model.checkStatusId,
+                        DESCRIPTION = model.description,
+                        COMMENT_ = model.comment,
+                        DELETED = false,
+                        DATETIMECREATED = _genSetup.GetApplicationDate(),
+                        CREATEDBY = (int)model.createdBy
+                    };
+                    context.TBL_ESG_CHECKLIST_DETAIL.Add(data);
+                }
+                //Audit Section ---------------------------
+                var audit = new TBL_AUDIT
+                {
+                    AUDITTYPEID = (short)AuditTypeEnum.LoanChecklistAdded,
+                    STAFFID = model.createdBy,
+                    BRANCHID = (short)model.userBranchId,
+                    DETAIL = $"{TranslateHelper.get("Added ESG Checklist Detail  with ESGChecklistDefinitionId of")} {model.esgChecklistDefinitionId}' ",
+                    IPADDRESS = CommonHelpers.GetLocalIpAddress(),
+                    URL = model.applicationUrl,
+                    APPLICATIONDATE = _genSetup.GetApplicationDate(),
+                    SYSTEMDATETIME = DateTime.Now,
+                    DEVICENAME = CommonHelpers.GetDeviceName(),
+                    OSNAME = CommonHelpers.FriendlyName()
+                };
+                this.auditTrail.AddAuditTrail(audit);
+                //end of Audit section -------------------------------
+
+                output = await  context.SaveChangesAsync() != 0;
+            }
+            //var sumModel = models[0];
+            //var summaryExist = (from s in context.TBL_ESG_CHECKLIST_SUMMARY
+            //                    where s.LOANAPPLICATIONDETAILID == sumModel.loanApplicationDetailId && s.CREATEDBY == (int)sumModel.createdBy
+            //                    select s).FirstOrDefault();
+            //if (summaryExist != null)
+            //{
+            //    summaryExist.COMMENT_ = sumModel.overSummary;
+            //    summaryExist.RATINGID = sumModel.overAllRiskStatusId;
+            //}
+            //else
+            //{
+            //    var summary = new TBL_ESG_CHECKLIST_SUMMARY
+            //    {
+            //        LOANAPPLICATIONDETAILID = sumModel.loanApplicationDetailId,
+            //        COMMENT_ = sumModel.overSummary,
+            //        RATINGID = sumModel.overAllRiskStatusId,
+            //        CHECKLIST_TYPEID = (int)CheckListTypeEnum.ESGMChecklist,
+            //        CREATEDBY = (int)sumModel.createdBy,
+            //        DATETIMECREATED = _genSetup.GetApplicationDate()
+            //    };
+            //    context.TBL_ESG_CHECKLIST_SUMMARY.Add(summary);
+            //}
+            context.SaveChanges();
+            return output;
+        }
+        public async Task<bool> AddESGChecklistSummary(ESGChecklistSummaryViewModel models)
+        {
+            var summaryExist = await (from s in context.TBL_ESG_CHECKLIST_SUMMARY
+                                where s.LOANAPPLICATIONDETAILID == models.loanApplicationDetailId
+                                //&& s.CREATEDBY == (int)models.createdBy
+                                && s.CHECKLIST_TYPEID == (int)CheckListTypeEnum.ESGMChecklist
+                                select s).FirstOrDefaultAsync();
+            if (summaryExist != null)
+            {
+                summaryExist.COMMENT_ = models.comment;
+                summaryExist.RATINGID = models.ratingId;
+                summaryExist.LASTUPDATEDBY = (int)models.createdBy;
+                summaryExist.DATETIMEUPDATED = _genSetup.GetApplicationDate();
+            }
+            else
+            {
+                var summary = new TBL_ESG_CHECKLIST_SUMMARY
+                {
+                    LOANAPPLICATIONDETAILID = models.loanApplicationDetailId,
+                    COMMENT_ = models.comment,
+                    RATINGID = models.ratingId,
+                    CREATEDBY = (int)models.createdBy,
+                    CHECKLIST_TYPEID = (int)CheckListTypeEnum.ESGMChecklist,
+                    DATETIMECREATED = _genSetup.GetApplicationDate()
+                };
+                context.TBL_ESG_CHECKLIST_SUMMARY.Add(summary);
+            }
+            //Audit Section ---------------------------
+            var audit = new TBL_AUDIT
+            {
+                AUDITTYPEID = (short)AuditTypeEnum.LoanChecklistAdded,
+                STAFFID = models.createdBy,
+                BRANCHID = (short)models.userBranchId,
+                DETAIL = $"{TranslateHelper.get("Added/updated ESG Checklist Summary  with Loan   ApplicationDetailId of")} {models.loanApplicationDetailId}",
+                IPADDRESS = CommonHelpers.GetLocalIpAddress(),
+                URL = models.applicationUrl,
+                APPLICATIONDATE = _genSetup.GetApplicationDate(),
+                SYSTEMDATETIME = DateTime.Now,
+                DEVICENAME = CommonHelpers.GetDeviceName(),
+                OSNAME = CommonHelpers.FriendlyName()
+            };
+            this.auditTrail.AddAuditTrail(audit);
+            //end of Audit section -------------------------------
+            var output = context.SaveChanges() > 0;
+            return output;
+        }
+
+        public async Task<IEnumerable<ESGChecklistDefinitionAndDetailViewModel>> GetESGChecklistStatus(int loanApplicationDetailId)
+        {
+            List<CheckListStatusViewModel> responseTypes = new List<CheckListStatusViewModel>();
+            var detailItem = (from s in context.TBL_ESG_CHECKLIST_DETAIL
+                              join k in context.TBL_ESG_CHECKLIST_DEFINITION
+                              on s.ESGCHECKLISTDEFINITIONID equals k.ESGCHECKLISTDEFINITIONID
+                              join i in context.TBL_CHECKLIST_ITEM on k.CHECKLISTITEMID equals i.CHECKLISTITEMID
+                              join c in context.TBL_ESG_CATEGORY on k.ESGCATEGORYID equals c.ESGCATEGORYID
+                              join q in context.TBL_ESG_SUB_CATEGORY on k.ESGSUBCATEGORYID equals q.ESGSUBCATEGORYID into gg
+                              from q in gg.DefaultIfEmpty()
+                              where s.LOANAPPLICATIONDETAILID == loanApplicationDetailId && k.DELETED == false
+                              && k.CHECKLIST_TYPEID == (int)CheckListTypeEnum.ESGMChecklist
+                              && s.CHECKLIST_TYPEID == (int)CheckListTypeEnum.ESGMChecklist
+                              select new ESGChecklistDefinitionAndDetailViewModel
+                              {
+                                  checkListDetailId = s.ESGCHECKLISTDETAILID,
+                                  checkListDefinitionId = s.ESGCHECKLISTDEFINITIONID,
+                                  loanApplicationDetailId = s.LOANAPPLICATIONDETAILID,
+                                  esgClassId = s.ESGCLASSID,
+                                  esgTypeId = s.ESGTYPEID,
+                                  categoryName = c.ESGCATEGORYNAME,
+                                  subCategoryName = q.ESGSUBCATEGORYNAME,
+                                  responseTypeId = i.RESPONSE_TYPEID,
+                                  requireComment = i.REQUIREUPLOAD,
+                                  checkListItemId = k.CHECKLISTITEMID,
+                                  checkListItemName = i.CHECKLISTITEMNAME,
+                                  comment = s.COMMENT_,
+                                  checklistStatusId = s.CHECKLISTSTATUSID,
+                                  yesChecklistScoresId = k.YESCHECKLISTSCORESID,
+                                  noChecklistScoresId = k.NOCHECKLISTSCORESID,
+                                  //responseTypes = context.TBL_ESG_CHECKLIST_SCORES.Where(x => x.SCORE == k.SCORE || x.SCORE == 6).OrderBy(a => a.SCORE).
+                                  //yesResponseTypes = context.TBL_ESG_CHECKLIST_SCORES.Where(x => x.CHECKLISTSCORESID == k.YESCHECKLISTSCORESID || (x.SCORE == 6 && x.CHECKLIST_TYPEID == (int)CheckListTypeEnum.ESGMChecklist)).OrderBy(a => a.SCORE).
+                                  yesResponseTypes = context.TBL_ESG_CHECKLIST_SCORES.Where(x => x.CHECKLISTSCORESID == k.YESCHECKLISTSCORESID && x.CHECKLIST_TYPEID == (int)CheckListTypeEnum.ESGMChecklist).
+                                    Select(x => new CheckListStatusViewModel()
+                                    {
+                                        checklistStatusId = (short)x.SCORE,
+                                        checkListScoresId = x.CHECKLISTSCORESID,
+                                        checklistStatusName = x.STATUSNAME,
+                                        grade = x.GRADE
+                                    }).FirstOrDefault(),
+                                  noResponseTypes = context.TBL_ESG_CHECKLIST_SCORES.Where(x => x.CHECKLISTSCORESID == k.NOCHECKLISTSCORESID && x.CHECKLIST_TYPEID == (int)CheckListTypeEnum.ESGMChecklist).
+                                    Select(x => new CheckListStatusViewModel()
+                                    {
+                                        checklistStatusId = (short)x.SCORE,
+                                        checkListScoresId = x.CHECKLISTSCORESID,
+                                        checklistStatusName = x.STATUSNAME,
+                                        grade = x.GRADE
+                                    }).FirstOrDefault()
+                              });
+
+            var data = (from k in context.TBL_ESG_CHECKLIST_DEFINITION
+                        join i in context.TBL_CHECKLIST_ITEM on k.CHECKLISTITEMID equals i.CHECKLISTITEMID
+                        join c in context.TBL_ESG_CATEGORY on k.ESGCATEGORYID equals c.ESGCATEGORYID
+                        join q in context.TBL_ESG_SUB_CATEGORY on k.ESGSUBCATEGORYID equals q.ESGSUBCATEGORYID
+                        into gg
+                        where k.CHECKLIST_TYPEID == (int)CheckListTypeEnum.ESGMChecklist && k.DELETED == false
+                        from q in gg.DefaultIfEmpty()
+                        select new ESGChecklistDefinitionAndDetailViewModel
+                        {
+                            checkListDetailId = 0,
+                            checkListDefinitionId = k.ESGCHECKLISTDEFINITIONID,
+                            //loanApplicationDetailId = s.LOANAPPLICATIONDETAILID,
+                            //esgClassId = s.ESGCLASSID,
+                            //esgTypeId = s.ESGTYPEID,
+                            categoryName = c.ESGCATEGORYNAME,
+                            subCategoryName = q.ESGSUBCATEGORYNAME,
+                            responseTypeId = i.RESPONSE_TYPEID,
+                            requireComment = i.REQUIREUPLOAD,
+                            checkListItemId = k.CHECKLISTITEMID,
+                            checkListItemName = i.CHECKLISTITEMNAME,
+                            comment = "",
+                            checklistStatusId = 0,
+                            yesChecklistScoresId = k.YESCHECKLISTSCORESID,
+                            noChecklistScoresId = k.NOCHECKLISTSCORESID,
+                            //responseTypes = context.TBL_ESG_CHECKLIST_SCORES.Where(x => x.SCORE == k.SCORE || x.SCORE == 6).OrderBy(a => a.SCORE).
+                            //responseTypes = context.TBL_ESG_CHECKLIST_SCORES.Where(x => x.CHECKLISTSCORESID == k.YESCHECKLISTSCORESID || (x.SCORE == 6 && x.CHECKLIST_TYPEID == (int)CheckListTypeEnum.ESGMChecklist)).OrderBy(a => a.SCORE).
+                            yesResponseTypes = context.TBL_ESG_CHECKLIST_SCORES.Where(x => x.CHECKLISTSCORESID == k.YESCHECKLISTSCORESID && x.CHECKLIST_TYPEID == (int)CheckListTypeEnum.ESGMChecklist).
+                                    Select(x => new CheckListStatusViewModel()
+                                    {
+                                        checklistStatusId = (short)x.SCORE,
+                                        checkListScoresId = x.CHECKLISTSCORESID,
+                                        checklistStatusName = x.STATUSNAME,
+                                        grade = x.GRADE
+                                    }).FirstOrDefault(),
+                            noResponseTypes = context.TBL_ESG_CHECKLIST_SCORES.Where(x => x.CHECKLISTSCORESID == k.NOCHECKLISTSCORESID && x.CHECKLIST_TYPEID == (int)CheckListTypeEnum.ESGMChecklist).
+                                    Select(x => new CheckListStatusViewModel()
+                                    {
+                                        checklistStatusId = (short)x.SCORE,
+                                        checkListScoresId = x.CHECKLISTSCORESID,
+                                        checklistStatusName = x.STATUSNAME,
+                                        grade = x.GRADE
+                                    }).FirstOrDefault()
+                        });
+            var definitionList = data.ToList();
+            var detailList = detailItem.ToList();
+            var detailId = detailItem.Select(a => a.checkListDefinitionId).ToList();
+            if (detailItem.Any())
+            //if checklist has been captured
+            {
+                var checklist = detailList.Concat(definitionList.Where(x => !detailId.Contains(x.checkListDefinitionId)));
+                return checklist.ToList();
+            }
+            return data.ToList();
+        }
+
+        #region GreenRating
+
+        public async Task<IEnumerable<ChecklistItemViewModel>> GetAllChecklistItemBycheckListTypeId(int checkListTypeId)
+        {
+            var data = await (from a in context.TBL_CHECKLIST_ITEM
+                        where a.DELETED == false && a.CHECKLIST_TYPEID == checkListTypeId
+                        select new ChecklistItemViewModel
+                        {
+                            checkListItemId = a.CHECKLISTITEMID,
+                            checkListItemName = a.CHECKLISTITEMNAME,
+                            responseTypeName = a.TBL_CHECKLIST_RESPONSE_TYPE.RESPONSE_TYPE_NAME,
+                            responseTypeId = a.RESPONSE_TYPEID,
+                            requireUpload = a.REQUIREUPLOAD,
+                            dateTimeCreated = a.DATETIMECREATED,
+                            createdBy = (int)a.CREATEDBY
+                        }).ToListAsync();
+            return data;
+        }
+
+        public async Task<IEnumerable<CheckListScores>> GetCheckListScores(int checkListTypeId)
+        {
+            var data = await (from a in context.TBL_ESG_CHECKLIST_SCORES
+                        where a.DELETED == false && a.CHECKLIST_TYPEID == checkListTypeId
+                        orderby a.SCORE
+                        select new CheckListScores()
+                        {
+                            checkListStatusId = a.CHECKLISTSTATUSID,
+                            checklistScoresId = a.CHECKLISTSCORESID,
+                            scoreWeight = a.SCOREWEIGHT,
+                            checkListTypeId = a.CHECKLIST_TYPEID,
+                            colourCode = a.SCORECOLORCODE,
+                            checklistStatusName = a.STATUSNAME,
+                            gradeScore = (int)a.SCORE,
+                            grade = (a.SCORE.ToString() == null) ? "N/A" : a.GRADE
+                        }).ToListAsync();
+            return data;
+        }
+
+        public async Task<bool> AddGreenRatingDetail(List<ESGChecklistDetailViewModel> models)
+        {
+            if (models.Count <= 0)
+                return false;
+            bool output = false;
+            foreach (ESGChecklistDetailViewModel model in models)
+            {
+                var loanId = context.TBL_LOAN_APPLICATION.FirstOrDefault(l => l.LOANAPPLICATIONID == model.loanApplicationDetailId).LOANAPPLICATIONID;
+                var existItem = (from a in context.TBL_ESG_CHECKLIST_DETAIL
+                                 where a.ESGCHECKLISTDETAILID == model.esgChecklistDetailId && a.ESGCHECKLISTDEFINITIONID == model.esgChecklistDefinitionId
+                                 && a.CHECKLIST_TYPEID == (int)CheckListTypeEnum.GreenRating
+                                 && a.LOANAPPLICATIONDETAILID == loanId && a.DELETED == false
+                                 select a).FirstOrDefault();
+                if (existItem != null)
+                {
+                    existItem.CHECKLISTSTATUSID = model.checkStatusId;
+                    existItem.COMMENT_ = model.comment;
+                    existItem.LASTUPDATEDBY = (int)model.createdBy;
+                    existItem.DATETIMEUPDATED = DateTime.Now;
+
+                }
+                else
+                {
+                    var data = new TBL_ESG_CHECKLIST_DETAIL
+                    {
+                        ESGCHECKLISTDEFINITIONID = model.esgChecklistDefinitionId,
+                        LOANAPPLICATIONDETAILID = loanId,
+                        ESGCLASSID = model.esgClassId,
+                        ESGTYPEID = model.esgTypeId,
+                        CHECKLIST_TYPEID = (int)CheckListTypeEnum.GreenRating,
+                        CHECKLISTSTATUSID = model.checkStatusId,
+                        DESCRIPTION = model.description,
+                        COMMENT_ = model.comment,
+                        DELETED = false,
+                        DATETIMECREATED = _genSetup.GetApplicationDate(),
+                        CREATEDBY = (int)model.createdBy
+                    };
+                    context.TBL_ESG_CHECKLIST_DETAIL.Add(data);
+                }
+                //Audit Section ---------------------------
+                var audit = new TBL_AUDIT
+                {
+                    AUDITTYPEID = (short)AuditTypeEnum.LoanChecklistAdded,
+                    STAFFID = model.createdBy,
+                    BRANCHID = (short)model.userBranchId,
+                    DETAIL = $"Added Green Rating Detail with ESGChecklistDefinitionId of {model.esgChecklistDefinitionId}' ",
+                    IPADDRESS = CommonHelpers.GetLocalIpAddress(),
+                    URL = model.applicationUrl,
+                    APPLICATIONDATE = _genSetup.GetApplicationDate(),
+                    SYSTEMDATETIME = DateTime.Now,
+                    DEVICENAME = CommonHelpers.GetDeviceName(),
+                    OSNAME = CommonHelpers.FriendlyName()
+                };
+                this.auditTrail.AddAuditTrail(audit);
+                //end of Audit section -------------------------------
+
+                output = await  context.SaveChangesAsync() != 0;
+            }
+            context.SaveChanges();
+            return output;
+        }
+
+        public async Task<bool> AddGreenRatingSummary(ESGChecklistSummaryViewModel models)
+        {
+            var summaryExist = await (from s in context.TBL_ESG_CHECKLIST_SUMMARY
+                                where s.LOANAPPLICATIONDETAILID == models.loanApplicationDetailId
+                                //&& s.CREATEDBY == (int)models.createdBy
+                                && s.CHECKLIST_TYPEID == (int)CheckListTypeEnum.GreenRating
+                                select s).FirstOrDefaultAsync();
+            if (summaryExist != null)
+            {
+                summaryExist.COMMENT_ = models.comment;
+                summaryExist.RATINGID = models.ratingId;
+                summaryExist.LASTUPDATEDBY = (int)models.createdBy;
+                summaryExist.DATETIMEUPDATED = _genSetup.GetApplicationDate();
+            }
+            else
+            {
+                var summary = new TBL_ESG_CHECKLIST_SUMMARY
+                {
+                    LOANAPPLICATIONDETAILID = models.loanApplicationDetailId,
+                    COMMENT_ = models.comment,
+                    RATINGID = models.ratingId,
+                    CREATEDBY = (int)models.createdBy,
+                    CHECKLIST_TYPEID = (int)CheckListTypeEnum.GreenRating,
+                    DATETIMECREATED = _genSetup.GetApplicationDate()
+                };
+                context.TBL_ESG_CHECKLIST_SUMMARY.Add(summary);
+            }
+            //Audit Section ---------------------------
+            var audit = new TBL_AUDIT
+            {
+                AUDITTYPEID = (short)AuditTypeEnum.LoanChecklistAdded,
+                STAFFID = models.createdBy,
+                BRANCHID = (short)models.userBranchId,
+                DETAIL = $"Added/updated Green Rating Summary with Loan ApplicationDetailId of {models.loanApplicationDetailId}",
+                IPADDRESS = CommonHelpers.GetLocalIpAddress(),
+                URL = models.applicationUrl,
+                APPLICATIONDATE = _genSetup.GetApplicationDate(),
+                SYSTEMDATETIME = DateTime.Now,
+                DEVICENAME = CommonHelpers.GetDeviceName(),
+                OSNAME = CommonHelpers.FriendlyName()
+            };
+            this.auditTrail.AddAuditTrail(audit);
+            //end of Audit section -------------------------------
+            var output = context.SaveChanges() > 0;
+            return output;
+        }
+
+        public async Task<bool> AddGreenRatingDefinition(List<ESGChecklistDefinitionViewModel> models)
+        {
+            if (models.Count <= 0)
+                return false;
+            bool output = false;
+            //var scoreIds = context.TBL_ESG_CHECKLIST_SCORES.Where(e => e.CHECKLIST_TYPEID == (int)CheckListTypeEnum.ESGMChecklist).ToList();
+            foreach (ESGChecklistDefinitionViewModel model in models)
+            {
+                var data = new TBL_ESG_CHECKLIST_DEFINITION
+                {
+                    CHECKLISTITEMID = model.checklistItemId,
+                    SECTORID = model.sectorId,
+                    ISCOMPULSORY = model.isCompulsory,
+                    ITEMDESCRIPTION = model.itemDescription,
+                    YESCHECKLISTSCORESID = model.yesChecklistScoresId,
+                    NOCHECKLISTSCORESID = model.noChecklistScoresId,
+                    CHECKLIST_TYPEID = (int)CheckListTypeEnum.GreenRating,
+                    //SCORE = model.gradeScore,
+                    COMPANYID = model.companyId,
+                    DELETED = false,
+                    DATETIMECREATED = _genSetup.GetApplicationDate(),
+                    CREATEDBY = (int)model.createdBy
+                };
+
+                //Audit Section ---------------------------
+
+                var audit = new TBL_AUDIT
+                {
+                    AUDITTYPEID = (short)AuditTypeEnum.LoanChecklistAdded,
+                    STAFFID = model.createdBy,
+                    BRANCHID = (short)model.userBranchId,
+                    DETAIL = $"Added Green Rating Definition  with ChecklistItemId of {model.checklistItemId}' ",
+                    IPADDRESS = CommonHelpers.GetLocalIpAddress(),
+                    URL = model.applicationUrl,
+                    APPLICATIONDATE = _genSetup.GetApplicationDate(),
+                    SYSTEMDATETIME = DateTime.Now,
+                    DEVICENAME = CommonHelpers.GetDeviceName(),
+                    OSNAME = CommonHelpers.FriendlyName()
+                };
+                context.TBL_ESG_CHECKLIST_DEFINITION.Add(data);
+                this.auditTrail.AddAuditTrail(audit);
+                //end of Audit section -------------------------------
+
+                output = await context.SaveChangesAsync() != 0;
+            }
+            return output;
+        }
+
+        public async Task<bool> DeleteGreenRatingDefinition(int esgChecklistDefinitionId, int staffId)
+        {
+            var checklist = context.TBL_ESG_CHECKLIST_DEFINITION.Where(o => o.ESGCHECKLISTDEFINITIONID == esgChecklistDefinitionId).Select(o => o).FirstOrDefault();
+            if (checklist != null)
+            {
+                checklist.DELETED = true;
+                checklist.DATETIMEUPDATED = DateTime.Now;
+                checklist.DELETEDBY = staffId;
+            }
+
+            if ( await context.SaveChangesAsync() > 0)
+                return true;
+
+            return false;
+        }
+
+        public IEnumerable<ESGChecklistDefinitionAndDetailViewModel> GetGreenRatingStatus(int loanApplicationId)
+        {
+            List<CheckListStatusViewModel> responseTypes = new List<CheckListStatusViewModel>();
+            var detailItem = (from s in context.TBL_ESG_CHECKLIST_DETAIL
+                              join k in context.TBL_ESG_CHECKLIST_DEFINITION on s.ESGCHECKLISTDEFINITIONID equals k.ESGCHECKLISTDEFINITIONID
+                              join i in context.TBL_CHECKLIST_ITEM on k.CHECKLISTITEMID equals i.CHECKLISTITEMID
+                              join c in context.TBL_SECTOR on k.SECTORID equals c.SECTORID
+                              where s.LOANAPPLICATIONDETAILID == loanApplicationId && k.DELETED == false
+                              && k.CHECKLIST_TYPEID == (int)CheckListTypeEnum.GreenRating
+                              && s.CHECKLIST_TYPEID == (int)CheckListTypeEnum.GreenRating
+                              select new ESGChecklistDefinitionAndDetailViewModel
+                              {
+                                  checkListDetailId = s.ESGCHECKLISTDETAILID,
+                                  checkListDefinitionId = s.ESGCHECKLISTDEFINITIONID,
+                                  loanApplicationDetailId = s.LOANAPPLICATIONDETAILID,
+                                  sectorId = k.SECTORID,
+                                  sectorName = c.NAME,
+                                  responseTypeId = i.RESPONSE_TYPEID,
+                                  requireComment = i.REQUIREUPLOAD,
+                                  checkListItemId = k.CHECKLISTITEMID,
+                                  checkListItemName = i.CHECKLISTITEMNAME,
+                                  comment = s.COMMENT_,
+                                  checklistStatusId = s.CHECKLISTSTATUSID,
+                                  checklistStatusName = context.TBL_ESG_CHECKLIST_SCORES.FirstOrDefault(x => x.SCORE == s.CHECKLISTSTATUSID && x.CHECKLIST_TYPEID == (int)CheckListTypeEnum.GreenRating).STATUSNAME,
+                                  grade = context.TBL_ESG_CHECKLIST_SCORES.FirstOrDefault(x => x.SCORE == s.CHECKLISTSTATUSID && x.CHECKLIST_TYPEID == (int)CheckListTypeEnum.GreenRating).GRADE,
+                                  //responseTypes = context.TBL_ESG_CHECKLIST_SCORES.Where(x => x.CHECKLISTSCORESID == k.YESCHECKLISTSCORESID || (x.SCORE == 6 && x.CHECKLIST_TYPEID == (int)CheckListTypeEnum.GreenRating)).OrderBy(a => a.SCORE).
+                                  yesResponseTypes = context.TBL_ESG_CHECKLIST_SCORES.Where(x => x.CHECKLISTSCORESID == k.YESCHECKLISTSCORESID && x.CHECKLIST_TYPEID == (int)CheckListTypeEnum.GreenRating).
+                                    Select(x => new CheckListStatusViewModel()
+                                    {
+                                        checklistStatusId = (short)x.SCORE,
+                                        checkListScoresId = x.CHECKLISTSCORESID,
+                                        checklistStatusName = x.STATUSNAME,
+                                        grade = x.GRADE
+                                    }).FirstOrDefault(),
+                                  noResponseTypes = context.TBL_ESG_CHECKLIST_SCORES.Where(x => x.CHECKLISTSCORESID == k.NOCHECKLISTSCORESID && x.CHECKLIST_TYPEID == (int)CheckListTypeEnum.GreenRating).
+                                    Select(x => new CheckListStatusViewModel()
+                                    {
+                                        checklistStatusId = (short)x.SCORE,
+                                        checkListScoresId = x.CHECKLISTSCORESID,
+                                        checklistStatusName = x.STATUSNAME,
+                                        grade = x.GRADE
+                                    }).FirstOrDefault()
+                              });
+
+            var data = (from c in context.TBL_SECTOR
+                        join l in context.TBL_LOAN_APPLICATION_DETAIL on c.SECTORID equals l.TBL_SUB_SECTOR.SECTORID
+                        join ln in context.TBL_LOAN_APPLICATION on l.LOANAPPLICATIONID equals ln.LOANAPPLICATIONID
+                        join k in context.TBL_ESG_CHECKLIST_DEFINITION on c.SECTORID equals k.SECTORID
+                        join i in context.TBL_CHECKLIST_ITEM on k.CHECKLISTITEMID equals i.CHECKLISTITEMID
+                        where k.CHECKLIST_TYPEID == (int)CheckListTypeEnum.GreenRating
+                        && ln.LOANAPPLICATIONID == loanApplicationId && k.DELETED == false
+                        select new ESGChecklistDefinitionAndDetailViewModel
+                        {
+                            checkListDetailId = 0,
+                            checkListDefinitionId = k.ESGCHECKLISTDEFINITIONID,
+                            //loanApplicationDetailId = s.LOANAPPLICATIONDETAILID,
+                            sectorId = k.SECTORID,
+                            sectorName = c.NAME,
+                            responseTypeId = i.RESPONSE_TYPEID,
+                            requireComment = i.REQUIREUPLOAD,
+                            checkListItemId = k.CHECKLISTITEMID,
+                            checkListItemName = i.CHECKLISTITEMNAME,
+                            comment = "",
+                            checklistStatusId = 0,
+                            //responseTypes = context.TBL_ESG_CHECKLIST_SCORES.Where(x => x.CHECKLISTSCORESID == k.YESCHECKLISTSCORESID || (x.SCORE == 6 && x.CHECKLIST_TYPEID == (int)CheckListTypeEnum.GreenRating)).OrderBy(a => a.SCORE).
+                            yesResponseTypes = context.TBL_ESG_CHECKLIST_SCORES.Where(x => x.CHECKLISTSCORESID == k.YESCHECKLISTSCORESID && x.CHECKLIST_TYPEID == (int)CheckListTypeEnum.GreenRating).
+                                    Select(x => new CheckListStatusViewModel()
+                                    {
+                                        checklistStatusId = (short)x.SCORE,
+                                        checkListScoresId = x.CHECKLISTSCORESID,
+                                        checklistStatusName = x.STATUSNAME,
+                                        grade = x.GRADE
+                                    }).FirstOrDefault(),
+                            noResponseTypes = context.TBL_ESG_CHECKLIST_SCORES.Where(x => x.CHECKLISTSCORESID == k.NOCHECKLISTSCORESID && x.CHECKLIST_TYPEID == (int)CheckListTypeEnum.GreenRating).
+                                    Select(x => new CheckListStatusViewModel()
+                                    {
+                                        checklistStatusId = (short)x.SCORE,
+                                        checkListScoresId = x.CHECKLISTSCORESID,
+                                        checklistStatusName = x.STATUSNAME,
+                                        grade = x.GRADE
+                                    }).FirstOrDefault()
+                        });
+            var definitionList = data.ToList();
+            var detailList = detailItem.ToList();
+            var detailId = detailItem.Select(a => a.checkListDefinitionId).ToList();
+            if (detailItem.Any())
+            {
+                var checklist = detailList.Concat(definitionList.Where(x => !detailId.Contains(x.checkListDefinitionId))).ToList();
+                return checklist.ToList();
+            }
+            return data.ToList();
+        }
+
+        public async Task<IEnumerable<ESGChecklistDefinitionViewModel>> GetGreenRatingDefinition()
+        {
+            var data = await (from s in context.TBL_SECTOR
+                        join a in context.TBL_ESG_CHECKLIST_DEFINITION on s.SECTORID equals a.SECTORID
+                        join c in context.TBL_CHECKLIST_ITEM on a.CHECKLISTITEMID equals c.CHECKLISTITEMID
+                        join y in context.TBL_ESG_CHECKLIST_SCORES on a.YESCHECKLISTSCORESID equals y.CHECKLISTSCORESID into yes
+                        join n in context.TBL_ESG_CHECKLIST_SCORES on a.NOCHECKLISTSCORESID equals n.CHECKLISTSCORESID into no
+                        from y in yes.DefaultIfEmpty()
+                        from n in no.DefaultIfEmpty()
+                        where a.DELETED == false && a.CHECKLIST_TYPEID == (int)CheckListTypeEnum.GreenRating
+                        select new ESGChecklistDefinitionViewModel()
+                        {
+                            esgChecklistDefinitionId = a.ESGCHECKLISTDEFINITIONID,
+                            checklistItemId = a.CHECKLISTITEMID,
+                            checklistItemName = c.CHECKLISTITEMNAME,
+                            sectorId = s.SECTORID,
+                            sectorName = s.NAME,
+                            isCompulsory = a.ISCOMPULSORY,
+                            itemDescription = a.ITEMDESCRIPTION,
+                            yesGradeScore = (int)y.SCORE,
+                            noGradeScore = n == null ? 0 : (int)n.SCORE,
+                            yesChecklistScoresId = y.CHECKLISTSCORESID,
+                            noChecklistScoresId = n == null ? 0 : n.CHECKLISTSCORESID,
+                            scoreWeight = y.SCOREWEIGHT,
+                            scoreColourCode = y.SCORECOLORCODE,
+                            yesGrade = (y.SCORE.ToString() == null) ? "N/A" : y.GRADE,
+                            noGrade = n == null ? "N/A" : (n.SCORE.ToString() == null) ? "N/A" : n.GRADE
+                        }).ToListAsync();
+            return data;
+        }
+
+        public async Task<IEnumerable<ESGChecklistDetailViewModel>> GetGreenRatingDetail(int loanApplicationId)
+        {
+            var data = await (from a in context.TBL_ESG_CHECKLIST_DETAIL
+                        join b in context.TBL_ESG_CHECKLIST_SUMMARY on a.LOANAPPLICATIONDETAILID equals b.LOANAPPLICATIONDETAILID
+                        into gg
+                        from b in gg.DefaultIfEmpty()
+                        join d in context.TBL_ESG_CHECKLIST_DEFINITION on a.ESGCHECKLISTDEFINITIONID equals d.ESGCHECKLISTDEFINITIONID
+                        join i in context.TBL_CHECKLIST_ITEM on d.CHECKLISTITEMID equals i.CHECKLISTITEMID
+                        join c in context.TBL_SECTOR on d.SECTORID equals c.SECTORID
+                        where a.LOANAPPLICATIONDETAILID == loanApplicationId && a.CHECKLIST_TYPEID == (int)CheckListTypeEnum.GreenRating
+                        && d.DELETED == false
+                        select new ESGChecklistDetailViewModel()
+                        {
+                            esgChecklistDetailId = a.ESGCHECKLISTDETAILID,
+                            esgChecklistDefinitionId = a.ESGCHECKLISTDEFINITIONID,
+                            loanApplicationDetailId = a.LOANAPPLICATIONDETAILID,
+                            esgCheckListItemName = i.CHECKLISTITEMNAME,
+                            checkStatusId = a.CHECKLISTSTATUSID,
+                            sectorName = c.NAME,
+                            sectorId = c.SECTORID,
+                            comment = a.COMMENT_,
+                            description = a.DESCRIPTION,
+                            overAllRiskStatusId = b.RATINGID,
+                            overSummary = b.COMMENT_
+                        }).ToListAsync();
+            return data;
+        }
+
+        public async Task<ESGChecklistSummaryViewModel> CalculateGreenRatingSummary(List<ESGChecklistDetailViewModel> models)
+        {
+            if (models.Count <= 0)
+            {
+                throw new SecureException("Nothing was selected");
+            }
+            ESGChecklistSummaryViewModel summary = new ESGChecklistSummaryViewModel();
+            var scoreWeights = context.TBL_ESG_CHECKLIST_SCORES.Where(e => e.CHECKLIST_TYPEID == (int)CheckListTypeEnum.GreenRating).Select(s => new { score = s.SCORE, weight = s.SCOREWEIGHT, colourCode = s.SCORECOLORCODE });
+            var modelScores = models.OrderBy(m => m.checkStatusId).Select(m => m.checkStatusId);
+            var maxScore = modelScores.Min();
+            var max = scoreWeights.FirstOrDefault(w => w.score == maxScore);
+            var maxWeight = max.weight.ToUpper();
+            summary.ratingId = maxScore;
+            summary.comment = maxWeight;
+            summary.colourCode = max.colourCode.ToLower();
+            //if (models.Exists(m => m.checkStatusId == 1))
+            //{
+            //    summary.ratingId = 1;
+            //    summary.comment = "POTENTIAL ELIGIBLE PROJECT";
+            //    return summary;
+            //}
+
+            //if (models.Exists(m => m.checkStatusId == 5))
+            //{
+            //    summary.ratingId = 5;
+            //    summary.comment = "MEDIUM RISK";
+            //    return summary;
+            //}
+
+            //if (models.Exists(m => m.checkStatusId == 6))
+            //{
+            //    summary.ratingId = 6;
+            //    summary.comment = "LOW RISK";
+            //    return summary;
+            //}
+            //summary.ratingId = 6;
+            //summary.comment = "NOT ELIGIBLE";
+            return summary;
+        }
+        #endregion GreenRating
+
+        public async Task<IEnumerable<LoanApplicationDetailViewModel>> GetAllFacilityDetails(int loanApplicationId, int companyId)
+        {
+            var esgDetailIds = (from a in context.TBL_ESG_CHECKLIST_DETAIL select a.LOANAPPLICATIONDETAILID).ToList();
+
+            var data = await (from a in context.TBL_LOAN_APPLICATION
+                        join b in context.TBL_LOAN_APPLICATION_DETAIL
+                        on a.LOANAPPLICATIONID equals b.LOANAPPLICATIONID
+                        where a.LOANAPPLICATIONID == loanApplicationId && esgDetailIds.Contains(b.LOANAPPLICATIONDETAILID)
+                        && a.COMPANYID == companyId && a.DELETED == false
+                        select new LoanApplicationDetailViewModel()
+                        {
+                            loanApplicationId = b.LOANAPPLICATIONID,
+                            loanApplicationDetailId = b.LOANAPPLICATIONDETAILID,
+                            proposedProductName = b.TBL_PRODUCT.PRODUCTNAME,
+                            proposedAmount = b.PROPOSEDAMOUNT,
+                        }).ToListAsync();
+            return data;
+        }
+        public async Task<ESGChecklistSummaryViewModel> CalculateESGChecklistSummary(List<ESGChecklistDetailViewModel> models)
+        {
+            ESGChecklistSummaryViewModel summary = new ESGChecklistSummaryViewModel();
+            if (models.Count <= 0)
+                throw new SecureException(TranslateHelper.get("Nothing was selected"));
+            if(models.Exists(m => m.checkStatusId == 1))
+            {
+                summary.ratingId = 1;
+                summary.comment = TranslateHelper.get("HIGH RISK");
+                return summary;
+            }
+
+            if (models.Exists(m => m.checkStatusId == 5))
+            {
+                summary.ratingId = 5;
+                summary.comment = TranslateHelper.get("MEDIUM RISK");
+                return summary;
+            }
+
+            if (models.Exists(m => m.checkStatusId == 6))
+            {
+                summary.ratingId = 6;
+                summary.comment = TranslateHelper.get("LOW RISK");
+                return summary;
+            }
+            return null;
+        }
+        #endregion
+
+        public async Task<bool> RegulatoryChecklistAutomapping(int customerId, ChecklistDetailViewModel model)
+        {
+            bool output = false;
+            var credit = await (from a in context.TBL_CUSTOMER_CREDIT_BUREAU
+                          where a.CUSTOMERID == customerId
+                          orderby a.DATECOMPLETED descending
+                          select a).GroupBy(c => c.CREDITBUREAUID).Select(y => y.FirstOrDefault()).ToListAsync();
+
+            var checklistItem = await (from f in context.TBL_CHECKLIST_ITEM
+                                 join g in context.TBL_CHECKLIST_DEFINITION on f.CHECKLISTITEMID equals g.CHECKLISTITEMID
+                                 where g.CHECKLIST_TYPEID == (int)CheckListTypeEnum.RegulatoryChecklist
+                                 select new
+                                 {
+                                     itemName = f.CHECKLISTITEMNAME,
+                                     itemDefinitionId = g.CHECKLISTDEFINITIONID
+                                 }).ToListAsync();
+
+            foreach (var item in credit)
+            {
+                model.checkListStatusId = item.ISREPORTOKAY == true ? model.checkListStatusId = (int)CheckListStatusEnum.Yes : model.checkListStatusId = (int)CheckListStatusEnum.No;
+                model.targetTypeId = (int)CheckListTargetTypeEnum.LoanApplicationCustomerChecklist;
+                var creditBureauType = (from c in context.TBL_CREDIT_BUREAU
+                                        where c.CREDITBUREAUID == item.CREDITBUREAUID
+                                        select c).FirstOrDefault().CREDITBUREAUNAME;
+
+                foreach (var id in checklistItem)
+                {
+                    if (CommonHelpers.Left(id.itemName.ToUpper().Trim(), 3) == CommonHelpers.Left(creditBureauType.ToUpper().Trim(), 3))
+                    {
+                        model.checkListDefinitionId = id.itemDefinitionId;
+                    }
+                }
+                if ( await ValidateChecklistDetailEntry(model.checkListDefinitionId, model.targetId))
+                {
+                    output = false;
+                }
+                else
+                {
+                    output = await AddChecklistDetail(model);
+                }
+            }
+            //      if ( == (short)CreditBureauEnum.CRMS) hascrms = true;
+            return output;
+        }
+
+       
+    }
+}
