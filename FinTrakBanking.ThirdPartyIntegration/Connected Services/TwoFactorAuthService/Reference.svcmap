@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="4bcd68a7-9ca1-4f47-8ccd-d1fadde94b6f" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://ho-bespoke07.nigeria.firstbank.local/EntrustWrapper/AuthWrapper.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="AuthWrapper.wsdl" MetadataType="Wsdl" ID="c037c0e2-05d8-4338-a929-7c63e1d36e1e" SourceId="1" SourceUrl="http://ho-bespoke07.nigeria.firstbank.local/EntrustWrapper/AuthWrapper.svc?wsdl" />
+    <MetadataFile FileName="AuthWrapper.xsd" MetadataType="Schema" ID="9ad2f269-6da1-463e-b6a1-09830a3346ad" SourceId="1" SourceUrl="http://ho-bespoke07.nigeria.firstbank.local/EntrustWrapper/AuthWrapper.svc?xsd=xsd3" />
+    <MetadataFile FileName="AuthWrapper1.xsd" MetadataType="Schema" ID="2f7ca6fb-00e4-43f2-873f-1df6f74521a8" SourceId="1" SourceUrl="http://ho-bespoke07.nigeria.firstbank.local/EntrustWrapper/AuthWrapper.svc?xsd=xsd2" />
+    <MetadataFile FileName="AuthWrapper2.xsd" MetadataType="Schema" ID="dacfa6c5-311c-4c37-beac-8e9c35fb47ba" SourceId="1" SourceUrl="http://ho-bespoke07.nigeria.firstbank.local/EntrustWrapper/AuthWrapper.svc?xsd=xsd0" />
+    <MetadataFile FileName="AuthWrapper3.xsd" MetadataType="Schema" ID="93feb794-fc66-440d-9788-39bf5f76b288" SourceId="1" SourceUrl="http://ho-bespoke07.nigeria.firstbank.local/EntrustWrapper/AuthWrapper.svc?xsd=xsd1" />
+    <MetadataFile FileName="AuthWrapper.disco" MetadataType="Disco" ID="c673e18d-566d-4e91-ba64-5cbaa027943f" SourceId="1" SourceUrl="http://ho-bespoke07.nigeria.firstbank.local/EntrustWrapper/AuthWrapper.svc?disco" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

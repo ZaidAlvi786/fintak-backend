@@ -1,0 +1,1702 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.Net.Compilers.Toolset.4.0.1\build\Microsoft.Net.Compilers.Toolset.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.Toolset.4.0.1\build\Microsoft.Net.Compilers.Toolset.props')" />
+  <Import Project="..\packages\Microsoft.Net.Compilers.3.11.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.3.11.0\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{81C64D5D-3674-499E-B718-257AA862B1B2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FinTrakBanking.ThirdPartyIntegration</RootNamespace>
+    <AssemblyName>FinTrakBanking.ThirdPartyIntegration</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.5.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=3.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.3.6.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Office.Interop.Excel.15.0.4795.1000\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp, Version=106.15.0.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.106.15.0\lib\net452\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp.Serializers.NewtonsoftJson, Version=106.15.0.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.Serializers.NewtonsoftJson.106.15.0\lib\net452\RestSharp.Serializers.NewtonsoftJson.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.5.0.0\lib\net45\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Text.Encodings.Web, Version=5.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encodings.Web.5.0.1\lib\net461\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=5.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Json.5.0.2\lib\net461\System.Text.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Basel\BaselIntegration.cs" />
+    <Compile Include="Connected Services\ACESS_STAFF\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\DraxlaExpress\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\ESBCRCService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\ESBFirstCentralService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\FCUBSCLServiceKenya\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\Mz2FAService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\Service\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\TestESBFirstCentralService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\TestService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\TwoFactorAuthService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\TwoFactorAuthSoapService1\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\TwoFactorAuthSoapService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Flexcube\CWGAPI\LoanPrepayment.cs" />
+    <Compile Include="Flexcube\CWGAPI\StaffDetails.cs" />
+    <Compile Include="StagingDatabase\Finacle\StaffMIS.cs" />
+    <Compile Include="SubToHeadOffice\SubToHeadOfficeIntegration.cs" />
+    <Compile Include="TwoFactorAuthIntegration\TwoFactorAuthIntegrationService.cs" />
+    <Compile Include="Connected Services\CRCWebService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\FbnAlertWS\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\XDSWebService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="CreditBureau\CRC\CRCService.cs" />
+    <Compile Include="CreditBureau\CreditBureauProcess.cs" />
+    <Compile Include="CreditBureau\XDS\XDSService.cs" />
+    <Compile Include="Flexcube\CWGAPI\AccountDetail.cs" />
+    <Compile Include="Flexcube\CWGAPI\BulkTransactionPosting.cs" />
+    <Compile Include="Flexcube\CWGAPI\CustomerDetails.cs" />
+    <Compile Include="Flexcube\CWGAPI\ForeignCurrencyAccount.cs" />
+    <Compile Include="Flexcube\CWGAPI\OverDraft.cs" />
+    <Compile Include="Flexcube\IntegrationWithFlexcube.cs" />
+    <Compile Include="Flexcube\CWGAPI\TransactionPosting.cs" />
+    <Compile Include="Notification\SMS\SMSIntegration.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\ACESS_STAFF\Service.wsdl" />
+    <None Include="Connected Services\CRCWebService\liverequestinvoker.wsdl" />
+    <None Include="Connected Services\DraxlaExpress\Service.wsdl" />
+    <None Include="Connected Services\ESBCRCService\crcweb.wsdl" />
+    <None Include="Connected Services\ESBCRCService\crcweb.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\ESBFirstCentralService\FinTrakBanking.ThirdPartyIntegration.ESBFirstCentralService.ConnectCommercialMatchResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ESBFirstCentralService\FinTrakBanking.ThirdPartyIntegration.ESBFirstCentralService.ConnectConsumerMatchResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ESBFirstCentralService\FinTrakBanking.ThirdPartyIntegration.ESBFirstCentralService.GetCommercialBasicCreditReportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ESBFirstCentralService\FinTrakBanking.ThirdPartyIntegration.ESBFirstCentralService.GetCommercialEnquiryReportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ESBFirstCentralService\FinTrakBanking.ThirdPartyIntegration.ESBFirstCentralService.GetCommercialFullCreditReportBinaryResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ESBFirstCentralService\FinTrakBanking.ThirdPartyIntegration.ESBFirstCentralService.GetCommercialFullCreditReportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ESBFirstCentralService\FinTrakBanking.ThirdPartyIntegration.ESBFirstCentralService.GetConsumerAccountMatchResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ESBFirstCentralService\FinTrakBanking.ThirdPartyIntegration.ESBFirstCentralService.GetConsumerBasicCreditReportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ESBFirstCentralService\FinTrakBanking.ThirdPartyIntegration.ESBFirstCentralService.GetConsumerBasicTraceReportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ESBFirstCentralService\FinTrakBanking.ThirdPartyIntegration.ESBFirstCentralService.GetConsumerEnquiryReportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ESBFirstCentralService\FinTrakBanking.ThirdPartyIntegration.ESBFirstCentralService.GetConsumerFullCreditReportBinaryResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ESBFirstCentralService\FinTrakBanking.ThirdPartyIntegration.ESBFirstCentralService.GetConsumerFullCreditReportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ESBFirstCentralService\FinTrakBanking.ThirdPartyIntegration.ESBFirstCentralService.GetConsumerPrimeReportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ESBFirstCentralService\FinTrakBanking.ThirdPartyIntegration.ESBFirstCentralService.GetConsumerXscorePrimereportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ESBFirstCentralService\FinTrakBanking.ThirdPartyIntegration.ESBFirstCentralService.GetReportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ESBFirstCentralService\FinTrakBanking.ThirdPartyIntegration.ESBFirstCentralService.GetXSCoreConsumerFullCreditReportBinaryResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ESBFirstCentralService\FinTrakBanking.ThirdPartyIntegration.ESBFirstCentralService.GetXSCoreConsumerFullCreditReportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ESBFirstCentralService\FinTrakBanking.ThirdPartyIntegration.ESBFirstCentralService.IsTicketValidResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ESBFirstCentralService\FinTrakBanking.ThirdPartyIntegration.ESBFirstCentralService.LoginResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ESBFirstCentralService\firstcentral.wsdl" />
+    <None Include="Connected Services\ESBFirstCentralService\firstcentral.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\FbnAlertWS\FinTrakBanking.ThirdPartyIntegration.FbnAlertWS.Output.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FbnAlertWS\Service.wsdl" />
+    <None Include="Connected Services\FbnAlertWS\Service.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\FbnAlertWS\Service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\FbnAlertWS\Service2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FCUBSCLService.wsdl" />
+    <None Include="Connected Services\FCUBSCLServiceKenya\FCUBSCLService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.ActiveRolloverIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.ACTIVEROLLOVER_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AuthCLAdhocIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AUTHCLADHOC_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AuthCLUDEventIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AUTHCLUDEVENT_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AuthInstStatChgIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AUTHINSTSTATCHG_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AuthorizeAccountFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AuthorizeAccountInactiveFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AuthorizeAccountInactiveIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AUTHORIZEACCOUNTINACTIVE_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AUTHORIZEACCOUNTINACTIVE_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AuthorizeAccountIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AuthorizeAccountTrfrFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AuthorizeAccountTrfrIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AUTHORIZEACCOUNTTRFR_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AUTHORIZEACCOUNTTRFR_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AUTHORIZEACCOUNT_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AUTHORIZEACCOUNT_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AuthorizeCommitAccountFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AuthorizeCommitAccountIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AUTHORIZECOMMITACCOUNT_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AUTHORIZECOMMITACCOUNT_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AuthorizeCommitVamiFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AuthorizeCommitVamiIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AUTHORIZECOMMITVAMI_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AUTHORIZECOMMITVAMI_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AuthorizeDisbursementFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AuthorizeDisbursementIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AUTHORIZEDISBURSEMENT_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AUTHORIZEDISBURSEMENT_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AuthorizeManualStatusChangeFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AuthorizeManualStatusChangeIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AUTHORIZEMANUALSTATUSCHANGE_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AUTHORIZEMANUALSTATUSCHANGE_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AuthorizeMortgageFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AuthorizeMortgageIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AUTHORIZEMORTGAGE_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AUTHORIZEMORTGAGE_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AuthorizeNotaryConfirmFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AuthorizeNotaryConfirmIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AUTHORIZENOTARYCONFIRM_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AUTHORIZENOTARYCONFIRM_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AuthorizePaymentFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AuthorizePaymentIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AUTHORIZEPAYMENT_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AUTHORIZEPAYMENT_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AuthorizeProdTrfrFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AuthorizeProdTrfrIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AUTHORIZEPRODTRFR_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AUTHORIZEPRODTRFR_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AuthorizeProductFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AuthorizeProductIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AUTHORIZEPRODUCT_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AUTHORIZEPRODUCT_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AuthorizeRollFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AuthorizeRollIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AUTHORIZEROLL_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AUTHORIZEROLL_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AuthorizeVamiFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AuthorizeVamiIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AUTHORIZEVAMI_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AUTHORIZEVAMI_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AuthReassignIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AUTHREASSIGN_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AuthRenogIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AUTHRENOG_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AuthRolloverIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AUTHROLLOVER_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AuthStatusChangeIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AUTHSTATUSCHANGE_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AuthVamiFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AuthVamiIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AUTHVAMI_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.AUTHVAMI_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CloseAccountTrfrFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CloseAccountTrfrIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CLOSEACCOUNTTRFR_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CLOSEACCOUNTTRFR_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CloseProdTrfrFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CloseProdTrfrIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CLOSEPRODTRFR_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CLOSEPRODTRFR_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CreateAccountFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CreateAccountInactiveFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CreateAccountInactiveIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CREATEACCOUNTINACTIVE_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CREATEACCOUNTINACTIVE_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CreateAccountIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CreateAccountSimulationFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CreateAccountSimulationIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CREATEACCOUNTSIMULATION_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CREATEACCOUNTSIMULATION_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CreateAccountTrfrFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CreateAccountTrfrIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CREATEACCOUNTTRFR_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CREATEACCOUNTTRFR_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CREATEACCOUNT_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CREATEACCOUNT_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CreateCLUDEventIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CREATECLUDEVENT_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CreateCommitAccountFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CreateCommitAccountIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CREATECOMMITACCOUNT_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CREATECOMMITACCOUNT_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CreateCommitVamiFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CreateCommitVamiIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CREATECOMMITVAMI_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CREATECOMMITVAMI_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CreateDisbursementFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CreateDisbursementIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CREATEDISBURSEMENT_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CREATEDISBURSEMENT_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CreateManualStatusChangeFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CreateManualStatusChangeIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CREATEMANUALSTATUSCHANGE_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CREATEMANUALSTATUSCHANGE_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CreateNotaryConfirmFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CreateNotaryConfirmIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CREATENOTARYCONFIRM_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CREATENOTARYCONFIRM_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CreatePaymentFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CreatePaymentIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CREATEPAYMENT_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CREATEPAYMENT_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CreateProdTrfrFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CreateProdTrfrIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CREATEPRODTRFR_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CREATEPRODTRFR_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CreateProductFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CreateProductIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CREATEPRODUCT_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CREATEPRODUCT_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CreateRollFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CreateRollIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CREATEROLL_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CREATEROLL_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CreateSimulationVamiFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CreateSimulationVamiIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CREATESIMULATIONVAMI_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CREATESIMULATIONVAMI_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CreateVamiFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CreateVamiIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CREATEVAMI_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.CREATEVAMI_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DeleteAccountFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DeleteAccountInactiveFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DeleteAccountInactiveIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DELETEACCOUNTINACTIVE_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DELETEACCOUNTINACTIVE_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DeleteAccountIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DeleteAccountTrfrFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DeleteAccountTrfrIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DELETEACCOUNTTRFR_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DELETEACCOUNTTRFR_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DELETEACCOUNT_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DELETEACCOUNT_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DeleteCLAdhocIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DELETECLADHOC_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DeleteCLUDEventIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DELETECLUDEVENT_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DeleteCommitAccountFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DeleteCommitAccountIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DELETECOMMITACCOUNT_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DELETECOMMITACCOUNT_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DeleteCommitVamiFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DeleteCommitVamiIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DELETECOMMITVAMI_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DELETECOMMITVAMI_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DeleteDisbursementFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DeleteDisbursementIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DELETEDISBURSEMENT_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DELETEDISBURSEMENT_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DeleteInstStatChgIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DELETEINSTSTATCHG_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DeleteManualStatusChangeFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DeleteManualStatusChangeIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DELETEMANUALSTATUSCHANGE_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DELETEMANUALSTATUSCHANGE_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DeleteNotaryConfirmFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DeleteNotaryConfirmIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DELETENOTARYCONFIRM_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DELETENOTARYCONFIRM_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DeletePaymentFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DeletePaymentIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DELETEPAYMENT_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DELETEPAYMENT_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DeleteProdTrfrFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DeleteProdTrfrIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DELETEPRODTRFR_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DELETEPRODTRFR_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DeleteProductFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DeleteProductIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DELETEPRODUCT_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DELETEPRODUCT_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DeleteRenogIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DELETERENOG_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DeleteRollFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DeleteRollIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DeleteRolloverIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DELETEROLLOVER_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DELETEROLL_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DELETEROLL_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DeleteSimulationVamiFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DeleteSimulationVamiIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DELETESIMULATIONVAMI_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DELETESIMULATIONVAMI_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DeleteStatusChangeIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DELETESTATUSCHANGE_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DeleteVamiFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DeleteVamiIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DELETEVAMI_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.DELETEVAMI_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.ModifyAccountInactiveFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.ModifyAccountInactiveIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.MODIFYACCOUNTINACTIVE_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.MODIFYACCOUNTINACTIVE_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.ModifyAccountTrfrFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.ModifyAccountTrfrIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.MODIFYACCOUNTTRFR_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.MODIFYACCOUNTTRFR_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.ModifyManualStatusChangeFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.ModifyManualStatusChangeIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.MODIFYMANUALSTATUSCHANGE_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.MODIFYMANUALSTATUSCHANGE_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.ModifyProdTrfrFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.ModifyProdTrfrIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.MODIFYPRODTRFR_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.MODIFYPRODTRFR_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.ModifyProductFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.ModifyProductIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.MODIFYPRODUCT_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.MODIFYPRODUCT_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QueryAccountInactiveIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QUERYACCOUNTINACTIVE_IOFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QueryAccountIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QueryAccountStatsIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QUERYACCOUNTSTATS_IOFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QueryAccountTrfrIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QUERYACCOUNTTRFR_IOFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QUERYACCOUNT_IOFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QueryAutosuspInfoIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QUERYAUTOSUSPINFO_IOFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QueryCLEventsIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QUERYCLEVENTS_IOFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QueryClInfoIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QUERYCLINFO_IOFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QueryCLUDEventIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QUERYCLUDEVENT_IOFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QueryCommitAccountIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QUERYCOMMITACCOUNT_IOFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QueryCommitVamiIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QUERYCOMMITVAMI_IOFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QueryCustSumIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QUERYCUSTSUM_IOFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QueryDisbursementIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QUERYDISBURSEMENT_IOFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QueryManualStatusChangeIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QUERYMANUALSTATUSCHANGE_IOFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QueryNotaryConfirmIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QUERYNOTARYCONFIRM_IOFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QueryPaymentIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QUERYPAYMENT_IOFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QueryPmntSchIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QUERYPMNTSCH_IOFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QueryProdTrfrIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QUERYPRODTRFR_IOFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QueryProductIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QUERYPRODUCT_IOFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QueryRenogIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QUERYRENOG_IOFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QueryRollIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QueryRolloverIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QUERYROLLOVER_IOFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QUERYROLL_IOFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QuerySimulationVamiIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QUERYSIMULATIONVAMI_IOFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QueryVamiIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.QUERYVAMI_IOFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.ReopenAccountTrfrFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.ReopenAccountTrfrIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.REOPENACCOUNTTRFR_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.REOPENACCOUNTTRFR_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.ReopenProdTrfrFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.ReopenProdTrfrIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.REOPENPRODTRFR_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.REOPENPRODTRFR_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.RevCLAdhocIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.REVCLADHOC_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.ReverseCLUDEventIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.REVERSECLUDEVENT_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.ReverseDisbursementFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.ReverseDisbursementIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.REVERSEDISBURSEMENT_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.REVERSEDISBURSEMENT_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.ReverseInstStatChgIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.REVERSEINSTSTATCHG_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.ReversePaymentFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.ReversePaymentIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.REVERSEPAYMENT_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.REVERSEPAYMENT_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.ReverseRenogIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.REVERSERENOG_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.ReverseRollFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.ReverseRollIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.ReverseRolloverIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.REVERSEROLLOVER_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.REVERSEROLL_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.REVERSEROLL_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.SaveAccountActivateIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.SAVEACCOUNTACTIVATE_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.SaveAccSimFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.SaveAccSimIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.SAVEACCSIM_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.SAVEACCSIM_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.SaveALiqdSuspFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.SaveALiqdSuspIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.SAVEALIQDSUSP_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.SAVEALIQDSUSP_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.SaveCLAdhocFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.SaveCLAdhocIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.SAVECLADHOC_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.SAVECLADHOC_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.SaveInactiveFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.SaveInactiveIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.SAVEINACTIVE_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.SAVEINACTIVE_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.SaveInstStatChgFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.SaveInstStatChgIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.SAVEINSTSTATCHG_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.SAVEINSTSTATCHG_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.SaveReassignFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.SaveReassignIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.SAVEREASSIGN_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.SAVEREASSIGN_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.SaveRenogFSResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.SaveRenogIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.SAVERENOG_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.SAVERENOG_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.SaveReversalFSResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.SAVEREVERSAL_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.SaveRolloverFSResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.SaveRolloverIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.SAVEROLLOVER_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.SAVEROLLOVER_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.SaveStatusChangeFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.SaveStatusChangeIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.SAVESTATUSCHANGE_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.SAVESTATUSCHANGE_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.SimPaymentFSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.SimPaymentIOResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.SIMPAYMENT_FSFS_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\FinTrakBanking.ThirdPartyIntegration.FCUBSCLServiceKenya.SIMPAYMENT_IOPK_RES.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\Mz2FAService\Service.wsdl" />
+    <None Include="Connected Services\Service\Service.wsdl" />
+    <None Include="Connected Services\TestESBFirstCentralService\FinTrakBanking.ThirdPartyIntegration.TestESBFirstCentralService.ConnectCommercialMatchResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TestESBFirstCentralService\FinTrakBanking.ThirdPartyIntegration.TestESBFirstCentralService.ConnectConsumerMatchResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TestESBFirstCentralService\FinTrakBanking.ThirdPartyIntegration.TestESBFirstCentralService.GetCommercialBasicCreditReportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TestESBFirstCentralService\FinTrakBanking.ThirdPartyIntegration.TestESBFirstCentralService.GetCommercialEnquiryReportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TestESBFirstCentralService\FinTrakBanking.ThirdPartyIntegration.TestESBFirstCentralService.GetCommercialFullCreditReportBinaryResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TestESBFirstCentralService\FinTrakBanking.ThirdPartyIntegration.TestESBFirstCentralService.GetCommercialFullCreditReportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TestESBFirstCentralService\FinTrakBanking.ThirdPartyIntegration.TestESBFirstCentralService.GetConsumerAccountMatchResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TestESBFirstCentralService\FinTrakBanking.ThirdPartyIntegration.TestESBFirstCentralService.GetConsumerBasicCreditReportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TestESBFirstCentralService\FinTrakBanking.ThirdPartyIntegration.TestESBFirstCentralService.GetConsumerBasicTraceReportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TestESBFirstCentralService\FinTrakBanking.ThirdPartyIntegration.TestESBFirstCentralService.GetConsumerEnquiryReportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TestESBFirstCentralService\FinTrakBanking.ThirdPartyIntegration.TestESBFirstCentralService.GetConsumerFullCreditReportBinaryResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TestESBFirstCentralService\FinTrakBanking.ThirdPartyIntegration.TestESBFirstCentralService.GetConsumerFullCreditReportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TestESBFirstCentralService\FinTrakBanking.ThirdPartyIntegration.TestESBFirstCentralService.GetConsumerPrimeReportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TestESBFirstCentralService\FinTrakBanking.ThirdPartyIntegration.TestESBFirstCentralService.GetConsumerXscorePrimereportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TestESBFirstCentralService\FinTrakBanking.ThirdPartyIntegration.TestESBFirstCentralService.GetReportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TestESBFirstCentralService\FinTrakBanking.ThirdPartyIntegration.TestESBFirstCentralService.GetXSCoreConsumerFullCreditReportBinaryResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TestESBFirstCentralService\FinTrakBanking.ThirdPartyIntegration.TestESBFirstCentralService.GetXSCoreConsumerFullCreditReportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TestESBFirstCentralService\FinTrakBanking.ThirdPartyIntegration.TestESBFirstCentralService.IsTicketValidResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TestESBFirstCentralService\FinTrakBanking.ThirdPartyIntegration.TestESBFirstCentralService.LoginResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TestESBFirstCentralService\firstcentral.wsdl" />
+    <None Include="Connected Services\TestESBFirstCentralService\firstcentral.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\TestService\FinTrakBanking.ThirdPartyIntegration.TestService.ForecastReturn.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TestService\FinTrakBanking.ThirdPartyIntegration.TestService.GetWeatherInformationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TestService\FinTrakBanking.ThirdPartyIntegration.TestService.WeatherDescription.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TestService\FinTrakBanking.ThirdPartyIntegration.TestService.WeatherReturn.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TestService\Weather.wsdl" />
+    <None Include="Connected Services\TwoFactorAuthService\AuthWrapper.wsdl" />
+    <None Include="Connected Services\TwoFactorAuthService\AuthWrapper.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\TwoFactorAuthService\AuthWrapper1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\TwoFactorAuthService\AuthWrapper2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\TwoFactorAuthService\AuthWrapper3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\TwoFactorAuthService\FinTrakBanking.ThirdPartyIntegration.TwoFactorAuthService.AuthResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TwoFactorAuthService\FinTrakBanking.ThirdPartyIntegration.TwoFactorAuthService.ResponseModel.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TwoFactorAuthService\FinTrakBanking.ThirdPartyIntegration.TwoFactorAuthService.SerialNoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TwoFactorAuthService\FinTrakBanking.ThirdPartyIntegration.TwoFactorAuthService.UnlockClearQAResponseModel.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TwoFactorAuthService\FinTrakBanking.ThirdPartyIntegration.TwoFactorAuthService.UserCheckResponseModel.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\TwoFactorAuthSoapService1\Service.wsdl" />
+    <None Include="Connected Services\TwoFactorAuthSoapService1\Service.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\TwoFactorAuthSoapService\Service.wsdl" />
+    <None Include="Connected Services\TwoFactorAuthSoapService\Service.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\XDSWebService\FinTrakBanking.ThirdPartyIntegration.XDSWebService.ConnectCommercialMatchResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\XDSWebService\FinTrakBanking.ThirdPartyIntegration.XDSWebService.ConnectConsumerMatchResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\XDSWebService\FinTrakBanking.ThirdPartyIntegration.XDSWebService.GetCommercialBasicCreditReportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\XDSWebService\FinTrakBanking.ThirdPartyIntegration.XDSWebService.GetCommercialEnquiryReportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\XDSWebService\FinTrakBanking.ThirdPartyIntegration.XDSWebService.GetCommercialFullCreditReportBinaryResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\XDSWebService\FinTrakBanking.ThirdPartyIntegration.XDSWebService.GetCommercialFullCreditReportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\XDSWebService\FinTrakBanking.ThirdPartyIntegration.XDSWebService.GetConsumerAccountMatchResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\XDSWebService\FinTrakBanking.ThirdPartyIntegration.XDSWebService.GetConsumerBasicCreditReportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\XDSWebService\FinTrakBanking.ThirdPartyIntegration.XDSWebService.GetConsumerBasicTraceReportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\XDSWebService\FinTrakBanking.ThirdPartyIntegration.XDSWebService.GetConsumerEnquiryReportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\XDSWebService\FinTrakBanking.ThirdPartyIntegration.XDSWebService.GetConsumerFullCreditReportBinaryResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\XDSWebService\FinTrakBanking.ThirdPartyIntegration.XDSWebService.GetConsumerFullCreditReportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\XDSWebService\FinTrakBanking.ThirdPartyIntegration.XDSWebService.GetConsumerPrimeReportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\XDSWebService\FinTrakBanking.ThirdPartyIntegration.XDSWebService.GetConsumerXscorePrimereportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\XDSWebService\FinTrakBanking.ThirdPartyIntegration.XDSWebService.GetReportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\XDSWebService\FinTrakBanking.ThirdPartyIntegration.XDSWebService.GetXSCoreConsumerFullCreditReportBinaryResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\XDSWebService\FinTrakBanking.ThirdPartyIntegration.XDSWebService.GetXSCoreConsumerFullCreditReportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\XDSWebService\FinTrakBanking.ThirdPartyIntegration.XDSWebService.IsTicketValidResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\XDSWebService\FinTrakBanking.ThirdPartyIntegration.XDSWebService.LoginResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\XDSWebService\FirstCentralNigeriaWebService.wsdl" />
+    <None Include="Connected Services\XDSWebService\XDSNigeriaWebService.wsdl" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\ACESS_STAFF\" />
+    <WCFMetadataStorage Include="Connected Services\CRCWebService\" />
+    <WCFMetadataStorage Include="Connected Services\DraxlaExpress\" />
+    <WCFMetadataStorage Include="Connected Services\ESBCRCService\" />
+    <WCFMetadataStorage Include="Connected Services\ESBFirstCentralService\" />
+    <WCFMetadataStorage Include="Connected Services\FbnAlertWS\" />
+    <WCFMetadataStorage Include="Connected Services\FCUBSCLServiceKenya\" />
+    <WCFMetadataStorage Include="Connected Services\Mz2FAService\" />
+    <WCFMetadataStorage Include="Connected Services\Service\" />
+    <WCFMetadataStorage Include="Connected Services\TestESBFirstCentralService\" />
+    <WCFMetadataStorage Include="Connected Services\TestService\" />
+    <WCFMetadataStorage Include="Connected Services\TwoFactorAuthService\" />
+    <WCFMetadataStorage Include="Connected Services\TwoFactorAuthSoapService1\" />
+    <WCFMetadataStorage Include="Connected Services\TwoFactorAuthSoapService\" />
+    <WCFMetadataStorage Include="Connected Services\XDSWebService\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\XDSWebService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\XDSWebService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\XDSWebService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\CRCWebService\liverequestinvoker.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\CRCWebService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\CRCWebService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\CRCWebService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\FbnAlertWS\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\FbnAlertWS\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\FbnAlertWS\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\TwoFactorAuthService\AuthWrapper.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\TwoFactorAuthService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\TwoFactorAuthService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\TwoFactorAuthService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\XDSWebService\FirstCentralNigeriaWebService.disco" />
+    <None Include="Connected Services\TwoFactorAuthSoapService\configuration91.svcinfo" />
+    <None Include="Connected Services\TwoFactorAuthSoapService\configuration.svcinfo" />
+    <None Include="Connected Services\TwoFactorAuthSoapService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Connected Services\TestService\configuration91.svcinfo" />
+    <None Include="Connected Services\TestService\configuration.svcinfo" />
+    <None Include="Connected Services\TestService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Connected Services\TwoFactorAuthSoapService1\configuration91.svcinfo" />
+    <None Include="Connected Services\TwoFactorAuthSoapService1\configuration.svcinfo" />
+    <None Include="Connected Services\TwoFactorAuthSoapService1\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Connected Services\ESBFirstCentralService\configuration91.svcinfo" />
+    <None Include="Connected Services\ESBFirstCentralService\configuration.svcinfo" />
+    <None Include="Connected Services\ESBFirstCentralService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Connected Services\TestESBFirstCentralService\configuration91.svcinfo" />
+    <None Include="Connected Services\TestESBFirstCentralService\configuration.svcinfo" />
+    <None Include="Connected Services\TestESBFirstCentralService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Connected Services\ESBCRCService\configuration91.svcinfo" />
+    <None Include="Connected Services\ESBCRCService\configuration.svcinfo" />
+    <None Include="Connected Services\ESBCRCService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Connected Services\Service\configuration91.svcinfo" />
+    <None Include="Connected Services\Service\configuration.svcinfo" />
+    <None Include="Connected Services\Service\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Connected Services\DraxlaExpress\configuration91.svcinfo" />
+    <None Include="Connected Services\DraxlaExpress\configuration.svcinfo" />
+    <None Include="Connected Services\DraxlaExpress\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Connected Services\ACESS_STAFF\configuration91.svcinfo" />
+    <None Include="Connected Services\ACESS_STAFF\configuration.svcinfo" />
+    <None Include="Connected Services\ACESS_STAFF\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Connected Services\Mz2FAService\configuration91.svcinfo" />
+    <None Include="Connected Services\Mz2FAService\configuration.svcinfo" />
+    <None Include="Connected Services\Mz2FAService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Connected Services\FCUBSCLServiceKenya\configuration91.svcinfo" />
+    <None Include="Connected Services\FCUBSCLServiceKenya\configuration.svcinfo" />
+    <None Include="Connected Services\FCUBSCLServiceKenya\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <Content Include="Connected Services\XDSWebService\XDSNigeriaWebService.asmx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FintrakBanking.Common\FintrakBanking.Common.csproj">
+      <Project>{18cefc20-2662-4757-94de-23d623ffc98d}</Project>
+      <Name>FintrakBanking.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FintrakBanking.Entities\FintrakBanking.Entities.csproj">
+      <Project>{fb338a9b-9c63-46ed-a8c3-d75a08dad6f0}</Project>
+      <Name>FintrakBanking.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FintrakBanking.Interfaces\FintrakBanking.Interfaces.csproj">
+      <Project>{6a7c3564-00b2-45d4-a40c-4b52a06c296a}</Project>
+      <Name>FintrakBanking.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FintrakBanking.ViewModels\FintrakBanking.ViewModels.csproj">
+      <Project>{53a300f2-b78d-4708-bfb4-2b86de64ec7d}</Project>
+      <Name>FintrakBanking.ViewModels</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.3.6.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.3.6.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.3.11.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.3.11.0\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.Toolset.4.0.1\build\Microsoft.Net.Compilers.Toolset.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.Toolset.4.0.1\build\Microsoft.Net.Compilers.Toolset.props'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.3.6.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.3.6.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets')" />
+</Project>
