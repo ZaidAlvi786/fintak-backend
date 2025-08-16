@@ -1,48 +1,79 @@
-import os
 import subprocess
-import json
+import datetime
+import random
+import smtplib
+from email.mime.text import MIMEText
 
-# Load secret replacements
-with open("secrets_map.json") as f:
-    secrets_map = json.load(f)
+# ========== CONFIG ==========
+SMTP_SERVER = "smtp.gmail.com"   # e.g., Gmail SMTP
+SMTP_PORT = 587
+EMAIL_USER = "itsabout786@gmail.com"    # sender email
+EMAIL_PASS = "alvig786"       # Gmail app password (not your main password!)
+EMAIL_TO   = "zaidalviza786@gmail.com"     # receiver email
+# ============================
 
-def replace_secrets_in_file(filepath):
-    """Replaces all known secrets with dummy values in a file."""
-    with open(filepath, "r", encoding="utf-8", errors="ignore") as f:
-        content = f.read()
+def send_email(subject, body):
+    """Send email notification"""
+    msg = MIMEText(body)
+    msg["Subject"] = subject
+    msg["From"] = EMAIL_USER
+    msg["To"] = EMAIL_TO
 
-    original_content = content
-    for real, dummy in secrets_map.items():
-        content = content.replace(real, dummy)
+    try:
+        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
+            server.starttls()
+            server.login(EMAIL_USER, EMAIL_PASS)
+            server.sendmail(EMAIL_USER, EMAIL_TO, msg.as_string())
+        print("📧 Error notification sent to", EMAIL_TO)
+    except Exception as e:
+        print("❌ Failed to send email:", e)
 
-    if content != original_content:
-        with open(filepath, "w", encoding="utf-8") as f:
-            f.write(content)
-        print(f"🔑 Replaced secrets in {filepath}")
+def run_cmd(cmd):
+    """Run a shell command and return output or raise error."""
+    result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+    if result.returncode != 0:
+        error_msg = f"Error running command: {cmd}\n{result.stderr}"
+        print(error_msg)
+        send_email("🚨 Auto Push Failed", error_msg)
+        exit(1)
+    return result.stdout.strip()
 
-def get_files_to_commit():
-    """Get tracked and untracked files, skip ignored."""
-    tracked = subprocess.check_output(
-        ["git", "ls-files"], encoding="utf-8"
-    ).splitlines()
-
-    untracked = subprocess.check_output(
-        ["git", "ls-files", "--others", "--exclude-standard"], encoding="utf-8"
-    ).splitlines()
-
+def get_candidate_files():
+    """Return list of tracked + untracked files (ignores .gitignore)."""
+    tracked = run_cmd("git ls-files").splitlines()
+    untracked = run_cmd("git ls-files --others --exclude-standard").splitlines()
     return tracked + untracked
 
 def main():
-    files = get_files_to_commit()
+    today = datetime.datetime.now().strftime("%Y-%m-%d")
+    branch_name = f"bug-fixes-{today}"
 
-    for filepath in files:
-        if os.path.isfile(filepath):
-            replace_secrets_in_file(filepath)
+    try:
+        run_cmd("git fetch origin")
+        run_cmd(f"git checkout -b {branch_name}")
 
-    # Git commit + push
-    subprocess.run(["git", "add", "."])
-    subprocess.run(["git", "commit", "-m", "Auto commit with secrets replaced"], check=False)
-    subprocess.run(["git", "push"], check=True)
+        candidates = get_candidate_files()
+        if not candidates:
+            print("⚡ No files to commit.")
+            return
+
+        selected = random.sample(candidates, min(7, len(candidates)))
+        print(f"📂 Selected files for commit: {selected}")
+
+        for f in selected:
+            run_cmd(f"git add '{f}'")
+
+        status = run_cmd("git status --porcelain")
+        if status:
+            commit_message = f"Automated commit ({len(selected)} files) on {today}"
+            run_cmd(f'git commit -m "{commit_message}"')
+            run_cmd(f"git push origin {branch_name}")
+            print(f"✅ Pushed {len(selected)} files to branch {branch_name}")
+        else:
+            print("⚡ No changes to commit after selecting files.")
+    except Exception as e:
+        send_email("🚨 Auto Push Script Failed", str(e))
+        raise
 
 if __name__ == "__main__":
     main()
