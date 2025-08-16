@@ -2,7 +2,7 @@ name: Auto Push Daily
 
 on:
   schedule:
-   - cron: "40 20 * * *"  # runs daily at 10:00 UTC
+    - cron: "0 5 * * *"  # runs daily at 10:00 UTC
   workflow_dispatch:      # allows manual trigger too
 
 jobs:
