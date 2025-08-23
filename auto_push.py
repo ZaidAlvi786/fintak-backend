@@ -3,20 +3,20 @@ import datetime
 import random
 import os
 import json
-import requests  # install via pip
+import requests  # installed via requirements.txt
 
-WEBHOOK_URL = "https://hooks.slack.com/services/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"
+WEBHOOK_URL = "https://hooks.slack.com/services/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"  # safer: read from GitHub Actions secrets
 
 def send_webhook(message):
     """Send a message to Slack/Discord via webhook"""
     if not WEBHOOK_URL:
         print("⚠️ WEBHOOK_URL not set")
         return
-    data = {"content": message}  # Discord
-    # For Slack, use: data = {"text": message}
+    # Discord uses "content", Slack uses "text"
+    data = {"text": message}  # change to {"content": message} if using Discord
     try:
         response = requests.post(WEBHOOK_URL, data=json.dumps(data), headers={"Content-Type": "application/json"})
-        if response.status_code == 200 or response.status_code == 204:
+        if response.status_code in [200, 204]:
             print("📢 Notification sent successfully!")
         else:
             print(f"❌ Failed to send notification: {response.text}")
@@ -24,6 +24,7 @@ def send_webhook(message):
         print(f"❌ Exception sending webhook: {e}")
 
 def run_cmd(cmd):
+    """Run a shell command safely"""
     result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
     if result.returncode != 0:
         error_msg = f"Error running command: {cmd}\n{result.stderr}"
@@ -32,7 +33,11 @@ def run_cmd(cmd):
         exit(1)
     return result.stdout.strip()
 
-# ----------------- rest of your auto_push.py -----------------
+def get_candidate_files():
+    """Return list of tracked + untracked files (ignores .gitignore)."""
+    tracked = run_cmd("git ls-files").splitlines()
+    untracked = run_cmd("git ls-files --others --exclude-standard").splitlines()
+    return tracked + untracked
 
 def main():
     today = datetime.datetime.now().strftime("%Y-%m-%d")
@@ -58,7 +63,9 @@ def main():
             commit_message = f"Automated commit ({len(selected)} files) on {today}"
             run_cmd(f'git commit -m "{commit_message}"')
             run_cmd(f"git push origin {branch_name}")
-            print(f"✅ Pushed {len(selected)} files to branch {branch_name}")
+            success_msg = f"✅ Auto-push succeeded: {len(selected)} files pushed to {branch_name}"
+            print(success_msg)
+            send_webhook(success_msg)
         else:
             print("⚡ No changes to commit after selecting files.")
     except Exception as e:
