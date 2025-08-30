@@ -2,12 +2,12 @@ name: Auto Push Daily
 
 on:
   schedule:
-    - cron: "0 5 * * *"  # runs daily at 10:00 AM Pakistan time (UTC+5)
+    - cron: "55 10 * * *"  # runs daily at 10:00 AM Pakistan time (UTC+5)
   workflow_dispatch:        # allows manual trigger too
 
 jobs:
   auto-push:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest`
 
     steps:
       - name: Checkout repository
