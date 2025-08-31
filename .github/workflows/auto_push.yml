@@ -2,7 +2,7 @@ name: Auto Push Daily
 
 on:
   schedule:
-    - cron: "55 10 * * *"  # runs daily at 10:00 AM Pakistan time (UTC+5)
+   - cron: "45 9 * * *"  # runs daily at 10:00 AM Pakistan time (UTC+5)
   workflow_dispatch:        # allows manual trigger too
 
 jobs:
