@@ -5,7 +5,7 @@ import os
 import json
 import requests  # installed via requirements.txt
 
-WEBHOOK_URL = "https://hooks.slack.com/services/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"  # safer: read from GitHub Actions secrets
+WEBHOOK_URL = ""  # Set your webhook URL here or leave empty to disable notifications
 
 def send_webhook(message):
     """Send a message to Slack/Discord via webhook"""
@@ -23,14 +23,17 @@ def send_webhook(message):
     except Exception as e:
         print(f"❌ Exception sending webhook: {e}")
 
-def run_cmd(cmd):
+def run_cmd(cmd, exit_on_error=True):
     """Run a shell command safely"""
     result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
     if result.returncode != 0:
         error_msg = f"Error running command: {cmd}\n{result.stderr}"
         print(error_msg)
-        send_webhook(f"🚨 Auto Push Failed:\n{error_msg}")
-        exit(1)
+        if exit_on_error:
+            send_webhook(f"🚨 Auto Push Failed:\n{error_msg}")
+            exit(1)
+        else:
+            raise Exception(error_msg)
     return result.stdout.strip()
 
 def get_candidate_files():
@@ -45,7 +48,11 @@ def main():
 
     try:
         run_cmd("git fetch origin")
-        run_cmd(f"git checkout -b {branch_name}")
+        # Check if branch exists and switch to it, otherwise create new branch
+        try:
+            run_cmd(f"git checkout {branch_name}", exit_on_error=False)
+        except:
+            run_cmd(f"git checkout -b {branch_name}")
 
         candidates = get_candidate_files()
         if not candidates:
