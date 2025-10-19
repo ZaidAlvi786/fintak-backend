@@ -1,0 +1,19 @@
+[Unit]
+Description=Auto Push Service - Daily Git Commits
+After=network.target
+
+[Service]
+Type=simple
+User=%i
+WorkingDirectory=/Users/apple/Downloads/demo/fintak-backend
+ExecStart=/usr/bin/python3 /Users/apple/Downloads/demo/fintak-backend/auto_push.py --scheduler
+Restart=always
+RestartSec=60
+StandardOutput=journal
+StandardError=journal
+
+# Environment variables
+Environment=PYTHONPATH=/Users/apple/Downloads/demo/fintak-backend
+
+[Install]
+WantedBy=multi-user.target
