@@ -47,9 +47,24 @@ def run_cmd(cmd, exit_on_error=True):
     return result.stdout.strip()
 
 def get_candidate_files():
-    """Return list of tracked + untracked files (ignores .gitignore and sensitive files)."""
-    tracked = run_cmd("git ls-files").splitlines()
-    untracked = run_cmd("git ls-files --others --exclude-standard").splitlines()
+    """Return list of tracked files with changes (ignores .gitignore and sensitive files)."""
+    # Get only tracked files that have changes (modified, added, etc.)
+    status_output = run_cmd("git status --porcelain")
+    changed_files = []
+    
+    for line in status_output.splitlines():
+        if line.strip():
+            # Parse git status output (format: "XY filename")
+            status = line[:2]
+            filename = line[3:].strip()
+            
+            # Handle filenames with spaces (they might be quoted)
+            if filename.startswith('"') and filename.endswith('"'):
+                filename = filename[1:-1]
+            
+            # Only include files that are tracked and have changes
+            if status[0] in ['M', 'A', 'R', 'C']:  # Modified, Added, Renamed, Copied
+                changed_files.append(filename)
     
     # Filter out sensitive files that should never be committed
     sensitive_files = {
@@ -66,10 +81,9 @@ def get_candidate_files():
         'credentials.json'
     }
     
-    all_files = tracked + untracked
     filtered_files = []
     
-    for file in all_files:
+    for file in changed_files:
         # Skip sensitive files
         if any(sensitive in file.lower() for sensitive in sensitive_files):
             print(f"🔒 Skipping sensitive file: {file}")
