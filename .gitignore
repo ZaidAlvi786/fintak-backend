@@ -259,3 +259,13 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+
+# Auto Push System Files
+auto_push_state.json
+auto_push.log
+auto_push_test.log
+
+# Secrets and sensitive files
+secrets_map.json
+*.env
+.env
