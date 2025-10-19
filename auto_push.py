@@ -47,10 +47,40 @@ def run_cmd(cmd, exit_on_error=True):
     return result.stdout.strip()
 
 def get_candidate_files():
-    """Return list of tracked + untracked files (ignores .gitignore)."""
+    """Return list of tracked + untracked files (ignores .gitignore and sensitive files)."""
     tracked = run_cmd("git ls-files").splitlines()
     untracked = run_cmd("git ls-files --others --exclude-standard").splitlines()
-    return tracked + untracked
+    
+    # Filter out sensitive files that should never be committed
+    sensitive_files = {
+        'secrets_map.json',
+        '.env',
+        'auto_push_state.json',
+        'auto_push.log',
+        'auto_push_test.log',
+        '*.key',
+        '*.pem',
+        '*.p12',
+        '*.pfx',
+        'config.json',
+        'credentials.json'
+    }
+    
+    all_files = tracked + untracked
+    filtered_files = []
+    
+    for file in all_files:
+        # Skip sensitive files
+        if any(sensitive in file.lower() for sensitive in sensitive_files):
+            print(f"🔒 Skipping sensitive file: {file}")
+            continue
+        # Skip files with common secret patterns
+        if any(pattern in file.lower() for pattern in ['secret', 'password', 'token', 'key', 'credential']):
+            print(f"🔒 Skipping potentially sensitive file: {file}")
+            continue
+        filtered_files.append(file)
+    
+    return filtered_files
 
 def load_state():
     """Load the current state from file"""
@@ -134,16 +164,37 @@ def push_single_file():
         if status:
             commit_message = f"Automated commit: {selected_file} on {today}"
             run_cmd(f'git commit -m "{commit_message}"')
-            run_cmd(f"git push origin {branch_name}")
             
-            # Update state
-            state["pushes_today"] += 1
-            state["pushed_files"].append(selected_file)
-            save_state(state)
-            
-            success_msg = f"✅ Auto-push succeeded: {selected_file} pushed to {branch_name} (Push #{state['pushes_today']}/{PUSHES_PER_DAY})"
-            print(success_msg)
-            send_webhook(success_msg)
+            # Try to push with better error handling
+            try:
+                push_result = run_cmd(f"git push origin {branch_name}", exit_on_error=False)
+                print(f"📤 Push successful: {push_result}")
+                
+                # Update state only on successful push
+                state["pushes_today"] += 1
+                state["pushed_files"].append(selected_file)
+                save_state(state)
+                
+                success_msg = f"✅ Auto-push succeeded: {selected_file} pushed to {branch_name} (Push #{state['pushes_today']}/{PUSHES_PER_DAY})"
+                print(success_msg)
+                send_webhook(success_msg)
+                
+            except Exception as push_error:
+                error_msg = f"❌ Push failed: {str(push_error)}"
+                print(error_msg)
+                
+                # Check if it's a GitHub push protection error
+                if "GH013" in str(push_error) or "repository rule violations" in str(push_error).lower():
+                    print("🔒 GitHub push protection detected - skipping this file")
+                    print("💡 This file may contain secrets and was blocked by GitHub")
+                    # Don't update state since push failed
+                else:
+                    # For other errors, still update state to avoid retrying the same file
+                    state["pushes_today"] += 1
+                    state["pushed_files"].append(selected_file)
+                    save_state(state)
+                
+                send_webhook(f"🚨 Auto Push Failed: {error_msg}")
         else:
             print("⚡ No changes to commit for selected file.")
             
