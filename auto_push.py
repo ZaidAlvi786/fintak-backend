@@ -13,8 +13,8 @@ WEBHOOK_URL = ""  # Set your webhook URL here or leave empty to disable notifica
 
 # Configuration
 PUSHES_PER_DAY = 7
-START_HOUR = 10  # 10 AM
-END_HOUR = 22    # 10 PM
+START_HOUR = 0  # 12 AM (for testing)
+END_HOUR = 24    # 12 AM (for testing)
 STATE_FILE = "auto_push_state.json"
 
 def send_webhook(message):
@@ -44,55 +44,41 @@ def run_cmd(cmd, exit_on_error=True):
             exit(1)
         else:
             raise Exception(error_msg)
+    
     return result.stdout.strip()
 
 def get_candidate_files():
     """Return list of tracked files with changes (ignores .gitignore and sensitive files)."""
-    # Get only tracked files that have changes (modified, added, etc.)
-    status_output = run_cmd("git status --porcelain")
-    changed_files = []
+    # Use git diff to get only modified tracked files - much simpler!
+    try:
+        # Get modified files that are tracked
+        modified_files = run_cmd("git diff --name-only HEAD").splitlines()
+        # Get staged files
+        staged_files = run_cmd("git diff --cached --name-only").splitlines()
+        
+        # Combine and deduplicate
+        all_changed_files = list(set(modified_files + staged_files))
+        
+        # Filter out empty strings
+        all_changed_files = [f for f in all_changed_files if f.strip()]
+        
+    except:
+        # Fallback: just get any modified files
+        all_changed_files = run_cmd("git ls-files -m").splitlines()
     
-    for line in status_output.splitlines():
-        if line.strip():
-            # Parse git status output (format: "XY filename")
-            status = line[:2]
-            filename = line[3:].strip()
-            
-            # Handle filenames with spaces (they might be quoted)
-            if filename.startswith('"') and filename.endswith('"'):
-                filename = filename[1:-1]
-            
-            # Only include files that are tracked and have changes
-            if status[0] in ['M', 'A', 'R', 'C']:  # Modified, Added, Renamed, Copied
-                changed_files.append(filename)
-    
-    # Filter out sensitive files that should never be committed
+    # Simple filter for sensitive files
     sensitive_files = {
         'secrets_map.json',
         '.env',
         'auto_push_state.json',
         'auto_push.log',
-        'auto_push_test.log',
-        '*.key',
-        '*.pem',
-        '*.p12',
-        '*.pfx',
-        'config.json',
-        'credentials.json'
+        'auto_push_test.log'
     }
     
     filtered_files = []
-    
-    for file in changed_files:
-        # Skip sensitive files
-        if any(sensitive in file.lower() for sensitive in sensitive_files):
-            print(f"🔒 Skipping sensitive file: {file}")
-            continue
-        # Skip files with common secret patterns
-        if any(pattern in file.lower() for pattern in ['secret', 'password', 'token', 'key', 'credential']):
-            print(f"🔒 Skipping potentially sensitive file: {file}")
-            continue
-        filtered_files.append(file)
+    for file in all_changed_files:
+        if file and not any(sensitive in file.lower() for sensitive in sensitive_files):
+            filtered_files.append(file)
     
     return filtered_files
 
@@ -170,10 +156,19 @@ def push_single_file():
         # Select one random file
         selected_file = random.choice(available_files)
         print(f"📂 Selected file for commit: {selected_file}")
+        
+        # Verify the file actually exists
+        if not os.path.exists(selected_file):
+            print(f"⚠️  Selected file doesn't exist: {selected_file}")
+            # Mark as processed to avoid infinite retry
+            state["pushed_files"].append(selected_file)
+            save_state(state)
+            return
 
         # Add and commit the single file
         run_cmd(f"git add '{selected_file}'")
         
+        # Check if there are actually changes to commit
         status = run_cmd("git status --porcelain")
         if status:
             commit_message = f"Automated commit: {selected_file} on {today}"
@@ -182,7 +177,6 @@ def push_single_file():
             # Try to push with better error handling
             try:
                 push_result = run_cmd(f"git push origin {branch_name}", exit_on_error=False)
-                print(f"📤 Push successful: {push_result}")
                 
                 # Update state only on successful push
                 state["pushes_today"] += 1
@@ -211,6 +205,9 @@ def push_single_file():
                 send_webhook(f"🚨 Auto Push Failed: {error_msg}")
         else:
             print("⚡ No changes to commit for selected file.")
+            # Still mark as processed to avoid infinite retry
+            state["pushed_files"].append(selected_file)
+            save_state(state)
             
     except Exception as e:
         error_msg = f"🚨 Auto Push Script Failed:\n{str(e)}"
