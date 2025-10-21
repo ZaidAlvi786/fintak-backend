@@ -13,8 +13,8 @@ WEBHOOK_URL = ""  # Set your webhook URL here or leave empty to disable notifica
 
 # Configuration
 PUSHES_PER_DAY = 7
-START_HOUR = 0  # 12 AM (for testing)
-END_HOUR = 24    # 12 AM (for testing)
+START_HOUR = 10  # 10 AM
+END_HOUR = 22    # 10 PM
 STATE_FILE = "auto_push_state.json"
 
 def send_webhook(message):
@@ -104,6 +104,10 @@ def save_state(state):
 
 def is_within_schedule():
     """Check if current time is within the allowed schedule (10 AM - 10 PM)"""
+    # In GitHub Actions, always allow (schedule is handled by cron)
+    if os.environ.get('GITHUB_ACTIONS'):
+        return True
+    
     current_hour = datetime.datetime.now().hour
     return START_HOUR <= current_hour < END_HOUR
 
