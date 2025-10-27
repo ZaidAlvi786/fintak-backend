@@ -40,20 +40,6 @@ jobs:
       run: |
         cd ${{ github.workspace }}
         python auto_push.py
-    
-    - name: Check for changes
-      id: verify-changed-files
-      run: |
-        if [ -n "$(git status --porcelain)" ]; then
-          echo "changed=true" >> $GITHUB_OUTPUT
-        else
-          echo "changed=false" >> $GITHUB_OUTPUT
-        fi
-    
-    - name: Push changes
-      if: steps.verify-changed-files.outputs.changed == 'true'
-      run: |
-        git push origin HEAD
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

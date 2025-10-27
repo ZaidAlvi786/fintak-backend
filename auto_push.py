@@ -180,6 +180,16 @@ def push_single_file():
             
             # Try to push with better error handling
             try:
+                # Use GITHUB_TOKEN for authentication in GitHub Actions
+                github_token = os.environ.get('GITHUB_TOKEN')
+                if github_token:
+                    # Get the repository URL and modify it to include the token
+                    remote_url = run_cmd("git remote get-url origin")
+                    if remote_url.startswith("https://github.com/"):
+                        # Replace https://github.com/ with https://token@github.com/
+                        auth_url = remote_url.replace("https://github.com/", f"https://{github_token}@github.com/")
+                        run_cmd(f"git remote set-url origin {auth_url}")
+                
                 push_result = run_cmd(f"git push origin {branch_name}", exit_on_error=False)
                 
                 # Update state only on successful push
