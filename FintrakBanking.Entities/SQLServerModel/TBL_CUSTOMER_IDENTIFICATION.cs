@@ -30,3 +30,6 @@ namespace FintrakBanking.Entities.SQLServerModel
         public virtual TBL_CUSTOMER_IDENTI_MODE_TYPE TBL_CUSTOMER_IDENTI_MODE_TYPE { get; set; }
     }
 }
+
+
+<!-- Auto-push timestamp: 2025-10-27 20:08:44 -->
