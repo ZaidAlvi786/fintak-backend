@@ -43,3 +43,6 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_EXCEPTIONAL_LOAN_APPL_DETAIL TBL_EXCEPTIONAL_LOAN_APPL_DETAIL { get; set; }
     }
 }
+
+
+<!-- Auto-push timestamp: 2025-10-27 16:12:03 -->
