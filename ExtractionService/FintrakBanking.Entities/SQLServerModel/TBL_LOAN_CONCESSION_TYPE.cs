@@ -27,3 +27,6 @@ namespace FintrakBanking.Entities.SQLServerModel
         public virtual ICollection<TBL_LOAN_RATE_FEE_CONCESSION> TBL_LOAN_RATE_FEE_CONCESSION { get; set; }
     }
 }
+
+
+<!-- Auto-push timestamp: 2025-10-27 18:14:32 -->
