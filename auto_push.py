@@ -49,22 +49,32 @@ def run_cmd(cmd, exit_on_error=True):
 
 def get_candidate_files():
     """Return list of tracked files with changes (ignores .gitignore and sensitive files)."""
-    # Use git diff to get only modified tracked files - much simpler!
-    try:
-        # Get modified files that are tracked
-        modified_files = run_cmd("git diff --name-only HEAD").splitlines()
-        # Get staged files
-        staged_files = run_cmd("git diff --cached --name-only").splitlines()
-        
-        # Combine and deduplicate
-        all_changed_files = list(set(modified_files + staged_files))
-        
-        # Filter out empty strings
-        all_changed_files = [f for f in all_changed_files if f.strip()]
-        
-    except:
-        # Fallback: just get any modified files
-        all_changed_files = run_cmd("git ls-files -m").splitlines()
+    # In GitHub Actions, pick from all tracked files since there are no local changes
+    if os.environ.get('GITHUB_ACTIONS'):
+        print("🔧 GitHub Actions detected - selecting from all tracked files...")
+        try:
+            # Get all tracked files
+            all_tracked_files = run_cmd("git ls-files").splitlines()
+            all_changed_files = [f for f in all_tracked_files if f.strip()]
+        except:
+            all_changed_files = []
+    else:
+        # Use git diff to get only modified tracked files - much simpler!
+        try:
+            # Get modified files that are tracked
+            modified_files = run_cmd("git diff --name-only HEAD").splitlines()
+            # Get staged files
+            staged_files = run_cmd("git diff --cached --name-only").splitlines()
+            
+            # Combine and deduplicate
+            all_changed_files = list(set(modified_files + staged_files))
+            
+            # Filter out empty strings
+            all_changed_files = [f for f in all_changed_files if f.strip()]
+            
+        except:
+            # Fallback: just get any modified files
+            all_changed_files = run_cmd("git ls-files -m").splitlines()
     
     # Simple filter for sensitive files
     sensitive_files = {
@@ -74,10 +84,6 @@ def get_candidate_files():
         'auto_push.log',
         'auto_push_test.log'
     }
-    
-    # Don't filter out the timestamp file in GitHub Actions
-    if os.environ.get('GITHUB_ACTIONS'):
-        sensitive_files.discard('last_auto_push.txt')
     
     filtered_files = []
     for file in all_changed_files:
@@ -151,18 +157,8 @@ def push_single_file():
 
         candidates = get_candidate_files()
         if not candidates:
-            # In GitHub Actions, if no files are modified, create a small change
-            if os.environ.get('GITHUB_ACTIONS'):
-                print("🔧 GitHub Actions detected - creating a small change to push...")
-                # Create or update a simple timestamp file
-                timestamp_file = "last_auto_push.txt"
-                with open(timestamp_file, "w") as f:
-                    f.write(f"Last auto-push: {datetime.datetime.now().isoformat()}\n")
-                candidates = [timestamp_file]
-                print(f"📝 Created timestamp file: {timestamp_file}")
-            else:
-                print("⚡ No files to commit.")
-                return
+            print("⚡ No files to commit.")
+            return
 
         # Filter out already pushed files today
         available_files = [f for f in candidates if f not in state["pushed_files"]]
@@ -183,6 +179,30 @@ def push_single_file():
             save_state(state)
             return
 
+        # In GitHub Actions, make a small change to the selected file
+        if os.environ.get('GITHUB_ACTIONS'):
+            print(f"🔧 Making small change to {selected_file} for GitHub Actions...")
+            try:
+                # Read the file content
+                with open(selected_file, 'r', encoding='utf-8') as f:
+                    content = f.read()
+                
+                # Add a small comment at the end (if it's a text file)
+                if selected_file.endswith(('.py', '.js', '.ts', '.cs', '.html', '.css', '.txt', '.md', '.yml', '.yaml', '.json', '.xml', '.sh')):
+                    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    new_content = content + f"\n\n<!-- Auto-push timestamp: {timestamp} -->"
+                    with open(selected_file, 'w', encoding='utf-8') as f:
+                        f.write(new_content)
+                    print(f"✅ Added timestamp comment to {selected_file}")
+                else:
+                    # For binary files, just touch them (update modification time)
+                    os.utime(selected_file, None)
+                    print(f"✅ Updated modification time for {selected_file}")
+            except Exception as e:
+                print(f"⚠️  Could not modify {selected_file}: {e}")
+                # Just touch the file
+                os.utime(selected_file, None)
+        
         # Add and commit the single file
         run_cmd(f"git add '{selected_file}'")
         
