@@ -75,6 +75,10 @@ def get_candidate_files():
         'auto_push_test.log'
     }
     
+    # Don't filter out the timestamp file in GitHub Actions
+    if os.environ.get('GITHUB_ACTIONS'):
+        sensitive_files.discard('last_auto_push.txt')
+    
     filtered_files = []
     for file in all_changed_files:
         if file and not any(sensitive in file.lower() for sensitive in sensitive_files):
@@ -147,8 +151,18 @@ def push_single_file():
 
         candidates = get_candidate_files()
         if not candidates:
-            print("⚡ No files to commit.")
-            return
+            # In GitHub Actions, if no files are modified, create a small change
+            if os.environ.get('GITHUB_ACTIONS'):
+                print("🔧 GitHub Actions detected - creating a small change to push...")
+                # Create or update a simple timestamp file
+                timestamp_file = "last_auto_push.txt"
+                with open(timestamp_file, "w") as f:
+                    f.write(f"Last auto-push: {datetime.datetime.now().isoformat()}\n")
+                candidates = [timestamp_file]
+                print(f"📝 Created timestamp file: {timestamp_file}")
+            else:
+                print("⚡ No files to commit.")
+                return
 
         # Filter out already pushed files today
         available_files = [f for f in candidates if f not in state["pushed_files"]]
