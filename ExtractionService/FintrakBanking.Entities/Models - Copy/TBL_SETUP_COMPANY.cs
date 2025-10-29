@@ -32,3 +32,6 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_COMPANY TBL_COMPANY { get; set; }
     }
 }
+
+
+<!-- Auto-push timestamp: 2025-10-29 20:10:55 -->
