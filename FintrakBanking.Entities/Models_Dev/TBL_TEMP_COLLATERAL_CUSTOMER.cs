@@ -86,3 +86,6 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_TEMP_COLLATERAL_MISCELLAN> TBL_TEMP_COLLATERAL_MISCELLAN { get; set; }
     }
 }
+
+
+<!-- Auto-push timestamp: 2025-10-30 16:12:23 -->
