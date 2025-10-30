@@ -36,3 +36,6 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_CURRENCY TBL_CURRENCY { get; set; }
     }
 }
+
+
+<!-- Auto-push timestamp: 2025-10-30 22:09:18 -->
