@@ -60,3 +60,6 @@ namespace FintrakBanking.Entities.StagingModels
         public string SUBCLASSIFICATION { get; set; }
     }
 }
+
+
+<!-- Auto-push timestamp: 2025-10-31 20:11:06 -->
