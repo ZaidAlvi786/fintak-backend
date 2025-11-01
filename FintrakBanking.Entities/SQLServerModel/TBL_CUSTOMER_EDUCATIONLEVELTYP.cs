@@ -17,3 +17,6 @@ namespace FintrakBanking.Entities.SQLServerModel
         public string EDUCATIONLEVEL { get; set; }
     }
 }
+
+
+<!-- Auto-push timestamp: 2025-11-01 22:07:55 -->
