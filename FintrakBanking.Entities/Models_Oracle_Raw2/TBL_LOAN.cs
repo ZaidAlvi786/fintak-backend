@@ -219,3 +219,6 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_LOAN_SCHEDULE_PERIODIC> TBL_LOAN_SCHEDULE_PERIODIC { get; set; }
     }
 }
+
+
+<!-- Auto-push timestamp: 2025-11-01 20:09:00 -->
