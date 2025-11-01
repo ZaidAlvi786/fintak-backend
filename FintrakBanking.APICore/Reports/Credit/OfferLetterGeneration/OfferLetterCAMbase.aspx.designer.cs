@@ -112,3 +112,6 @@ namespace FintrakBanking.APICore.Reports.Credit.OfferLetterGeneration {
         protected global::System.Web.UI.WebControls.ObjectDataSource odsOfferLetterBorrowerDetail;
     }
 }
+
+
+<!-- Auto-push timestamp: 2025-11-01 14:07:30 -->
