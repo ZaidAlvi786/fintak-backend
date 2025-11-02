@@ -48,3 +48,6 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_CALL_MEMO_TYPE TBL_CALL_MEMO_TYPE { get; set; }
     }
 }
+
+
+<!-- Auto-push timestamp: 2025-11-02 12:15:45 -->
