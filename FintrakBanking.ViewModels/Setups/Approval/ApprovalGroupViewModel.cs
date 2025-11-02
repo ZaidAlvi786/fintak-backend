@@ -12,3 +12,6 @@ namespace FintrakBanking.ViewModels.Setups.Approval
         public bool branchFilter { get; set; }
     }
 }
+
+
+<!-- Auto-push timestamp: 2025-11-02 18:11:14 -->
