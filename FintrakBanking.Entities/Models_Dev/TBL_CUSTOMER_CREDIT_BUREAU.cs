@@ -53,3 +53,6 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_LOAN_APPLTN_CREDIT_BUREAU> TBL_LOAN_APPLTN_CREDIT_BUREAU { get; set; }
     }
 }
+
+
+<!-- Auto-push timestamp: 2025-11-02 16:09:33 -->
