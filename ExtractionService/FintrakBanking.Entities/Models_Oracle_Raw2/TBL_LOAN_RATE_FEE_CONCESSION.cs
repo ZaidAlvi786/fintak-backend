@@ -49,3 +49,6 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_LOAN_CONCESSION_TYPE TBL_LOAN_CONCESSION_TYPE { get; set; }
     }
 }
+
+
+<!-- Auto-push timestamp: 2025-11-03 20:11:07 -->
