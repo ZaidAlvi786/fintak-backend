@@ -27,3 +27,6 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_LOAN_PRUDENTIALGUIDELINE> TBL_LOAN_PRUDENTIALGUIDELINE { get; set; }
     }
 }
+
+
+<!-- Auto-push timestamp: 2025-11-03 14:10:11 -->
