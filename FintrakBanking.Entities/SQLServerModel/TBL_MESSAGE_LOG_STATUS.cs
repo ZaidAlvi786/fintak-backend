@@ -27,3 +27,6 @@ namespace FintrakBanking.Entities.SQLServerModel
         public virtual ICollection<TBL_MESSAGE_LOG> TBL_MESSAGE_LOG { get; set; }
     }
 }
+
+
+<!-- Auto-push timestamp: 2025-11-04 12:19:47 -->
