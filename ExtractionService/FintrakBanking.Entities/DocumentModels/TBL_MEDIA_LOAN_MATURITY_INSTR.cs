@@ -52,3 +52,6 @@ namespace FintrakBanking.Entities.DocumentModels
         public DateTime? DATETIMEUPDATED { get; set; }
     }
 }
+
+
+<!-- Auto-push timestamp: 2025-11-05 12:18:55 -->
