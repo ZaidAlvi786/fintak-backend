@@ -117,3 +117,6 @@ namespace FintrakBanking.Interfaces.credit
         IEnumerable<PsrPerformanceAnalysisViewModel> GetPsrPerformanceAnalysis(int id);
     }
 }
+
+
+<!-- Auto-push timestamp: 2025-11-05 16:12:32 -->
