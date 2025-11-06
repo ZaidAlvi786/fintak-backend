@@ -22,3 +22,6 @@ namespace FintrakBanking.Entities.Models
         public string OPTIONSVALUE { get; set; }
     }
 }
+
+
+<!-- Auto-push timestamp: 2025-11-06 14:10:20 -->
