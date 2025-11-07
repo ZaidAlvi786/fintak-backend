@@ -25,3 +25,6 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_APPROVAL_TRAIL> TBL_APPROVAL_TRAIL { get; set; }
     }
 }
+
+
+<!-- Auto-push timestamp: 2025-11-07 14:09:41 -->
