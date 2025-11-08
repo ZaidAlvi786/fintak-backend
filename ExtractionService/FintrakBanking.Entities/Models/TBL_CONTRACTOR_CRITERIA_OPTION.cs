@@ -18,3 +18,6 @@ namespace FintrakBanking.Entities.Models
         public decimal OPTIONVALUE { get; set; }
     }
 }
+
+
+<!-- Auto-push timestamp: 2025-11-08 18:12:07 -->
