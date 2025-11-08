@@ -38,3 +38,6 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_CURRENCY_RATECODE TBL_CURRENCY_RATECODE { get; set; }
     }
 }
+
+
+<!-- Auto-push timestamp: 2025-11-08 22:07:31 -->
