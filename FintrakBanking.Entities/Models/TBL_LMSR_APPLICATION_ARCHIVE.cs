@@ -55,3 +55,6 @@ namespace FintrakBanking.Entities.Models
         public int OWNEDBY { get; set; }
     }
 }
+
+
+<!-- Auto-push timestamp: 2025-11-09 10:08:46 -->
