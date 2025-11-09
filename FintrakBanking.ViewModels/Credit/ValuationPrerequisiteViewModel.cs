@@ -56,3 +56,6 @@ namespace FintrakBanking.ViewModels.Credit
         public string narration { get; set; }
     }
 }
+
+
+<!-- Auto-push timestamp: 2025-11-09 16:09:57 -->
