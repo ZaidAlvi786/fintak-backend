@@ -36,3 +36,6 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_LOAN_CONDITION_PRECEDENT TBL_LOAN_CONDITION_PRECEDENT { get; set; }
     }
 }
+
+
+<!-- Auto-push timestamp: 2025-11-11 22:09:39 -->
