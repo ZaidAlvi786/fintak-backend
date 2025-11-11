@@ -27,3 +27,6 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_SIGNATURE_DOCUMENT_STAFF> TBL_SIGNATURE_DOCUMENT_STAFF { get; set; }
     }
 }
+
+
+<!-- Auto-push timestamp: 2025-11-11 20:10:52 -->
