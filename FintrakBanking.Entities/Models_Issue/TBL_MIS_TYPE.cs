@@ -37,3 +37,6 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_MIS_INFO> TBL_MIS_INFO { get; set; }
     }
 }
+
+
+<!-- Auto-push timestamp: 2025-11-13 18:13:42 -->
