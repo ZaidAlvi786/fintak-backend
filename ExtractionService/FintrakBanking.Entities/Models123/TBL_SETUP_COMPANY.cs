@@ -32,3 +32,6 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_CHART_OF_ACCOUNT TBL_CHART_OF_ACCOUNT { get; set; }
     }
 }
+
+
+<!-- Auto-push timestamp: 2025-11-13 12:19:15 -->
