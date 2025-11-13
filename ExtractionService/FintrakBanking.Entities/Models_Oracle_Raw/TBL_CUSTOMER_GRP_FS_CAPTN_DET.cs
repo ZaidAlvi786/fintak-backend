@@ -40,3 +40,6 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_CUSTOMER_GROUP TBL_CUSTOMER_GROUP { get; set; }
     }
 }
+
+
+<!-- Auto-push timestamp: 2025-11-13 22:09:49 -->
