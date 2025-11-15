@@ -56,3 +56,6 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_CUSTOMER_COMPANY_DIRECTOR TBL_CUSTOMER_COMPANY_DIRECTOR { get; set; }
     }
 }
+
+
+<!-- Auto-push timestamp: 2025-11-15 12:15:58 -->
