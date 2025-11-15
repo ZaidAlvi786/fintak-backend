@@ -27,3 +27,6 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_LOANAPPLICATION_COLTRL_MAP TBL_LOANAPPLICATION_COLTRL_MAP2 { get; set; }
     }
 }
+
+
+<!-- Auto-push timestamp: 2025-11-15 22:06:38 -->
