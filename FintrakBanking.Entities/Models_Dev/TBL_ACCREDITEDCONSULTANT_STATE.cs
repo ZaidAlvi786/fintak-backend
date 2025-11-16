@@ -20,3 +20,6 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_ACCREDITEDCONSULTANT TBL_ACCREDITEDCONSULTANT { get; set; }
     }
 }
+
+
+<!-- Auto-push timestamp: 2025-11-16 14:07:42 -->
