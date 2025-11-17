@@ -32,3 +32,6 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_CASA TBL_CASA { get; set; }
     }
 }
+
+
+<!-- Auto-push timestamp: 2025-11-17 20:11:15 -->
