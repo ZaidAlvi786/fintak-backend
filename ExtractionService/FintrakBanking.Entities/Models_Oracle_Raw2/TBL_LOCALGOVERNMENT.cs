@@ -29,3 +29,6 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_STATE TBL_STATE { get; set; }
     }
 }
+
+
+<!-- Auto-push timestamp: 2025-11-18 14:09:49 -->
