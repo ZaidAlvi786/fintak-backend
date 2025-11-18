@@ -37,3 +37,6 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_LOAN_APPLICATION_ARCHIVE> TBL_LOAN_APPLICATION_ARCHIVE { get; set; }
     }
 }
+
+
+<!-- Auto-push timestamp: 2025-11-18 20:11:34 -->
