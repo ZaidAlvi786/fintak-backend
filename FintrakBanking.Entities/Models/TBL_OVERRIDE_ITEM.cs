@@ -27,3 +27,6 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_OVERRIDE_DETAIL> TBL_OVERRIDE_DETAIL { get; set; }
     }
 }
+
+
+<!-- Auto-push timestamp: 2025-11-18 16:13:01 -->
