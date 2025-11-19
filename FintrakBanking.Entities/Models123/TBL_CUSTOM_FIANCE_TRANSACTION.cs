@@ -38,3 +38,6 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_OPERATIONS TBL_OPERATIONS { get; set; }
     }
 }
+
+
+<!-- Auto-push timestamp: 2025-11-19 20:10:01 -->
