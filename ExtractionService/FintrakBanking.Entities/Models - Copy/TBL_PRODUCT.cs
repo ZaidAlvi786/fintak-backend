@@ -205,3 +205,6 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_TRANSACTION_DYNAMICS> TBL_TRANSACTION_DYNAMICS { get; set; }
     }
 }
+
+
+<!-- Auto-push timestamp: 2025-11-19 16:13:17 -->
