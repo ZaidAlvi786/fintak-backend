@@ -18,3 +18,6 @@ namespace FintrakBanking.Entities.Models
         public int PROJECTRISKRATINGCATEGORYID { get; set; }
     }
 }
+
+
+<!-- Auto-push timestamp: 2025-11-20 12:18:52 -->
