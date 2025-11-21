@@ -46,3 +46,6 @@ namespace FintrakBanking.Interfaces.Setups.General
         //Task<bool> UpdateAccreditedAuditors(AccreditedAuditorsViewModel entity, int id);
     }
 }
+
+
+<!-- Auto-push timestamp: 2025-11-21 18:14:31 -->
