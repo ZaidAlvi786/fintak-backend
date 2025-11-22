@@ -31,3 +31,6 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_LOAN_PAST_DUE> TBL_LOAN_PAST_DUE { get; set; }
     }
 }
+
+
+<!-- Auto-push timestamp: 2025-11-22 16:10:17 -->
