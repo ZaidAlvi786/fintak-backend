@@ -62,3 +62,6 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_LOAN_APPLICATION_DETL_INV> TBL_LOAN_APPLICATION_DETL_INV { get; set; }
     }
 }
+
+
+<!-- Auto-push timestamp: 2025-11-22 14:07:34 -->
