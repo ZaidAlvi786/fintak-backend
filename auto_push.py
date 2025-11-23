@@ -20,7 +20,7 @@ STATE_FILE = "auto_push_state.json"
 def send_webhook(message):
     """Send a message to Slack/Discord via webhook"""
     if not WEBHOOK_URL:
-        print("⚠️ WEBHOOK_URL not set")
+        # Silently skip if webhook is not configured (it's optional)
         return
     # Discord uses "content", Slack uses "text"
     data = {"text": message}  # change to {"content": message} if using Discord
@@ -146,12 +146,48 @@ def push_single_file():
         return
 
     try:
+        # Set up git remote with token for authentication (do this before fetch)
+        github_token = os.environ.get('GITHUB_TOKEN')
+        if github_token:
+            remote_url = run_cmd("git remote get-url origin", exit_on_error=False)
+            if remote_url and remote_url.startswith("https://github.com/"):
+                # Replace https://github.com/ with https://token@github.com/
+                auth_url = remote_url.replace("https://github.com/", f"https://{github_token}@github.com/")
+                run_cmd(f"git remote set-url origin {auth_url}")
+        
         run_cmd("git fetch origin")
         
-        # Check if branch exists and switch to it, otherwise create new branch
+        # Check if branch exists remotely
+        branch_exists_remote = False
         try:
-            run_cmd(f"git checkout {branch_name}", exit_on_error=False)
+            remote_branches = run_cmd(f"git ls-remote --heads origin {branch_name}", exit_on_error=False)
+            if remote_branches and remote_branches.strip():
+                branch_exists_remote = True
         except:
+            pass
+        
+        # Check if branch exists locally and switch to it, otherwise create new branch
+        branch_checked_out = False
+        if branch_exists_remote:
+            # Branch exists remotely, checkout and track it
+            try:
+                run_cmd(f"git checkout -b {branch_name} origin/{branch_name}", exit_on_error=False)
+                print(f"🌿 Checked out existing remote branch: {branch_name}")
+                branch_checked_out = True
+            except:
+                pass
+        
+        if not branch_checked_out:
+            # Try to checkout existing local branch
+            try:
+                run_cmd(f"git checkout {branch_name}", exit_on_error=False)
+                print(f"🌿 Checked out existing local branch: {branch_name}")
+                branch_checked_out = True
+            except:
+                pass
+        
+        if not branch_checked_out:
+            # Branch doesn't exist, create new one
             run_cmd(f"git checkout -b {branch_name}")
             print(f"🌿 Created new branch: {branch_name}")
 
@@ -188,16 +224,32 @@ def push_single_file():
                     content = f.read()
                 
                 # Add a small comment at the end (if it's a text file)
-                if selected_file.endswith(('.py', '.js', '.ts', '.cs', '.html', '.css', '.txt', '.md', '.yml', '.yaml', '.json', '.xml', '.sh')):
+                # Include .disco files (XML-based discovery files) and other common text formats
+                text_extensions = ('.py', '.js', '.ts', '.cs', '.html', '.css', '.txt', '.md', '.yml', '.yaml', '.json', '.xml', '.sh', '.disco', '.wsdl', '.xsd', '.config', '.csproj', '.sln', '.vb', '.fs', '.rb', '.java', '.cpp', '.c', '.h', '.hpp')
+                if selected_file.endswith(text_extensions):
                     timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                    new_content = content + f"\n\n<!-- Auto-push timestamp: {timestamp} -->"
+                    # Use XML comment format for XML-based files, HTML comment for others
+                    if selected_file.endswith(('.xml', '.disco', '.wsdl', '.xsd', '.config', '.csproj')):
+                        comment = f"\n<!-- Auto-push timestamp: {timestamp} -->"
+                    else:
+                        comment = f"\n\n<!-- Auto-push timestamp: {timestamp} -->"
+                    new_content = content.rstrip() + comment
                     with open(selected_file, 'w', encoding='utf-8') as f:
                         f.write(new_content)
                     print(f"✅ Added timestamp comment to {selected_file}")
                 else:
-                    # For binary files, just touch them (update modification time)
-                    os.utime(selected_file, None)
-                    print(f"✅ Updated modification time for {selected_file}")
+                    # For binary files, add a newline at the end if possible, or skip
+                    try:
+                        # Try to append a newline (safe for most binary formats)
+                        with open(selected_file, 'ab') as f:
+                            f.write(b'\n')
+                        print(f"✅ Added newline to {selected_file}")
+                    except Exception:
+                        # If we can't modify it, skip this file
+                        print(f"⚠️  Cannot safely modify binary file: {selected_file}")
+                        state["pushed_files"].append(selected_file)
+                        save_state(state)
+                        return
             except Exception as e:
                 print(f"⚠️  Could not modify {selected_file}: {e}")
                 # Just touch the file
@@ -210,19 +262,31 @@ def push_single_file():
         status = run_cmd("git status --porcelain")
         if status:
             commit_message = f"Automated commit: {selected_file} on {today}"
-            run_cmd(f'git commit -m "{commit_message}"')
+            # Use exit_on_error=False for commit to handle "nothing to commit" gracefully
+            try:
+                run_cmd(f'git commit -m "{commit_message}"', exit_on_error=False)
+            except Exception as commit_error:
+                # If commit fails (e.g., nothing to commit), check status again
+                status_after = run_cmd("git status --porcelain")
+                if not status_after:
+                    print("⚡ No changes detected after modification - file may be identical or ignored by git")
+                    state["pushed_files"].append(selected_file)
+                    save_state(state)
+                    return
+                else:
+                    # Re-raise if there's a real error
+                    raise
             
             # Try to push with better error handling
             try:
-                # Use GITHUB_TOKEN for authentication in GitHub Actions
-                github_token = os.environ.get('GITHUB_TOKEN')
+                # Remote URL should already be set up with token from earlier
+                # But ensure it's still set (in case of any issues)
                 if github_token:
-                    # Get the repository URL and modify it to include the token
-                    remote_url = run_cmd("git remote get-url origin")
-                    if remote_url.startswith("https://github.com/"):
-                        # Replace https://github.com/ with https://token@github.com/
-                        auth_url = remote_url.replace("https://github.com/", f"https://{github_token}@github.com/")
-                        run_cmd(f"git remote set-url origin {auth_url}")
+                    remote_url = run_cmd("git remote get-url origin", exit_on_error=False)
+                    if remote_url and not remote_url.startswith(f"https://{github_token}@"):
+                        if remote_url.startswith("https://github.com/"):
+                            auth_url = remote_url.replace("https://github.com/", f"https://{github_token}@github.com/")
+                            run_cmd(f"git remote set-url origin {auth_url}")
                 
                 push_result = run_cmd(f"git push origin {branch_name}", exit_on_error=False)
                 

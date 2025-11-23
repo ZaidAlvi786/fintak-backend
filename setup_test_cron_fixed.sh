@@ -64,3 +64,4 @@ echo "   - Test script directly: cd $SCRIPT_DIR && python3 auto_push.py"
 echo "   - Remove test cron: crontab -e (delete TEST_AUTO_PUSH line)"
 echo ""
 echo "💡 The wrapper script handles environment setup for cron jobs on macOS"
+

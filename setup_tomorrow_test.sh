@@ -53,3 +53,4 @@ echo "   $WRAPPER_SCRIPT"
 echo ""
 echo "🔧 Monitor logs:"
 echo "   tail -f $SCRIPT_DIR/auto_push_test.log"
+
