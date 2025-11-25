@@ -18,3 +18,5 @@ namespace FintrakBanking.ViewModels.CASA
         public string customerName { get { return $"{this.firstName} {this.lastName}"; } }
     }
 }
+
+<!-- Auto-push timestamp: 2025-11-25 18:15:25 -->
