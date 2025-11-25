@@ -48,3 +48,5 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_KYC_ITEM TBL_KYC_ITEM { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2025-11-25 22:09:27 -->
