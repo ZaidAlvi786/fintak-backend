@@ -45,3 +45,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_CUSTOMER_CREDIT_BUREAU> TBL_CUSTOMER_CREDIT_BUREAU { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2025-11-25 16:12:47 -->
