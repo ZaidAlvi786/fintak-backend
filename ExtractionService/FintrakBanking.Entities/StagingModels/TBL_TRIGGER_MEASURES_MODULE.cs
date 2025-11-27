@@ -21,3 +21,5 @@ namespace FintrakBanking.Entities.StagingModels
         public decimal? LIQUIDATION { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2025-11-27 12:18:56 -->
