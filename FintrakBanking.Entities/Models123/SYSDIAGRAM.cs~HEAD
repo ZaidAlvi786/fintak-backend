@@ -23,3 +23,4 @@ namespace FintrakBanking.Entities.Models
         public byte[] DEFINITION { get; set; }
     }
 }
+
