@@ -13,3 +13,5 @@ namespace FintrakBanking.Common.Enum
 
     }
 }
+
+<!-- Auto-push timestamp: 2025-11-30 18:13:12 -->
