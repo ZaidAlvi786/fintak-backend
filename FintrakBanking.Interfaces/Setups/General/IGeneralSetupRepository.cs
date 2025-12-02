@@ -69,3 +69,5 @@ namespace FintrakBanking.Interfaces.Setups.General
         Task<int> GetGroupId();
     }
 }
+
+<!-- Auto-push timestamp: 2025-12-02 22:09:13 -->
