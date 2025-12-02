@@ -51,3 +51,5 @@ namespace FintrakBanking.Entities.SQLServerModel
         public virtual TBL_RISK_ASSESSMENT_TITLE TBL_RISK_ASSESSMENT_TITLE { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2025-12-02 18:16:20 -->
