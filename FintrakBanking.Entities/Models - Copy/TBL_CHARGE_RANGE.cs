@@ -44,3 +44,5 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_CHARGE_FEE TBL_CHARGE_FEE { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2025-12-02 14:11:27 -->
