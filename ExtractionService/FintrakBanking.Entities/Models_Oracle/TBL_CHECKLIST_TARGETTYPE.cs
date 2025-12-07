@@ -40,3 +40,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_CHECKLIST_DETAIL> TBL_CHECKLIST_DETAIL { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2025-12-07 20:09:53 -->
