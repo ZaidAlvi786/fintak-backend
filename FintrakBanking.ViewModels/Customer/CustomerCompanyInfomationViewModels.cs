@@ -151,3 +151,5 @@ namespace FintrakBanking.ViewModels.Customer
 
     public class CustomerCompanyShareholdersViewModels: CustomerCompanyDirectorsViewModels { }
 }
+
+<!-- Auto-push timestamp: 2025-12-08 16:13:33 -->
