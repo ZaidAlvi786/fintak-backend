@@ -18,3 +18,5 @@ namespace FintrakBanking.Interfaces.Setups.General
         IEnumerable<MonitoringSetupViewModel> GetAllProduct();
     }
 }
+
+<!-- Auto-push timestamp: 2025-12-08 20:11:08 -->
