@@ -57,3 +57,5 @@ namespace FintrakBanking.Entities.Models
         public int SESSIONTIMEOUT { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2025-12-09 16:13:31 -->
