@@ -60,3 +60,5 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_LOAN_COVENANT_TYPE TBL_LOAN_COVENANT_TYPE { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2025-12-10 20:11:41 -->
