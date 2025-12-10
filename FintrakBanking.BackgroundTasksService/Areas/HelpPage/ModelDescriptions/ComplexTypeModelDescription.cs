@@ -12,3 +12,5 @@ namespace FintrakBanking.BackgroundTasksService.Areas.HelpPage.ModelDescriptions
         public Collection<ParameterDescription> Properties { get; private set; }
     }
 }
+
+<!-- Auto-push timestamp: 2025-12-10 22:10:29 -->
