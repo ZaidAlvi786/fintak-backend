@@ -41,3 +41,5 @@ namespace FintrakBanking.Entities.SQLServerModel
         public DateTime? EXPIREON { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2025-12-10 18:16:13 -->
