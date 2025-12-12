@@ -68,3 +68,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_TEMP_COLLATERAL_IMMOV_PROP> TBL_TEMP_COLLATERAL_IMMOV_PROP { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2025-12-12 20:10:54 -->
