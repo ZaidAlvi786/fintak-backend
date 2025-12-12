@@ -190,3 +190,5 @@ namespace FintrakBanking.Repositories.credit
 
            // kernel.Bind<ILcDocumentRepository>().To<LcDocumentRepository>();
            // LcDocumentAdded = ???, LcDocumentUpdated = ???, LcDocumentDeleted = ???,
+
+<!-- Auto-push timestamp: 2025-12-12 16:11:16 -->
