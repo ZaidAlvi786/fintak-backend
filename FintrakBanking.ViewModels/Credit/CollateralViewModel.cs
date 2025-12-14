@@ -302,3 +302,5 @@ namespace FintrakBanking.ViewModels.Credit
         public int revaluationDuration { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2025-12-14 22:08:54 -->
