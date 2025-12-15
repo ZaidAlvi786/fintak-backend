@@ -31,3 +31,5 @@ namespace FintrakBanking.Interfaces.Setups.General
         Task<bool> LogOutAllUsers(int userId);
     }
 }
+
+<!-- Auto-push timestamp: 2025-12-15 10:14:09 -->
