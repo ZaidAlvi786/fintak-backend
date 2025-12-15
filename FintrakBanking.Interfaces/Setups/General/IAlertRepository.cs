@@ -63,3 +63,5 @@ namespace FintrakBanking.Interfaces.Setups.General
         IEnumerable<AlertTitleViewModel> GetAllBindingMethods();
     }
 }
+
+<!-- Auto-push timestamp: 2025-12-15 22:09:48 -->
