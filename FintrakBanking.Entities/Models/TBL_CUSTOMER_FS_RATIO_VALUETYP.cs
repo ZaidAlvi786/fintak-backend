@@ -40,3 +40,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_CUSTOMER_FS_RATIO_DETAIL> TBL_CUSTOMER_FS_RATIO_DETAIL { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2025-12-16 12:20:41 -->
