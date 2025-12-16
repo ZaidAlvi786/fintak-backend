@@ -35,3 +35,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_LOAN_PRELIMINARY_EVALUATN> TBL_LOAN_PRELIMINARY_EVALUATN { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2025-12-16 14:13:55 -->
