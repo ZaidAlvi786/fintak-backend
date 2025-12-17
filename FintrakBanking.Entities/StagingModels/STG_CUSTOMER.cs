@@ -98,3 +98,5 @@ namespace FintrakBanking.Entities.StagingModels
         public short? RISKRATINGID { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2025-12-17 22:09:44 -->
