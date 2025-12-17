@@ -129,3 +129,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_LOAN_CONTINGENT_USAGE> TBL_LOAN_CONTINGENT_USAGE { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2025-12-17 16:13:57 -->
