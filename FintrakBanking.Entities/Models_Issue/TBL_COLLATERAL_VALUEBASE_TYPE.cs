@@ -51,3 +51,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_TEMP_COLLATERAL_PLANT_EQUP> TBL_TEMP_COLLATERAL_PLANT_EQUP { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2025-12-18 12:19:50 -->
