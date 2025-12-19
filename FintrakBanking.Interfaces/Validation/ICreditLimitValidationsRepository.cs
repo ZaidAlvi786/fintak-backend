@@ -82,3 +82,5 @@ namespace FintrakBanking.Interfaces.CreditLimitValidations
         Task<TotalExposureLimit> GetTotalExposureLimitReference(string reference, int getCompanyId);
     }
 }
+
+<!-- Auto-push timestamp: 2025-12-19 14:11:10 -->
