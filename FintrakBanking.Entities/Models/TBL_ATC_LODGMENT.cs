@@ -71,3 +71,5 @@ namespace FintrakBanking.Entities.Models
                 .WillCascadeOnDelete(false);
 
         */
+
+<!-- Auto-push timestamp: 2025-12-20 20:09:59 -->
