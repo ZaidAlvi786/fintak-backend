@@ -50,3 +50,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_TEMP_PROFILE_USERGROUP> TBL_TEMP_PROFILE_USERGROUP { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2025-12-21 20:10:38 -->
