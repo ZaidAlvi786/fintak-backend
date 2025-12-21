@@ -34,3 +34,5 @@ namespace FintrakBanking.Entities.Models
         public int MAXIMUMUPLOADFILESIZE { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2025-12-21 10:09:41 -->
