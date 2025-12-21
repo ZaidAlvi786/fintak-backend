@@ -30,3 +30,5 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_CREDIT_APPRAISAL_MEMORANDM TBL_CREDIT_APPRAISAL_MEMORANDM { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2025-12-21 22:09:15 -->
