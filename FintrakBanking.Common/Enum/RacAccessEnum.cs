@@ -12,3 +12,5 @@ namespace FintrakBanking.Common.Enum
         CreditCard = 2,  
     }
 }
+
+<!-- Auto-push timestamp: 2025-12-21 12:17:18 -->
