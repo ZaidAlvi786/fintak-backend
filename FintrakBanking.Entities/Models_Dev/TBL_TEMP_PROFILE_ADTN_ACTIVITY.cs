@@ -67,3 +67,5 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_TEMP_PROFILE_USER TBL_TEMP_PROFILE_USER { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2025-12-22 22:10:18 -->
