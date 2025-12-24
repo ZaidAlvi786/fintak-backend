@@ -26,3 +26,5 @@ namespace FintrakBanking.Interfaces.Setups.Finance
     }
 
 }
+
+<!-- Auto-push timestamp: 2025-12-24 16:12:35 -->
