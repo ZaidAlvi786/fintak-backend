@@ -34,3 +34,5 @@ namespace FintrakBanking.Entities.StagingModels
         public bool? ISTERRORIST { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2025-12-25 12:19:19 -->
