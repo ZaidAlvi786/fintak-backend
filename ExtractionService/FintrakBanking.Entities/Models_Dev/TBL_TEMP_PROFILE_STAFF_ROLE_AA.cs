@@ -44,3 +44,5 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_STAFF_ROLE TBL_STAFF_ROLE { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2025-12-27 20:10:54 -->
