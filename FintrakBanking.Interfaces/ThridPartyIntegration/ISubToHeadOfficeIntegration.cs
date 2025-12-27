@@ -19,3 +19,5 @@ namespace FintrakBanking.Interfaces.ThridPartyIntegration
         List<InternationalCustomerViewModel> GlobalCustomerSearchZambia(SearchInternationalCustomerViewModel model);
     }
 }
+
+<!-- Auto-push timestamp: 2025-12-27 10:10:08 -->
