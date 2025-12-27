@@ -32,3 +32,5 @@ namespace FintrakBanking.Entities.StagingModels
         public string SCHEME_CODE { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2025-12-27 18:13:53 -->
