@@ -71,3 +71,5 @@ namespace FintrakBanking.Entities.SQLServerModel
         public virtual ICollection<TBL_TEMP_STAFF> TBL_TEMP_STAFF { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2025-12-28 20:10:53 -->
