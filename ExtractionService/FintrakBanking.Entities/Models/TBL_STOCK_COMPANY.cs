@@ -56,3 +56,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_STOCK_PRICE> TBL_STOCK_PRICE { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2025-12-29 12:20:38 -->
