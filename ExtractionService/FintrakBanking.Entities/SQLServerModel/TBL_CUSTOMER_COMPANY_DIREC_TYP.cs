@@ -26,3 +26,5 @@ namespace FintrakBanking.Entities.SQLServerModel
         public virtual ICollection<TBL_CUSTOMER_COMPANY_DIRECTOR> TBL_CUSTOMER_COMPANY_DIRECTOR { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2025-12-30 12:20:10 -->
