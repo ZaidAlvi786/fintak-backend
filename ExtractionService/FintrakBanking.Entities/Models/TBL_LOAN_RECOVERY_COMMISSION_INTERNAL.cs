@@ -24,3 +24,5 @@ namespace FintrakBanking.Entities.Models
         public decimal? AMOUNTRECOVERED { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-01-01 10:11:41 -->
