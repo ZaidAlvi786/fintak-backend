@@ -15,3 +15,5 @@ namespace FintrakBanking.ViewModels.Credit
         public bool CanSeeForeignCurrency { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-01-01 20:11:23 -->
