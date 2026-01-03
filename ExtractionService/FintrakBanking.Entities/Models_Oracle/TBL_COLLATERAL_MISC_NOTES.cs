@@ -38,3 +38,5 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_COLLATERAL_MISCELLANEOUS TBL_COLLATERAL_MISCELLANEOUS { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-01-03 12:17:57 -->
