@@ -39,3 +39,5 @@
         //public virtual TBL_LOAN_MONITORING_TRIG_SETUP TBL_LOAN_MONITORING_TRIG_SETUP { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-01-03 14:09:10 -->
