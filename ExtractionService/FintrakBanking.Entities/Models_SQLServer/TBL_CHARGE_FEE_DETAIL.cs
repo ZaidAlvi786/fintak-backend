@@ -61,3 +61,5 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_POSTING_TYPE TBL_POSTING_TYPE { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-01-06 12:20:19 -->
