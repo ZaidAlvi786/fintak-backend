@@ -43,3 +43,5 @@ namespace FintrakBanking.Entities.Models
         public int? COMPANYGROUPID { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-01-08 14:14:47 -->
