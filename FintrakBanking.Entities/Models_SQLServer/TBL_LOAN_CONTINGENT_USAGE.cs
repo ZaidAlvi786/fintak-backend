@@ -42,3 +42,5 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_LOAN_CONTINGENT TBL_LOAN_CONTINGENT { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-01-09 12:20:18 -->
