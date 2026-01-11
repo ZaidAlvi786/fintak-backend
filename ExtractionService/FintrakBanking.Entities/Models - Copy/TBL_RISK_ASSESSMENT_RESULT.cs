@@ -39,3 +39,5 @@ namespace FintrakBanking.Entities.Models
         public int? DELETEDBY { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-01-11 16:11:37 -->
