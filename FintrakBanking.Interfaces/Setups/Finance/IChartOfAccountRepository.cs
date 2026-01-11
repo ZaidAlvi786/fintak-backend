@@ -25,3 +25,5 @@ namespace FintrakBanking.Interfaces.Setups.Finance
         Task<int> GetAccountDefaultCurrency(int glAccountId, int companyId);
     }
 }
+
+<!-- Auto-push timestamp: 2026-01-11 20:10:41 -->
