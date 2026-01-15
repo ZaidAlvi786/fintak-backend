@@ -31,3 +31,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_MONITORING_ALERT_SETUP> TBL_MONITORING_ALERT_SETUP { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-01-15 18:21:28 -->
