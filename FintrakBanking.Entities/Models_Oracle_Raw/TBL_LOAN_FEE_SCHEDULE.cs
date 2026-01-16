@@ -24,3 +24,5 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_LOAN_FEE TBL_LOAN_FEE { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-01-16 16:14:31 -->
