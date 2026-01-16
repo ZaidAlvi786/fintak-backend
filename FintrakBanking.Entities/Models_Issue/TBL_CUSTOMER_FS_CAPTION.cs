@@ -60,3 +60,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_CUSTOMER_GRP_FS_CAPTN_DET> TBL_CUSTOMER_GRP_FS_CAPTN_DET { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-01-16 22:10:31 -->
