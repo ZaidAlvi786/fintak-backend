@@ -24,3 +24,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_LOAN_SCHEDULE_TYPE> TBL_LOAN_SCHEDULE_TYPE { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-01-16 10:12:22 -->
