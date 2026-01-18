@@ -30,3 +30,5 @@ namespace FintrakBanking.Entities.SQLServerModel
         public virtual ICollection<TBL_ESG_CHECKLIST_DEFINITION> TBL_ESG_CHECKLIST_DEFINITION { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-01-18 10:10:27 -->
