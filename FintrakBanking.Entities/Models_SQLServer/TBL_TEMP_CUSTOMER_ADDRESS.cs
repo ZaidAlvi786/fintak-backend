@@ -55,3 +55,5 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_CUSTOMER_ADDRESS_TYPE TBL_CUSTOMER_ADDRESS_TYPE { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-01-19 14:17:28 -->
