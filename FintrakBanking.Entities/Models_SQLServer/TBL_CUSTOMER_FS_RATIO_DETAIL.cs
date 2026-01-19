@@ -48,3 +48,5 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_CUSTOMER_FS_RATIO_VALUETYP TBL_CUSTOMER_FS_RATIO_VALUETYP { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-01-19 20:12:17 -->
