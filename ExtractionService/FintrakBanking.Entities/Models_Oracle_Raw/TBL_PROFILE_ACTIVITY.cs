@@ -44,3 +44,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_TEMP_PROFILE_STAFF_ROLE_AA> TBL_TEMP_PROFILE_STAFF_ROLE_AA { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-01-20 14:20:46 -->
