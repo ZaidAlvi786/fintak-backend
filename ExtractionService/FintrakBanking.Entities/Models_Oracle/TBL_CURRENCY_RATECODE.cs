@@ -31,3 +31,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_CURRENCY_EXCHANGERATE> TBL_CURRENCY_EXCHANGERATE { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-01-21 12:22:52 -->
