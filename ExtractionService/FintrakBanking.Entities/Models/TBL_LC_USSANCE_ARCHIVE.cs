@@ -36,3 +36,5 @@ namespace FintrakBanking.Entities.Models
         public int ARCHIVINGOPERATIONID { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-01-22 10:15:46 -->
