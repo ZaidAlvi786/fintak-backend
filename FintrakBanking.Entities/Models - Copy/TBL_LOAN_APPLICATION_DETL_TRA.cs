@@ -58,3 +58,5 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_LOAN_MARKET TBL_LOAN_MARKET { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-01-22 20:13:26 -->
