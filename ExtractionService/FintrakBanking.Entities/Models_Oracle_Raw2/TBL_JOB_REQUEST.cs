@@ -98,3 +98,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_JOB_REQUEST_MESSAGE> TBL_JOB_REQUEST_MESSAGE { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-01-25 22:10:09 -->
