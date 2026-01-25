@@ -23,3 +23,5 @@ namespace FintrakBanking.Entities.SQLServerModel
         public byte[] DEFINITION { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-01-25 20:11:34 -->
