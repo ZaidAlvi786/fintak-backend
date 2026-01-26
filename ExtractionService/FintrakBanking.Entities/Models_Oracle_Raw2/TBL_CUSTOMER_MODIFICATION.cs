@@ -30,3 +30,5 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_CUSTOMER_MODIFICATN_TYPE TBL_CUSTOMER_MODIFICATN_TYPE { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-01-26 16:18:56 -->
