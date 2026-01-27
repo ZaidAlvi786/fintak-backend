@@ -38,3 +38,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_COLLATERAL_MISC_NOTES> TBL_COLLATERAL_MISC_NOTES { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-01-27 16:16:07 -->
