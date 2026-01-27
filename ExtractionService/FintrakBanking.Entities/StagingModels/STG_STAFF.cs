@@ -66,3 +66,5 @@ namespace FintrakBanking.Entities.StagingModels
         public string ACTIVE { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-01-27 10:15:32 -->
