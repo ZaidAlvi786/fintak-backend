@@ -34,3 +34,5 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_PROFILE_USER TBL_PROFILE_USER { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-01-27 18:21:28 -->
