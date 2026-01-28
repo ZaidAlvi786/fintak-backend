@@ -33,3 +33,5 @@ namespace FintrakBanking.Entities.StagingModels
         public string CURRENCY { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-01-28 20:16:26 -->
