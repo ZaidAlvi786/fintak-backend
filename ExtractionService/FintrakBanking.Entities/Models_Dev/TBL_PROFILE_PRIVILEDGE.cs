@@ -25,3 +25,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_PROFILE_PRIVILEDGE_ACTIVIT> TBL_PROFILE_PRIVILEDGE_ACTIVIT { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-01-29 18:28:33 -->
