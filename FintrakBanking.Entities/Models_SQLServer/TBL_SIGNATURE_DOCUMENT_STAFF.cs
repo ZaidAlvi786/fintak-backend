@@ -37,3 +37,5 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_SIGNATURE_DOCUMENT_TYPE TBL_SIGNATURE_DOCUMENT_TYPE { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-01-29 22:15:36 -->
