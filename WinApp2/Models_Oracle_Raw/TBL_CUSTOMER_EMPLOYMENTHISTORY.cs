@@ -45,3 +45,5 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_CUSTOMER_EMPLOYER TBL_CUSTOMER_EMPLOYER { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-01-30 14:25:30 -->
