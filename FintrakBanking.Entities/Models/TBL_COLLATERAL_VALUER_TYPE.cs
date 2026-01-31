@@ -39,3 +39,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_COLLATERAL_VALUER> TBL_COLLATERAL_VALUER { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-01-31 10:12:26 -->
