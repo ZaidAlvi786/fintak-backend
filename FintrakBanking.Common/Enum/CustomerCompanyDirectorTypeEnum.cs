@@ -14,3 +14,5 @@ namespace FintrakBanking.Common.Enum
         AccountSignatory =4
     }
 }
+
+<!-- Auto-push timestamp: 2026-01-31 20:12:12 -->
