@@ -30,3 +30,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_CHECKLIST_TYPE_APROV_LEVL> TBL_CHECKLIST_TYPE_APROV_LEVL { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-02-02 16:22:55 -->
