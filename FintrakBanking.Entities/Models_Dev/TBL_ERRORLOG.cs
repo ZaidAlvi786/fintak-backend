@@ -43,3 +43,5 @@ namespace FintrakBanking.Entities.Models
         public string ALLXML { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-02-03 20:22:43 -->
