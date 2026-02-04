@@ -32,3 +32,5 @@ namespace FintrakBanking.Entities.Models
         public int? PRODUCTCLASSID { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-02-04 10:27:36 -->
