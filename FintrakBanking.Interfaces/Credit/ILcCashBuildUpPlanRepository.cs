@@ -22,3 +22,5 @@ namespace FintrakBanking.Interfaces.credit
         Task<bool> DeleteLcCashBuildUpPlan(int id, UserInfo user);
     }
 }
+
+<!-- Auto-push timestamp: 2026-02-05 20:19:46 -->
