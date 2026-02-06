@@ -35,3 +35,5 @@ namespace FintrakBanking.Entities.Models
         public string GENDER { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-02-06 18:31:40 -->
