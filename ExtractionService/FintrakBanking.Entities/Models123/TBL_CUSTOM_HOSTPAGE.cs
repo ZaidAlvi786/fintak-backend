@@ -23,3 +23,5 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_CUSTOM_HOSTPAGE TBL_CUSTOM_HOSTPAGE2 { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-02-07 18:18:14 -->
