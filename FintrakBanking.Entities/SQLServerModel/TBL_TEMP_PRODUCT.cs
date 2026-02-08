@@ -171,3 +171,5 @@ namespace FintrakBanking.Entities.SQLServerModel
         public virtual ICollection<TBL_TEMP_PRODUCT_CHARGE_FEE> TBL_TEMP_PRODUCT_CHARGE_FEE { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-02-08 20:13:24 -->
