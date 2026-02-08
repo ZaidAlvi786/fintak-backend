@@ -38,3 +38,5 @@ namespace FintrakBanking.Entities.SQLServerModel
         public virtual TBL_CRMS_REGULATORY TBL_CRMS_REGULATORY { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-02-08 12:22:10 -->
