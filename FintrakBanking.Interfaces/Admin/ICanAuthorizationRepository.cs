@@ -10,3 +10,5 @@ namespace FintrakBanking.Interfaces.Admin
         bool CanPerformActionOnResource(int userId, int activityId, UserActions action);
     }
 }
+
+<!-- Auto-push timestamp: 2026-02-10 22:27:45 -->
