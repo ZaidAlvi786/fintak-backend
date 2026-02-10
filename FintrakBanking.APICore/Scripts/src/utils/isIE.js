@@ -19,3 +19,5 @@ export default function isIE(version) {
   }
   return isIE11 || isIE10;
 }
+
+<!-- Auto-push timestamp: 2026-02-10 18:49:44 -->
