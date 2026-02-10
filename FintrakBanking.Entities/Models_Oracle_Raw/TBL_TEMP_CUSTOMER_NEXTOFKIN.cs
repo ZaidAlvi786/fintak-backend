@@ -55,3 +55,5 @@ namespace FintrakBanking.Entities.Models
         public DateTime? DATEOFBIRTH { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-02-10 12:43:02 -->
