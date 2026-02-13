@@ -144,3 +144,5 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_LOAN_APPLICATION_TYPE TBL_LOAN_APPLICATION_TYPE { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-02-13 12:30:21 -->
