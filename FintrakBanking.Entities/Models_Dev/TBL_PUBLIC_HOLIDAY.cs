@@ -27,3 +27,5 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_COUNTRY TBL_COUNTRY { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-02-13 14:33:23 -->
