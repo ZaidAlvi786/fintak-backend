@@ -202,3 +202,5 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_SUB_SECTOR TBL_SUB_SECTOR { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-02-14 16:15:04 -->
