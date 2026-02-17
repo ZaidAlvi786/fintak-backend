@@ -114,3 +114,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_LOAN_REVIEW_APPLICATN_CAM> TBL_LOAN_REVIEW_APPLICATN_CAM { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-02-17 20:23:57 -->
