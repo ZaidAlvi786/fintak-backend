@@ -36,3 +36,5 @@ namespace FintrakBanking.Entities.DocumentModels
         public string PHYSICALLOCATION { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-02-17 18:40:14 -->
