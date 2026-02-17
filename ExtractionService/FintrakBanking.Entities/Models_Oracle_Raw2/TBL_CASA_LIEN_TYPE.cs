@@ -25,3 +25,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_CASA_LIEN> TBL_CASA_LIEN { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-02-17 16:42:37 -->
