@@ -22,3 +22,5 @@ namespace FintrakBanking.Entities.StagingModels
         public decimal? BANK { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-02-17 10:33:37 -->
