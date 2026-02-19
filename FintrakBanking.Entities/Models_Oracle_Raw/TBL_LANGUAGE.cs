@@ -29,3 +29,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_COMPANY> TBL_COMPANY { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-02-19 10:31:22 -->
