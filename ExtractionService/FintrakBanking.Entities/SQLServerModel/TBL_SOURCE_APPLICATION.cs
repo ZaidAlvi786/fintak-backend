@@ -17,3 +17,5 @@ namespace FintrakBanking.Entities.SQLServerModel
         public string APPLICATIONNAME { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-02-19 12:34:47 -->
