@@ -32,3 +32,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_LOAN_MONITORING_TRIGGER> TBL_LOAN_MONITORING_TRIGGER { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-02-22 18:18:46 -->
