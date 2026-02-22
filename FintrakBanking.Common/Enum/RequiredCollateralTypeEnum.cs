@@ -11,3 +11,5 @@ namespace FintrakBanking.Common.Enum
         NoCollateral = 3,
     }
 }
+
+<!-- Auto-push timestamp: 2026-02-22 16:14:52 -->
