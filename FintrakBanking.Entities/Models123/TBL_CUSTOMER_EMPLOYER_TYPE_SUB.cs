@@ -35,3 +35,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_TEMP_CUSTOMER_EMPLOYER> TBL_TEMP_CUSTOMER_EMPLOYER { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-02-22 14:15:19 -->
