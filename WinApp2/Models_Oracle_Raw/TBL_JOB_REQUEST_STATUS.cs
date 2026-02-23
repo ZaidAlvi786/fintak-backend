@@ -28,3 +28,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_JOB_REQUEST_STATUS_FEEDBAK> TBL_JOB_REQUEST_STATUS_FEEDBAK { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-02-23 16:40:27 -->
