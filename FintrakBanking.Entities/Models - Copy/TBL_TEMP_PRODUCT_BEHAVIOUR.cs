@@ -46,3 +46,5 @@ namespace FintrakBanking.Entities.Models
         public int APPROVALSTATUSID { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-02-24 18:43:26 -->
