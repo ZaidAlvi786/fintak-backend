@@ -70,3 +70,5 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_LOAN_PRINCIPAL TBL_LOAN_PRINCIPAL { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-02-24 14:42:37 -->
