@@ -1149,3 +1149,5 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
 //# sourceMappingURL=popper-utils.js.map
+
+<!-- Auto-push timestamp: 2026-02-27 18:24:58 -->
