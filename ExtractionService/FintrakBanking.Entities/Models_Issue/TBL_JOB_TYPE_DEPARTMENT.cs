@@ -21,3 +21,5 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_JOB_TYPE TBL_JOB_TYPE { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-02-27 12:30:41 -->
