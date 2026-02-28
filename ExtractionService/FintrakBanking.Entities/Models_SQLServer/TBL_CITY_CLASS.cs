@@ -27,3 +27,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_CITY> TBL_CITY { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-02-28 14:11:30 -->
