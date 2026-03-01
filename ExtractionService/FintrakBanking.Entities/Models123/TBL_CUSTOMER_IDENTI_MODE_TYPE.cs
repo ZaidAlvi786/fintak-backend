@@ -26,3 +26,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_CUSTOMER_IDENTIFICATION> TBL_CUSTOMER_IDENTIFICATION { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-03-01 14:14:22 -->
