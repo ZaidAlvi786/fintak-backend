@@ -48,12 +48,4 @@ namespace FintrakBanking.Entities.DocumentModels
     }
 }
 
-
-
-
-
-
-
-
-
-
+<!-- Auto-push timestamp: 2026-03-01 12:21:46 -->
