@@ -34,3 +34,5 @@ namespace FintrakBanking.Entities.Models
         public DateTime? EXPIRYDATE { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-03-01 10:13:18 -->
