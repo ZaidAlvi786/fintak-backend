@@ -25,3 +25,5 @@ namespace FintrakBanking.Entities.Models
         public string FILESIZEUNIT { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-03-01 16:14:02 -->
