@@ -31,3 +31,5 @@ namespace FintrakBanking.Entities.StagingModels
         public string CUSTOMERCODE { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-03-02 14:34:40 -->
