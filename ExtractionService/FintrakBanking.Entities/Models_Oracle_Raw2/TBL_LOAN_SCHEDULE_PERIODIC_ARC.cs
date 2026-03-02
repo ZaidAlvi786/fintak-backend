@@ -58,3 +58,5 @@ namespace FintrakBanking.Entities.Models
         public DateTime ARCHIVEDATE { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-03-02 10:33:06 -->
