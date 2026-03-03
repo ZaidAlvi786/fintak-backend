@@ -30,3 +30,5 @@ namespace FintrakBanking.Entities.SQLServerModel
         public virtual ICollection<TBL_TEMP_PRODUCT> TBL_TEMP_PRODUCT { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-03-03 22:17:20 -->
