@@ -20,3 +20,5 @@ namespace FintrakBanking.Interfaces.Customer
         bool ValidateFSCaption(string captionName);
     }            
 }
+
+<!-- Auto-push timestamp: 2026-03-03 20:20:38 -->
