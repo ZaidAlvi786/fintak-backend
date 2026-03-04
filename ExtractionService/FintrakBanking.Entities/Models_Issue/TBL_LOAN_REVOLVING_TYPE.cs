@@ -33,3 +33,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_LOAN_REVOLVING_ARCHIVE> TBL_LOAN_REVOLVING_ARCHIVE { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-03-04 12:29:26 -->
