@@ -76,3 +76,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_TEMP_COMPANY_BENEFICIA> TBL_TEMP_COMPANY_BENEFICIA { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-03-05 14:36:40 -->
