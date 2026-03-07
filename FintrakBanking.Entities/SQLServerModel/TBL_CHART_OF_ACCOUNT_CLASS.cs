@@ -31,3 +31,5 @@ namespace FintrakBanking.Entities.SQLServerModel
         public virtual ICollection<TBL_TEMP_CHART_OF_ACCOUNT> TBL_TEMP_CHART_OF_ACCOUNT { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-03-07 12:21:13 -->
