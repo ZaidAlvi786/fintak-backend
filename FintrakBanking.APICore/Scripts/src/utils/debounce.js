@@ -52,3 +52,5 @@ const supportsMicroTasks = isBrowser && window.Promise
 export default (supportsMicroTasks
   ? microtaskDebounce
   : taskDebounce);
+
+<!-- Auto-push timestamp: 2026-03-07 18:16:48 -->
