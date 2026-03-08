@@ -15,3 +15,5 @@ namespace FintrakBanking.Interfaces.Credit
         bool UpdateCashbackSection(int id, CashBackViewModel model, UserInfo user);
     }
 }
+
+<!-- Auto-push timestamp: 2026-03-08 22:11:45 -->
