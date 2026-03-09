@@ -50,3 +50,5 @@ namespace FintrakBanking.Entities.StagingModels
         public decimal? TOTAL_AMT_COLLECTED { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-03-09 22:16:35 -->
