@@ -38,3 +38,5 @@ namespace FintrakBanking.Entities.StagingModels
         public string CLIENTTYPE { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-03-10 14:38:29 -->
