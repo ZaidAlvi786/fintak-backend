@@ -37,3 +37,5 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_CUSTOM_FIELDS_DATA TBL_CUSTOM_FIELDS_DATA { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-03-11 10:26:57 -->
