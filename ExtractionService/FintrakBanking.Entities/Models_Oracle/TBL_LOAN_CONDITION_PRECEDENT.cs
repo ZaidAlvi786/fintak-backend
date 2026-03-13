@@ -65,3 +65,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_LOAN_CONDITION_DEFERRAL> TBL_LOAN_CONDITION_DEFERRAL { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-03-13 10:23:22 -->
