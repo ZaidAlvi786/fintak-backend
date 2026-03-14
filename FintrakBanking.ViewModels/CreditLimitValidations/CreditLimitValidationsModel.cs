@@ -21,3 +21,5 @@
         public decimal nplExposure { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-03-14 12:23:20 -->
