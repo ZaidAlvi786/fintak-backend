@@ -25,3 +25,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_DAILY_ACCRUAL> TBL_DAILY_ACCRUAL { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-03-14 22:13:55 -->
