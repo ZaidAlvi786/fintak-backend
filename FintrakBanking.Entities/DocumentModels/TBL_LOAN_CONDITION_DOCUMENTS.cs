@@ -44,3 +44,5 @@ namespace FintrakBanking.Entities.DocumentModels
         public bool DELETED { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-03-18 14:55:22 -->
