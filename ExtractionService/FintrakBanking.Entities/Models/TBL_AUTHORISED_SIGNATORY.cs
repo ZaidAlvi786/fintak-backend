@@ -31,3 +31,5 @@
         public ICollection<TBL_OPERATION_SIGNATORY> TBL_OPERATION_SIGNATORY { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-03-18 18:41:47 -->
