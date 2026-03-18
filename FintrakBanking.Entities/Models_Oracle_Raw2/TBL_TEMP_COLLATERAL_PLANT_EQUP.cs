@@ -61,3 +61,5 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_COLLATERAL_VALUEBASE_TYPE TBL_COLLATERAL_VALUEBASE_TYPE { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-03-18 22:20:52 -->
