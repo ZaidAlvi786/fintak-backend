@@ -26,3 +26,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_CUSTOMER_CLIENT_SUPPLIER> TBL_CUSTOMER_CLIENT_SUPPLIER { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-03-20 18:31:01 -->
