@@ -40,3 +40,5 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_LOAN_MONITORING_TRIG_SETUP TBL_LOAN_MONITORING_TRIG_SETUP { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-03-21 20:12:52 -->
