@@ -63,3 +63,5 @@ namespace FintrakBanking.ViewModels.Media
         public short? productPriceIndex { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-03-24 22:18:47 -->
