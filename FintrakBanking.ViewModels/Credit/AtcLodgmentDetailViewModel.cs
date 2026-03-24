@@ -18,3 +18,5 @@ namespace FintrakBanking.ViewModels.credit
         public int atcLodgmentId { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-03-24 14:50:00 -->
