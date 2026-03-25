@@ -50,3 +50,5 @@ namespace FintrakBanking.ViewModels.Credit
         public DateTime effectiveDate { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-03-25 20:26:51 -->
