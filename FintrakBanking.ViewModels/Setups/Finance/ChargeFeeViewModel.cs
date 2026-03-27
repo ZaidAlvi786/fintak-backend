@@ -93,3 +93,5 @@ namespace FintrakBanking.ViewModels.Setups.Finance
         public short postingGroup { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-03-27 16:40:10 -->
