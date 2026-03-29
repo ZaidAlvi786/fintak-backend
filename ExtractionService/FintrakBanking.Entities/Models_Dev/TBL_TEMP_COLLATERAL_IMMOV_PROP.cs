@@ -76,3 +76,5 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_COLLATERAL_PERFECTN_STAT TBL_COLLATERAL_PERFECTN_STAT { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-03-29 16:21:14 -->
