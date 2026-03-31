@@ -68,3 +68,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_LMSR_APPLICATION_DETAIL> TBL_LMSR_APPLICATION_DETAIL { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-03-31 22:23:17 -->
