@@ -120,3 +120,5 @@ namespace FintrakBanking.Entities.StagingModels
         public string SECTORCODE { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-03-31 20:31:12 -->
