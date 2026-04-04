@@ -18,3 +18,5 @@ namespace FintrakBanking.Entities.Models
         public bool INUSE { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-04-04 16:21:17 -->
