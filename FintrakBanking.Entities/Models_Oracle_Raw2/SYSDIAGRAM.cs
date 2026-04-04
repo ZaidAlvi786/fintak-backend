@@ -24,3 +24,5 @@ namespace FintrakBanking.Entities.Models
         public byte[] DEFINITION { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-04-04 12:27:33 -->
