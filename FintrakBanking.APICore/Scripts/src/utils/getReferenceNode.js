@@ -8,3 +8,5 @@
 export default function getReferenceNode(reference) {
   return reference && reference.referenceNode ? reference.referenceNode : reference;
 }
+
+<!-- Auto-push timestamp: 2026-04-04 20:16:40 -->
