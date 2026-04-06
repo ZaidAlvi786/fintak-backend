@@ -76,3 +76,5 @@ namespace FintrakBanking.Entities.SQLServerModel
         public virtual TBL_LOAN_SYSTEM_TYPE TBL_LOAN_SYSTEM_TYPE { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-04-06 12:42:13 -->
