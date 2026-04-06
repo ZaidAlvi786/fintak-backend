@@ -41,3 +41,5 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_CUSTOMER_FS_CAPTION TBL_CUSTOMER_FS_CAPTION { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-04-06 18:39:26 -->
