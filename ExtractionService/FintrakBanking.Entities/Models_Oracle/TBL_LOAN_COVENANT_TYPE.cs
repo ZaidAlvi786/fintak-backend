@@ -40,3 +40,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_LOAN_COVENANT_DETAIL> TBL_LOAN_COVENANT_DETAIL { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-04-08 22:27:46 -->
