@@ -37,3 +37,5 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_PRODUCT TBL_PRODUCT { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-04-10 18:36:37 -->
