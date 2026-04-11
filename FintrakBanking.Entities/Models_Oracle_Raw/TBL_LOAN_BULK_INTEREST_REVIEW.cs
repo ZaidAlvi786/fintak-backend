@@ -38,3 +38,5 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_PRODUCT_PRICE_INDEX TBL_PRODUCT_PRICE_INDEX { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-04-11 12:30:17 -->
