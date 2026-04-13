@@ -13,3 +13,5 @@ namespace FintrakBanking.Interfaces.Credit
         Task<List<ValuationReportViewModel>> GetAllValuationReports();
     }
 }
+
+<!-- Auto-push timestamp: 2026-04-13 20:40:37 -->
