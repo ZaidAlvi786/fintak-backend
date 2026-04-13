@@ -92,3 +92,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_TEMP_LOAN> TBL_TEMP_LOAN1 { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-04-13 15:06:21 -->
