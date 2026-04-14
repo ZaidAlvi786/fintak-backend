@@ -28,3 +28,5 @@ namespace FintrakBanking.Entities.Models
         
     }
 }
+
+<!-- Auto-push timestamp: 2026-04-14 20:40:07 -->
