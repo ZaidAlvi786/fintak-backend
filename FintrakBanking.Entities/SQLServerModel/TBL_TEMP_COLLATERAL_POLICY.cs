@@ -54,3 +54,5 @@ namespace FintrakBanking.Entities.SQLServerModel
         public virtual TBL_FREQUENCY_TYPE TBL_FREQUENCY_TYPE { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-04-14 15:04:38 -->
