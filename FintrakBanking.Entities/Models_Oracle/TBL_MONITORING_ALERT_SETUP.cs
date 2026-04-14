@@ -45,3 +45,5 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_MESSAGE_LOG_TYPE TBL_MESSAGE_LOG_TYPE { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-04-14 16:53:16 -->
