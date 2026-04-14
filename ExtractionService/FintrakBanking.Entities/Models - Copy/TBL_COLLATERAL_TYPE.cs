@@ -69,3 +69,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_TEMP_COLLATERAL_CUSTOMER> TBL_TEMP_COLLATERAL_CUSTOMER { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-04-14 10:54:33 -->
