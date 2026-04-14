@@ -30,3 +30,5 @@ namespace FintrakBanking.Entities.SQLServerModel
         public virtual ICollection<TBL_ESG_SUB_CATEGORY> TBL_ESG_SUB_CATEGORY { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-04-14 12:55:27 -->
