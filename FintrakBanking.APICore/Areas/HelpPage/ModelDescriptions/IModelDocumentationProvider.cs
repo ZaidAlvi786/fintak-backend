@@ -10,3 +10,5 @@ namespace FintrakBanking.APICore.Areas.HelpPage.ModelDescriptions
         string GetDocumentation(Type type);
     }
 }
+
+<!-- Auto-push timestamp: 2026-04-17 12:51:07 -->
