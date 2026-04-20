@@ -28,3 +28,5 @@ namespace FintrakBanking.Entities.Models
         public int? CUSTOMERID { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-04-20 20:33:53 -->
