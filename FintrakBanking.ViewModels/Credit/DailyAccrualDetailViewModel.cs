@@ -28,3 +28,5 @@ namespace FintrakBanking.ViewModels.Credit
         public decimal DAILYACCURALAMOUNT2 { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-04-23 20:41:45 -->
