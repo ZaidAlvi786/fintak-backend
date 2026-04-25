@@ -52,3 +52,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_APPROVAL_LEVEL> TBL_APPROVAL_LEVEL { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-04-25 16:27:55 -->
