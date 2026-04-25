@@ -51,3 +51,5 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_COLLATERAL_SWAP_REQUEST TBL_COLLATERAL_SWAP_REQUEST { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-04-25 14:34:26 -->
