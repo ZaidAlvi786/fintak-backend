@@ -23,3 +23,5 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_CHECKLIST_TYPE TBL_CHECKLIST_TYPE { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-04-27 20:48:32 -->
