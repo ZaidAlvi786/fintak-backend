@@ -33,3 +33,5 @@ namespace FintrakBanking.Entities.Models
         public decimal SHAREVALUEAMOUNTTOUSE { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-04-28 16:02:38 -->
