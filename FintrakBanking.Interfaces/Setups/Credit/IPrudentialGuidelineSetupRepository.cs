@@ -22,3 +22,5 @@ namespace FintrakBanking.Interfaces.Setups.Credit
         IEnumerable<PrudentialGuidelineViewModel> GetAllGuidelineTypes(int getCompanyId);
     }
 }
+
+<!-- Auto-push timestamp: 2026-04-28 20:56:21 -->
