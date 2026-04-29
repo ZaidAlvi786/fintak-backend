@@ -49,3 +49,5 @@ namespace FintrakBanking.Repositories.AppEmail
         }
     }
 }
+
+<!-- Auto-push timestamp: 2026-04-29 19:04:38 -->
