@@ -31,3 +31,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_TEMP_CUSTOMER_ADDRESS> TBL_TEMP_CUSTOMER_ADDRESS { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-04-30 11:21:20 -->
