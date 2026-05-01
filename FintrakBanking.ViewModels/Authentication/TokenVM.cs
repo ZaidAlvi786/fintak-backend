@@ -8,3 +8,5 @@
         public string validTo { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-05-01 22:38:18 -->
