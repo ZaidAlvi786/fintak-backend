@@ -110,3 +110,5 @@ namespace FintrakBanking.ViewModels.Credit
         public decimal newMaturityAmount { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-05-03 20:30:02 -->
