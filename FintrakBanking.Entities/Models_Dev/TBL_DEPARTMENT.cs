@@ -49,3 +49,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_JOB_TYPE_DEPARTMENT> TBL_JOB_TYPE_DEPARTMENT { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-05-04 19:09:24 -->
