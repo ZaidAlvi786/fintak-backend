@@ -18,3 +18,5 @@ namespace FintrakBanking.Entities.Models
         public string TENORMODENAME { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-05-05 19:01:18 -->
