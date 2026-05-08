@@ -173,3 +173,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_TEMP_PRODUCT> TBL_TEMP_PRODUCT6 { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-05-08 22:42:19 -->
