@@ -104,3 +104,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_LOAN_FEE_ARCHIVE> TBL_LOAN_FEE_ARCHIVE { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-05-11 12:32:38 -->
