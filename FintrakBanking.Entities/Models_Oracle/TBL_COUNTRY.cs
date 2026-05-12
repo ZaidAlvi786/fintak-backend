@@ -45,3 +45,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_REGION> TBL_REGION { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-05-12 19:25:03 -->
