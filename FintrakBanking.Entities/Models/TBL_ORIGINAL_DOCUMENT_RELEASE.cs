@@ -36,3 +36,5 @@ namespace FintrakBanking.Entities.Models
         public bool? ISONAMCONLIST { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-05-12 11:45:09 -->
