@@ -50,3 +50,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_RISK_ASSESSMENT_INDEX> TBL_RISK_ASSESSMENT_INDEX { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-05-13 13:59:35 -->
