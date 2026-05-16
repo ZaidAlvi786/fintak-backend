@@ -30,3 +30,5 @@ export default function destroy() {
   }
   return this;
 }
+
+<!-- Auto-push timestamp: 2026-05-16 10:52:40 -->
