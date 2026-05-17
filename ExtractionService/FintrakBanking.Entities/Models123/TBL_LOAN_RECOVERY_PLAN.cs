@@ -54,3 +54,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_LOAN_RECOVERY_PLAN_PAYMNT> TBL_LOAN_RECOVERY_PLAN_PAYMNT { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-05-17 10:57:14 -->
