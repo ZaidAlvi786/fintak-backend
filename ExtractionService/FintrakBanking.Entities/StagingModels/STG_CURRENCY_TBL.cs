@@ -24,5 +24,4 @@ namespace FintrakBanking.Entities.StagingModels
     }
 }
 
-
-
+<!-- Auto-push timestamp: 2026-05-17 20:37:28 -->
