@@ -24,3 +24,5 @@ namespace FintrakBanking.Interfaces.Admin
         #endregion
     }
 }
+
+<!-- Auto-push timestamp: 2026-05-17 18:49:22 -->
