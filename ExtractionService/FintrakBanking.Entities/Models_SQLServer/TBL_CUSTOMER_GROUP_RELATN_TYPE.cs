@@ -30,3 +30,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_TEMP_CUSTOMER_GROUP_MAPPNG> TBL_TEMP_CUSTOMER_GROUP_MAPPNG { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-01-03 22:09:05 -->
