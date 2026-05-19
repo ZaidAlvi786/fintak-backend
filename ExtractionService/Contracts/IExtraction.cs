@@ -14,3 +14,5 @@ namespace ExtractionService
         }
     }
 }
+
+<!-- Auto-push timestamp: 2026-05-19 22:55:06 -->
