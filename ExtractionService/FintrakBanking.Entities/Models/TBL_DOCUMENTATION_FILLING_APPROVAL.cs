@@ -23,3 +23,5 @@ namespace FintrakBanking.Entities.Models
         public string LOANREFERENCE { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-05-20 21:50:22 -->
