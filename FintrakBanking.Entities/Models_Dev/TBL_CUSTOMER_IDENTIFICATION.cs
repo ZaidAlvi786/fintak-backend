@@ -35,3 +35,5 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_CUSTOMER_IDENTI_MODE_TYPE TBL_CUSTOMER_IDENTI_MODE_TYPE { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-05-22 21:01:22 -->
