@@ -53,3 +53,5 @@ namespace FintrakBanking.Interfaces.Credit
         Task<List<ConditionPrecedentViewModel>> GetConditionPrecedentDefaultByApplicationIdAndOperationLms(int detailId, int? operationId);
     }
 }
+
+<!-- Auto-push timestamp: 2026-01-01 16:12:40 -->
