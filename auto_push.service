@@ -17,3 +17,4 @@ Environment=PYTHONPATH=/Users/apple/Downloads/demo/fintak-backend
 
 [Install]
 WantedBy=multi-user.target
+
