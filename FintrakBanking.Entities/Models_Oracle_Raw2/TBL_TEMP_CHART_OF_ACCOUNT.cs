@@ -78,3 +78,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_TEMP_CHART_OF_ACCOUNT_CUR> TBL_TEMP_CHART_OF_ACCOUNT_CUR { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-05-23 12:53:51 -->
