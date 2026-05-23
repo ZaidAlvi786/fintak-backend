@@ -90,3 +90,5 @@ namespace FintrakBanking.Entities.Models
         public virtual ICollection<TBL_TEMP_CHARGE_FEE> TBL_TEMP_CHARGE_FEE { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2026-05-23 16:45:07 -->
