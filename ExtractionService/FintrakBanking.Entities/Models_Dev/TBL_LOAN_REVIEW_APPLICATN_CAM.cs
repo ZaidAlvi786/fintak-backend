@@ -50,3 +50,5 @@ namespace FintrakBanking.Entities.Models
         public virtual TBL_LOAN_REVIEW_APPLICATION TBL_LOAN_REVIEW_APPLICATION { get; set; }
     }
 }
+
+<!-- Auto-push timestamp: 2025-12-28 14:09:23 -->
